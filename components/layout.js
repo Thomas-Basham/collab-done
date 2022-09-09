@@ -4,13 +4,11 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 
-import { useAuth } from '../contexts/auth';
-
+import { useAuth } from "../contexts/auth";
 
 export default function Layout({ children }) {
-  const { signIn, signUp, signOut, session   } = useAuth();
+  const { signIn, signUp, signOut, session } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-
 
   return (
     <div>

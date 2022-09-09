@@ -39,15 +39,18 @@ body,
   margin-left: auto;
   margin-right: auto;
 }
+
 .row {
   position: relative;
   width: 100%;
 }
+
 .row [class^='col'] {
   float: left;
   margin: 0.5rem 2%;
   min-height: 0.125rem;
 }
+
 .col-1,
 .col-2,
 .col-3,
@@ -62,52 +65,67 @@ body,
 .col-12 {
   width: 96%;
 }
+
 .col-1-sm {
   width: 4.33%;
 }
+
 .col-2-sm {
   width: 12.66%;
 }
+
 .col-3-sm {
   width: 21%;
 }
+
 .col-4-sm {
   width: 29.33%;
 }
+
 .col-5-sm {
   width: 37.66%;
 }
+
 .col-6-sm {
   width: 46%;
 }
+
 .col-7-sm {
   width: 54.33%;
 }
+
 .col-8-sm {
   width: 62.66%;
 }
+
 .col-9-sm {
   width: 71%;
 }
+
 .col-10-sm {
   width: 79.33%;
 }
+
 .col-11-sm {
   width: 87.66%;
 }
+
 .col-12-sm {
   width: 96%;
 }
+
 .row::after {
   content: '';
   display: table;
   clear: both;
 }
+
 .hidden-sm {
   display: none;
 }
 
 @media only screen and (min-width: 33.75em) {
+
   /* 540px */
   .container {
     width: 80%;
@@ -115,49 +133,63 @@ body,
 }
 
 @media only screen and (min-width: 45em) {
+
   /* 720px */
   .col-1 {
     width: 4.33%;
   }
+
   .col-2 {
     width: 12.66%;
   }
+
   .col-3 {
     width: 21%;
   }
+
   .col-4 {
     width: 29.33%;
   }
+
   .col-5 {
     width: 37.66%;
   }
+
   .col-6 {
     width: 46%;
   }
+
   .col-7 {
     width: 54.33%;
   }
+
   .col-8 {
     width: 62.66%;
   }
+
   .col-9 {
     width: 71%;
   }
+
   .col-10 {
     width: 79.33%;
   }
+
   .col-11 {
     width: 87.66%;
   }
+
   .col-12 {
     width: 96%;
   }
+
   .hidden-sm {
     display: block;
   }
 }
 
 @media only screen and (min-width: 60em) {
+
   /* 960px */
   .container {
     width: 75%;
@@ -195,41 +227,53 @@ input[disabled] {
   display: block;
   width: 100%;
 }
+
 .inline-block {
   display: inline-block;
   width: 100%;
 }
+
 .flex {
   display: flex;
 }
+
 .flex.column {
   flex-direction: column;
 }
+
 .flex.row {
   flex-direction: row;
 }
+
 .flex.flex-1 {
   flex: 1 1 0;
 }
+
 .flex-end {
   justify-content: flex-end;
 }
+
 .flex-center {
   justify-content: center;
 }
+
 .items-center {
   align-items: center;
 }
+
 .text-sm {
   font-size: 0.8rem;
   font-weight: 300;
 }
+
 .text-right {
   text-align: right;
 }
+
 .font-light {
   font-weight: 300;
 }
+
 .opacity-half {
   opacity: 50%;
 }
@@ -272,9 +316,11 @@ button.primary,
   overflow: hidden;
   max-width: 100%;
 }
+
 .avatar.image {
   object-fit: cover;
 }
+
 .avatar.no-image {
   background-color: #333;
   border: 1px solid rgb(200, 200, 200);
@@ -284,7 +330,7 @@ button.primary,
 .footer {
   position: absolute;
   max-width: 100%;
-  height: 100px ;
+  height: 100px;
   max-height: 100px;
   bottom: 0;
   left: 0;
@@ -300,29 +346,35 @@ button.primary,
   text-align: center;
 
 }
+
 .footer div {
   padding: var(--custom-spacing);
   display: flex;
   align-items: center;
   width: 100%;
 }
-.footer div > img {
+
+.footer div>img {
   height: 20px;
   margin-left: 10px;
 }
-.footer > div:first-child {
+
+.footer>div:first-child {
   display: none;
 }
-.footer > div:nth-child(2) {
+
+.footer>div:nth-child(2) {
   justify-content: left;
 }
 
 @media only screen and (min-width: 60em) {
+
   /* 960px */
-  .footer > div:first-child {
+  .footer>div:first-child {
     display: flex;
   }
-  .footer > div:nth-child(2) {
+
+  .footer>div:nth-child(2) {
     justify-content: center;
   }
 }
@@ -331,6 +383,7 @@ button.primary,
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -361,7 +414,7 @@ button.primary,
   gap: 20px;
 }
 
-.auth-widget > .button {
+.auth-widget>.button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -375,7 +428,7 @@ button.primary,
   background-color: #2a2a2a;
 }
 
-.auth-widget .button > .loader {
+.auth-widget .button>.loader {
   width: 17px;
   animation: spin 1s linear infinite;
   filter: invert(1);
@@ -389,13 +442,13 @@ button.primary,
   gap: 20px;
 }
 
-.account > * > .avatarField {
+.account>*>.avatarField {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
 
-.account > * > .avatarField > .avatarContainer {
+.account>*>.avatarField>.avatarContainer {
   margin-right: 20px;
 }
 
@@ -414,7 +467,7 @@ button.primary,
   margin-bottom: 0px;
 }
 
-.profileCard > .userInfo {
+.profileCard>.userInfo {
   margin-left: 20px;
   font-weight: 300;
   display: flex;
@@ -422,17 +475,17 @@ button.primary,
   justify-content: center;
 }
 
-.profileCard > .userInfo > p {
+.profileCard>.userInfo>p {
   margin: 0;
 }
 
-.profileCard > .userInfo > .username {
+.profileCard>.userInfo>.username {
   font-size: 1.3rem;
   font-weight: 500;
   margin-bottom: 5px;
 }
 
-.profileCard > .userInfo > .website {
+.profileCard>.userInfo>.website {
   font-size: 0.9rem;
   color: var(--custom-color-brand);
   margin-bottom: 10px;
@@ -440,7 +493,7 @@ button.primary,
 }
 
 header {
-  margin-bottom: 300px;
+  margin-bottom: 30px;
 }
 
 nav {
@@ -457,24 +510,108 @@ nav {
   position: fixed;
   top: 0;
 }
+
 .description {
   color: #3a2e69;
   text-align: center;
 }
+
 .description {
   line-height: 1.5;
   font-size: 1rem;
   margin-left: 1em;
 }
+
 .actions {
   display: flex;
   flex-direction: row;
   position: absolute;
   right: 10px;
 }
+
 .actions h3 {
   margin-right: 1em;
 }
+
+a {
+  text-decoration: none;
+}
+
+
+.note {
+  background-color: #f2f0ff;
+  color: #3a2d68;
+  max-width: 400px;
+  border-radius: 5px;
+  margin-top: 1em;
+  padding: 1em;
+  margin: 2em;
+}
+
+.container {
+  /* min-height: 100vh; */
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  /* min-height: 90vh; */
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.title a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.logo {
+  height: 1em;
+}
+
 
 
 

@@ -1,4 +1,4 @@
-import styles from "./form.module.css";
+import styles from "../styles/form.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ export default function Form() {
   };
   return (
     <div className="col-6 form-widget">
-      <h1 className="header">Supabase + Next.js</h1>
+      <h1 className="header">COLLAB DONE</h1>
       <p className="description">Register</p>
       <div>
         <input

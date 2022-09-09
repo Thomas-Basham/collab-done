@@ -1,11 +1,9 @@
-import Auth from '../components/Login'
+import Auth from "../components/Login";
 
 export default function Login() {
   return (
     <>
-              <Auth />
-              
-
+      <Auth />
     </>
   );
 }
