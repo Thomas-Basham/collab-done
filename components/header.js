@@ -2,27 +2,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
-export default function Header() {
+
+
+export default function Header({session}) {
   const router = useRouter();
   const [isAuthed, setAuthStatus] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("./api/getUser")
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       setAuthStatus(result.user && result.user.role === "authenticated");
-  //     });
-  // }, []);
-
-
-  // useEffect(() => {
-  //   supabase.auth.user()
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       setAuthStatus(result.user && result.user.role === "authenticated");
-  //     });
-  // }, []);
-
+  console.log(session)
   const signOutUser = async () => {
     const res = await fetch(`/api/logout`);
     if (res.status === 200) setAuthStatus(false);
@@ -44,12 +29,21 @@ export default function Header() {
           ) : (
             <>
               {" "}
+              {!session 
+              ? <>
               <Link href="/signup">
                 <h3>Sign Up &rarr;</h3>
               </Link>
+
               <Link href="/login">
                 <h3>Login &rarr;</h3>
               </Link>
+              </>
+                : 
+                <Link href="/profile">
+                <h3>Profile &rarr;</h3>
+              </Link>  
+              }
             </>
           )}
         </div>

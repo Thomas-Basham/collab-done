@@ -56,7 +56,7 @@ export default function Form() {
         password: password,
       })
       if (error) throw error
-      router.push('/')
+      router.push('/login')
     } catch (error) {
       alert(error.error_description || error.message)
     } finally {

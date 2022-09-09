@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import Avatar from './Avatar'
+import { useAuth } from '../contexts/auth';
 
-export default function Account({ session }) {
+export default function Account() {
+  const { session, login, getInitialSession } = useAuth();
+  // getInitialSession()
+  console.log({session}, "poops")
+  
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
