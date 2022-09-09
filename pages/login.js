@@ -1,11 +1,10 @@
-import Form from "../components/registrationForm";
-import Layout from "../components/layout";
-import Auth from '../components/Auth'
+import Auth from '../components/Login'
 
 export default function Login() {
   return (
     <>
               <Auth />
+              
 
     </>
   );

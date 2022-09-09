@@ -4,14 +4,10 @@ import Layout from "../components/layout";
 export default function Signup() {
   return (
     <>
-      <Layout>
-        <main>
           <p className="note">
            Sign Up to View Top Secret Protected Route
           </p>
           <Form />
-        </main>
-      </Layout>
       <style jsx>{`
         .note {
           background-color: #f2f0ff;

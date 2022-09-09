@@ -1,92 +1,11 @@
-// import { createContext, useContext, useState, useEffect } from "react";
-
-
-// const AuthContext = createContext();
-
-// export function useAuth() {
-//   const auth = useContext(AuthContext);
-//   if (!auth) throw new Error("You forgot AuthProvider!");
-//   return auth;
-// }
-
-// export function AuthProvider(props) {
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [session, setSession] = useState(null);
-//   const [state, setState] = useState({
-//     isLoading,
-//     session,
-//     handleLogin,
-//     // logout,
-// });
-//   useEffect(() => {
-//     let mounted = true;
-
-//     async function getInitialSession() {
-//       const {
-//         data: { session },
-//       } = await supabase.auth.getSession();
-
-//       // only update the react state if the component is still mounted
-//       if (mounted) {
-//         if (session) {
-//           setSession(session);
-//         }
-
-//         setIsLoading(false);
-//       }
-//     }
-
-//     getInitialSession();
-
-//     const { subscription } = supabase.auth.onAuthStateChange(
-//       (_event, session) => {
-//         setSession(session);
-//       }
-//     );
-
-//     return () => {
-//       mounted = false;
-
-//       subscription?.unsubscribe();
-//     };
-//   }, []);
-
-//   async function handleLogin (email, password) {
-//     try {
-//       setIsLoading(true);
-//       const { data, error } = await supabase.auth.signInWithPassword({
-//         email: email,
-//         password: password,
-//       });
-//       if (error) throw error;
-//     } catch (error) {
-//       alert(error.error_description || error.message);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-// //   function logout() {
-// //     const newState = {
-// //       tokens: null,
-// //       user: null,
-// //     };
-// //     setState((prevState) => ({ ...prevState, ...newState }));
-// //   }
-
-//   return (
-//     <AuthContext.Provider value={state}>{props.children}</AuthContext.Provider>
-//   );
-// }
-
-
-
 import React, { useContext, useState, useEffect } from 'react'
 import { supabase } from "../utils/supabaseClient";
+import { useRouter } from "next/router";
 
 const AuthContext = React.createContext()
 
 export function AuthProvider({ children }) {
+    const router = useRouter();
     const [session, setSession] = useState()
     const [isLoading, setIsLoading] = useState(true)
   
@@ -148,10 +67,17 @@ export function AuthProvider({ children }) {
         };
       }, []);
 
+
+      async function signOut() {
+        // Ends user session
+        router.push('/')
+        await supabase.auth.signOut()
+    
+      }
     const value = {
       signUp: (data) => supabase.auth.signUp(data),
-      signIn: (data) => supabase.auth.signIn(data),
-      signOut: () => supabase.auth.signOut(),
+      signIn: (data) => supabase.auth.signInWithPassword(data),
+      signOut: () => signOut,
       session,
     }
   
