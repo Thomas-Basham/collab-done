@@ -612,8 +612,14 @@ code {
   height: 1em;
 }
 
+.music-post{
+  border: var(--custom-border);
+  padding: .75rem;
+}
 
-
+small {
+  font: .7em sans-serif;
+}
 
 
 

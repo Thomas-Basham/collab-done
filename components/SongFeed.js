@@ -7,9 +7,9 @@ export default function SongFeed() {
 
   const feed = musicPosts.map((data, i) => {
     return (
-      <div key={i}>
-        <p>{data.artist}</p>
-        <p>{Date(data.created_at)}</p>
+      <div className="music-post" key={i}>
+        <h1>{data.artist}</h1>
+        <small>{data.created_at}</small>
         <p>{data.genre}</p>
         <p>{data.description}</p>
         <p>{data.needs}</p>

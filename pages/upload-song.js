@@ -3,21 +3,18 @@ import { useAuth } from "../contexts/auth";
 import { useState, useEffect } from "react";
 
 export default function UploadSong() {
-  const {
-    session,
-
-    username,
-
-  } = useAuth();
+  const { session, username } = useAuth();
   const { createSongPost } = useResource();
+
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
   const [loading, setLoading] = useState(false);
+
   function handleSubmit() {
     const values = {
-      // id: user.id,
       artist: username,
+      artist_id: session.user.id,
       genre,
       description,
       needs,
