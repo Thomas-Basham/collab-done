@@ -3,8 +3,8 @@ import { useAuth } from "../contexts/auth";
 import { useState, useEffect } from "react";
 
 export default function UploadSong(){
-  const { session, signIn, signOut } = useAuth();
-  const { createSongPost } = useResource();
+  const { session, signIn, signOut, getProfile} = useAuth();
+  const { createSongPost  } = useResource();
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
@@ -13,7 +13,7 @@ export default function UploadSong(){
   function handleSubmit(){
     const values = {
       // id: user.id,
-      artist: session.user.id,
+      artist: getProfile(),
       genre,
       description,
       needs,
@@ -27,7 +27,7 @@ export default function UploadSong(){
 
         <div>
           <label htmlFor="artist">Artist</label>
-          <input id="artist" type="text" value={session?.user.email} disabled />
+          <input id="artist" type="text" value={'getProfile()'} disabled />
         </div>
         <div>
           <label htmlFor="genre">Genre</label>
