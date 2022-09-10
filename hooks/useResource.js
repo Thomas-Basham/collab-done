@@ -31,6 +31,7 @@ export default function useResource() {
     } catch (error) {
       alert(error.message);
     } finally {
+      
       setLoading(false);
     }
   }
@@ -72,6 +73,23 @@ export default function useResource() {
     }
   }
 
+  async function updateSongPost(values, id) {
+    try {
+      setLoading(true);
+
+      let { error } = await supabase.from("songs").update(values).match({id: id});
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      getmusicPosts()
+      setLoading(false);
+    }
+  }
+
 
   return {
     createSongPost,
@@ -79,6 +97,8 @@ export default function useResource() {
     loading,
     musicPosts,
     deleteSongPost,
+    updateSongPost,
+
 
   };
 }

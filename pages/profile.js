@@ -5,10 +5,26 @@ import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 
-export default function Profile() {
-  const { musicPosts, deleteSongPost } = useResource();
-  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
+export default function Profile() {
+  const { musicPosts, deleteSongPost, updateSongPost } = useResource();
+  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
+  const { createSongPost } = useResource();
+
+  const [songPostData, SetSongPostData] = useState(null);
+  const [genre, setGenre] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [needs, setNeeds] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  
+  console.log(show)
   const {
     session,
     signIn,
@@ -29,6 +45,29 @@ export default function Profile() {
   let fillteredPosts = musicPosts.filter(
     (post) => post.artist_id === session.user.id
   );
+
+  function handleOpenModal(data) {
+    setShow(true);
+    setGenre(data.genre);
+    setDescription(data.description);
+    setNeeds(data.needs);
+    SetSongPostData(data)
+    return 
+  }
+
+  function handleSubmit() {
+
+    const values = {
+      artist: username,
+      artist_id: session.user.id,
+      genre,
+      description,
+      needs,
+    };
+    updateSongPost(values, songPostData.id);
+    setShow(false);
+  }
+
   const userFeed = fillteredPosts.map((data, i) => {
     return (
       <div className="music-post" key={i}>
@@ -40,6 +79,7 @@ export default function Profile() {
         <p>{data.potential_collaborators}</p>
         <p>{data.finished_song && ""}</p>
         <svg
+          cursor={"pointer"}
           onClick={() => deleteSongPost(data.id)}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -58,9 +98,10 @@ export default function Profile() {
         </svg>
 
         <svg
-          onClick={() => deleteSongPost(data.id)}
+          cursor={"pointer"}
+          onClick={() => handleOpenModal(data)}
           width={25}
-          className="trash-icon"
+          className="edit-icon"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -128,7 +169,70 @@ export default function Profile() {
           </button>
         </div>
         {userFeed}
+
+
+
+      
       </div>
+      <Modal show={show} onHide={() => setShow(false)}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <div className="row flex-center flex">
+      <div className="col-6 form-widget">
+        <div>
+          <label htmlFor="artist">Artist</label>
+          <input id="artist" type="text" value={username} disabled />
+        </div>
+        <div>
+          <label htmlFor="genre">Genre</label>
+          <input
+            id="genre"
+            type="text"
+            value={genre || ""}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="website">Description</label>
+          <input
+            id="description"
+            type="text"
+            value={description || ""}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="needs">Needs</label>
+          <input
+            id="needs"
+            type="text"
+            value={needs || ""}
+            onChange={(e) => setNeeds(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <button
+            className="button primary block"
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          >
+            {loading ? "Loading ..." : "Submit"}
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+      </Modal>
+
+
     </div>
   );
 }

@@ -12,10 +12,10 @@ body {
   --custom-border-radius: 5px;
   --custom-spacing: 5px;
 
-  padding: 0;
-  margin: 0;
-  font-family: var(--custom-font-family);
-  background-color: var(--custom-bg-color);
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: var(--custom-font-family) !important;
+  background-color: var(--custom-bg-color) !important;
 }
 
 * {
@@ -534,7 +534,8 @@ nav {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: white !important;
 }
 
 
@@ -620,7 +621,6 @@ code {
 small {
   font: .7em sans-serif;
 }
-
 
 
 
