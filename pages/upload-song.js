@@ -1,33 +1,46 @@
-import useResource from '../hooks/useResource';
+import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
 import { useState, useEffect } from "react";
 
-export default function UploadSong(){
-  const { session, signIn, signOut, getProfile} = useAuth();
-  const { createSongPost  } = useResource();
+export default function UploadSong() {
+  const {
+    session,
+    signIn,
+    signOut,
+    username,
+    setUsername,
+    website,
+    setWebsite,
+    avatar_url,
+    setAvatarUrl,
+    getCurrentUser,
+    getProfile,
+    isLoading,
+    setIsLoading,
+    updateProfile,
+  } = useAuth();
+  const { createSongPost } = useResource();
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log("sesssss", session)
-  function handleSubmit(){
+  function handleSubmit() {
     const values = {
       // id: user.id,
-      artist: getProfile(),
+      artist: username,
       genre,
       description,
       needs,
     };
-    createSongPost(values)
+    createSongPost(values);
   }
 
-  return(
+  return (
     <div className="row flex-center flex">
       <div className="col-6 form-widget">
-
         <div>
           <label htmlFor="artist">Artist</label>
-          <input id="artist" type="text" value={'getProfile()'} disabled />
+          <input id="artist" type="text" value={username} disabled />
         </div>
         <div>
           <label htmlFor="genre">Genre</label>
@@ -66,10 +79,7 @@ export default function UploadSong(){
             {loading ? "Loading ..." : "Upload"}
           </button>
         </div>
-
-
       </div>
     </div>
-
-  )
+  );
 }

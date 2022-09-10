@@ -123,7 +123,7 @@ export function AuthProvider({ children }) {
 
   async function signOut() {
     // Ends user session
-    router.push("/");
+    // router.push("/");
     await supabase.auth.signOut();
   }
   const value = {

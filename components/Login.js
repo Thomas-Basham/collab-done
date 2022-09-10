@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { signIn, signUp, signOut, session } = useAuth();
 
-  console.log(email, password);
 
   const handleLogin = async (email, password) => {
     try {

@@ -10,67 +10,16 @@ export default function useResource() {
   const [loading, setLoading] = useState(true);
   const { signIn, signUp, signOut, session } = useAuth();
   const [musicPosts, setmusicPosts] = useState([]);
-  
+
   useEffect(() => {
     getmusicPosts();
   }, []);
-
-
-
-  async function getCurrentUser() {
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      throw error;
-    }
-
-    if (!session?.user) {
-      router.push("/");
-
-      // throw new Error("User not logged in");
-    }
-
-    return session.user;
-  }
-  async function getUserData(id) {
-    try {
-
-      let { data, error, status } = await supabase
-        .from("profiles")
-        .select(`username, website, avatar_url`)
-        .eq("id", id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        // console.log(data.username.toString())
-        // data = JSON.stringify(data.username);
-        // return data.username
-      }
-      // console.log(data)
-      return data.username
-
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
 
   async function getmusicPosts() {
     try {
       setLoading(true);
 
-      let { data, error, status } = await supabase
-        .from("songs")
-        .select('*')
+      let { data, error, status } = await supabase.from("songs").select("*");
 
       if (error && status !== 406) {
         throw error;
@@ -78,7 +27,7 @@ export default function useResource() {
 
       if (data) {
         setmusicPosts(data);
-        console.log(data)
+        console.log(data);
       }
     } catch (error) {
       alert(error.message);
@@ -108,9 +57,5 @@ export default function useResource() {
     getmusicPosts,
     loading,
     musicPosts,
-    // getCurrentUser,
-    getUserData,
-
-
   };
 }

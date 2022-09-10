@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 export default function Header({ session, signOut }) {
-  console.log(session);
 
   return (
     <header>
@@ -15,9 +14,13 @@ export default function Header({ session, signOut }) {
         <div className="actions">
           {session ? (
             <>
-              <a onClick={signOut()}>
-                <h3>Sign Out &rarr;</h3>
+                    <Link href="/">
+
+              <a >
+                <h3 onClick={signOut()}>Sign Out &rarr;</h3>
               </a>
+              </Link>
+
               <Link href="/profile">
                 <a>
                   <h3>Profile &rarr;</h3>
