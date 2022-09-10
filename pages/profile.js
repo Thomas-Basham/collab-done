@@ -5,8 +5,8 @@ import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 export default function Profile() {
   const { musicPosts, deleteSongPost, updateSongPost } = useResource();
@@ -23,8 +23,6 @@ export default function Profile() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  
-  console.log(show)
   const {
     session,
     signIn,
@@ -41,6 +39,7 @@ export default function Profile() {
     setIsLoading,
     updateProfile,
   } = useAuth();
+  console.log(avatar_url);
 
   let fillteredPosts = musicPosts.filter(
     (post) => post.artist_id === session.user.id
@@ -51,12 +50,11 @@ export default function Profile() {
     setGenre(data.genre);
     setDescription(data.description);
     setNeeds(data.needs);
-    SetSongPostData(data)
-    return 
+    SetSongPostData(data);
+    return;
   }
 
   function handleSubmit() {
-
     const values = {
       artist: username,
       artist_id: session.user.id,
@@ -73,6 +71,7 @@ export default function Profile() {
       <div className="music-post" key={i}>
         <h1>{data.artist}</h1>
         <small>{data.created_at}</small>
+        <p>{data.song_url}</p>
         <p>{data.genre}</p>
         <p>{data.description}</p>
         <p>{data.needs}</p>
@@ -169,70 +168,63 @@ export default function Profile() {
           </button>
         </div>
         {userFeed}
-
-
-
-      
       </div>
-      <Modal show={show} onHide={() => setShow(false)}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
       >
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <div className="row flex-center flex">
-      <div className="col-6 form-widget">
-        <div>
-          <label htmlFor="artist">Artist</label>
-          <input id="artist" type="text" value={username} disabled />
-        </div>
-        <div>
-          <label htmlFor="genre">Genre</label>
-          <input
-            id="genre"
-            type="text"
-            value={genre || ""}
-            onChange={(e) => setGenre(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="website">Description</label>
-          <input
-            id="description"
-            type="text"
-            value={description || ""}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="needs">Needs</label>
-          <input
-            id="needs"
-            type="text"
-            value={needs || ""}
-            onChange={(e) => setNeeds(e.target.value)}
-          />
-        </div>
+          <div className="col-6 form-widget">
+            <div>
+              <label htmlFor="artist">Artist</label>
+              <input id="artist" type="text" value={username} disabled />
+            </div>
+            <div>
+              <label htmlFor="genre">Genre</label>
+              <input
+                id="genre"
+                type="text"
+                value={genre || ""}
+                onChange={(e) => setGenre(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="website">Description</label>
+              <input
+                id="description"
+                type="text"
+                value={description || ""}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="needs">Needs</label>
+              <input
+                id="needs"
+                type="text"
+                value={needs || ""}
+                onChange={(e) => setNeeds(e.target.value)}
+              />
+            </div>
 
-        <div>
-          <button
-            className="button primary block"
-            onClick={() => handleSubmit()}
-            disabled={loading}
-          >
-            {loading ? "Loading ..." : "Submit"}
-          </button>
+            <div>
+              <button
+                className="button primary block"
+                onClick={() => handleSubmit()}
+                disabled={loading}
+              >
+                {loading ? "Loading ..." : "Submit"}
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-
-
       </Modal>
-
-
     </div>
   );
 }
