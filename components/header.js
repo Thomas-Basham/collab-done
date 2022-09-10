@@ -23,6 +23,11 @@ export default function Header({ session, signOut }) {
                   <h3>Profile &rarr;</h3>
                 </a>
               </Link>
+              <Link href="/upload-song">
+                <a>
+                  <h3>Upload &rarr;</h3>
+                </a>
+              </Link>
             </>
           ) : (
             <>
