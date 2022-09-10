@@ -8,12 +8,30 @@ export default function useResource() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
-  const { signIn, signUp, signOut, session } = useAuth();
+  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
   const [musicPosts, setmusicPosts] = useState([]);
+  const {
+    session,
+    signIn,
+    signOut,
+    username,
+    setUsername,
+    website,
+    setWebsite,
+    avatar_url,
+    setAvatarUrl,
+    getCurrentUser,
+    getProfile,
+    isLoading,
+    setIsLoading,
+    updateProfile,
+  } = useAuth();
 
   useEffect(() => {
     getmusicPosts();
   }, []);
+
+
 
   async function getmusicPosts() {
     try {
@@ -27,7 +45,7 @@ export default function useResource() {
 
       if (data) {
         setmusicPosts(data);
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
       alert(error.message);
@@ -35,6 +53,16 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
+  // function getCurrentUserSongPosts() {
+  //   if (musicPosts){
+  //     console.log(musicPosts)
+  //     let fillteredPosts =  musicPosts.filter(post => post.artist === 'tommyb' )
+  //     // console.log(fillteredPosts)
+  //     setCurrentUserSongPosts(fillteredPosts)
+  //     // console.log(currentUserSongPosts) 
+  //   }
+  // }
 
   async function createSongPost(values) {
     try {
@@ -57,5 +85,9 @@ export default function useResource() {
     getmusicPosts,
     loading,
     musicPosts,
+    // getCurrentUserSongPosts,
+    currentUserSongPosts,
+
+    
   };
 }

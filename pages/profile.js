@@ -3,8 +3,12 @@ import { supabase } from "../utils/supabaseClient";
 import Avatar from "../components/Avatar";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
+import useResource from "../hooks/useResource";
 
 export default function Profile() {
+  const { musicPosts } = useResource();
+  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
+
   const {
     session,
     signIn,
@@ -15,15 +19,35 @@ export default function Profile() {
     setWebsite,
     avatar_url,
     setAvatarUrl,
-    getCurrentUser,
+
     getProfile,
     isLoading,
     setIsLoading,
     updateProfile,
   } = useAuth();
 
+  let fillteredPosts =  musicPosts.filter(post => post.artist === 'tommyb' )
+  const userFeed = fillteredPosts.map((data, i) => {
+    return (
+      <div key={i}>
+        <p>{data.artist}</p>
+        <p>{Date(data.created_at)}</p>
+        <p>{data.genre}</p>
+        <p>{data.description}</p>
+        <p>{data.needs}</p>
+        <p>{data.potential_collaborators}</p>
+        <p>{data.finished_song && ""}</p>
+      </div>
+    );
+  });
+
+
+  
   return (
     <div className="row flex-center flex">
+
+
+
       <div className="col-6 form-widget">
         <Avatar
           url={avatar_url}
@@ -71,6 +95,8 @@ export default function Profile() {
             Sign Out
           </button>
         </div>
+        {userFeed}
+
       </div>
     </div>
   );

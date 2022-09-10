@@ -5,19 +5,9 @@ import { useState, useEffect } from "react";
 export default function UploadSong() {
   const {
     session,
-    signIn,
-    signOut,
+
     username,
-    setUsername,
-    website,
-    setWebsite,
-    avatar_url,
-    setAvatarUrl,
-    getCurrentUser,
-    getProfile,
-    isLoading,
-    setIsLoading,
-    updateProfile,
+
   } = useAuth();
   const { createSongPost } = useResource();
   const [genre, setGenre] = useState(null);
