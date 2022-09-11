@@ -4,7 +4,14 @@ import { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 
 export default function UploadSong() {
-  const { session, username } = useAuth();
+  const {
+    session,
+    username,
+    instagram_url,
+    twitter_url,
+    spotify_url,
+    soundcloud_url,
+  } = useAuth();
   const { createSongPost } = useResource();
 
   const [genre, setGenre] = useState(null);
@@ -14,7 +21,6 @@ export default function UploadSong() {
   const [songUrl, setSongUrl] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-
 
   async function uploadSong(event) {
     try {
@@ -38,15 +44,13 @@ export default function UploadSong() {
       }
 
       setSongUrl(filePath);
-      setFileName(file.name)
+      setFileName(file.name);
     } catch (error) {
       alert(error.message);
     } finally {
       setUploading(false);
     }
   }
-
-
 
   function handleSubmit() {
     const values = {
@@ -56,10 +60,14 @@ export default function UploadSong() {
       description,
       needs,
       song_url: songUrl,
+      instagram_url,
+      twitter_url,
+      spotify_url,
+      soundcloud_url,
     };
     createSongPost(values);
   }
-  let size = 150
+  let size = 150;
 
   return (
     <div className="row flex-center flex">
@@ -70,21 +78,21 @@ export default function UploadSong() {
         </div>
         <p>{fileName}</p>
         <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? "Uploading ..." : "Upload"}
-        </label>
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-          }}
-          type="file"
-          id="single"
-          accept="audio/*"
-          onChange={uploadSong}
-          disabled={uploading}
-        />
-      </div>
+          <label className="button primary block" htmlFor="single">
+            {uploading ? "Uploading ..." : "Upload"}
+          </label>
+          <input
+            style={{
+              visibility: "hidden",
+              position: "absolute",
+            }}
+            type="file"
+            id="single"
+            accept="audio/*"
+            onChange={uploadSong}
+            disabled={uploading}
+          />
+        </div>
 
         <div>
           <label htmlFor="genre">Genre</label>

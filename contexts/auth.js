@@ -11,6 +11,10 @@ export function AuthProvider({ children }) {
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
+  const [instagram_url, setInstagram_url] = useState(null);
+  const [twitter_url, setTwitter_url] = useState(null);
+  const [spotify_url, setSpotify_url] = useState(null);
+  const [soundcloud_url, setSoundcloud_url] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -106,6 +110,10 @@ export function AuthProvider({ children }) {
         username,
         website,
         avatar_url,
+        instagram_url,
+        twitter_url,
+        spotify_url,
+        soundcloud_url,
         updated_at: new Date(),
       };
 
@@ -140,8 +148,15 @@ export function AuthProvider({ children }) {
     setAvatarUrl,
     updateProfile,
     isLoading,
-    setIsLoading
-
+    setIsLoading,
+    instagram_url,
+    setInstagram_url,
+    twitter_url,
+    setTwitter_url,
+    spotify_url,
+    setSpotify_url,
+    soundcloud_url, 
+    setSoundcloud_url,
 
 
   };

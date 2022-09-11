@@ -46,7 +46,14 @@ export default function Profile() {
     setWebsite,
     avatar_url,
     setAvatarUrl,
-
+    instagram_url,
+    setInstagram_url,
+    twitter_url,
+    setTwitter_url,
+    spotify_url,
+    setSpotify_url,
+    soundcloud_url, 
+    setSoundcloud_url,
     getProfile,
     isLoading,
     setIsLoading,
@@ -54,9 +61,7 @@ export default function Profile() {
   } = useAuth();
   console.log(avatar_url);
 
-  let fillteredPosts = musicPosts.filter(
-    (post) => post.artist_id === session.user.id
-  );
+
 
   function handleOpenModal(data) {
     setShow(true);
@@ -78,7 +83,9 @@ export default function Profile() {
     updateSongPost(values, songPostData.id);
     setShow(false);
   }
-
+  let fillteredPosts = musicPosts.filter(
+    (post) => post.artist_id === session.user.id
+  );
   const userFeed = fillteredPosts.map((data, i) => {
     return (
       <div className="music-post" key={i}>
@@ -180,6 +187,42 @@ export default function Profile() {
             type="website"
             value={website || ""}
             onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="instagram">Instagram</label>
+          <input
+            id="instagram"
+            type="website"
+            value={instagram_url || ""}
+            onChange={(e) => setInstagram_url(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="twitter">Twitter</label>
+          <input
+            id="twitter"
+            type="website"
+            value={twitter_url || ""}
+            onChange={(e) => setTwitter_url(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="Spotify">Spotify</label>
+          <input
+            id="Spotify"
+            type="website"
+            value={spotify_url || ""}
+            onChange={(e) => setSpotify_url(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="soundcloud">Soundcloud</label>
+          <input
+            id="soundcloud"
+            type="website"
+            value={soundcloud_url || ""}
+            onChange={(e) => setSoundcloud_url(e.target.value)}
           />
         </div>
 
