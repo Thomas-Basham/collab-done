@@ -59,7 +59,8 @@ export default function Profile() {
     setIsLoading,
     updateProfile,
   } = useAuth();
-  console.log(avatar_url);
+
+  console.log(instagram_url);
 
 
 
@@ -124,9 +125,8 @@ export default function Profile() {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          className="w-6 h-6 trash-icon"
           width={25}
-          className="trash-icon"
         >
           <path
             stroke-linecap="round"
@@ -164,7 +164,7 @@ export default function Profile() {
           size={150}
           onUpload={(url) => {
             setAvatarUrl(url);
-            updateProfile({ username, website, avatar_url: url });
+            updateProfile({  avatar_url: url }); // username, website,
           }}
         />
         <div>
@@ -229,7 +229,7 @@ export default function Profile() {
         <div>
           <button
             className="button primary block"
-            onClick={() => updateProfile({ username, website, avatar_url })}
+            onClick={() => updateProfile({ username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url })}
             disabled={isLoading}
           >
             {isLoading ? "Loading ..." : "Update"}

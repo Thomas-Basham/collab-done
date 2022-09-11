@@ -61,7 +61,8 @@ export function AuthProvider({ children }) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
         .eq("id", user.id)
         .single();
 
@@ -73,6 +74,10 @@ export function AuthProvider({ children }) {
         setUsername(data.username);
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
+        setInstagram_url(data.instagram_url);
+        setTwitter_url(data.twitter_url);
+        setSpotify_url(data.spotify_url);
+        setSoundcloud_url(data.soundcloud_url);
         // return(data)
       }
     } catch (error) {
@@ -100,7 +105,7 @@ export function AuthProvider({ children }) {
     return session.user;
   }
 
-  async function updateProfile({ username, website, avatar_url }) {
+  async function updateProfile({ username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url }) {
     try {
       setIsLoading(true);
       const user = await getCurrentUser();
@@ -117,8 +122,9 @@ export function AuthProvider({ children }) {
         updated_at: new Date(),
       };
 
-      let { error } = await supabase.from("profiles").upsert(updates);
-
+      //   let { error } = await supabase.from("profiles").upsert(updates);
+        let { error } = await supabase.from("profiles").update(updates).eq('id', user.id);
+      
       if (error) {
         throw error;
       }
