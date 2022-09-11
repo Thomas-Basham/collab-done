@@ -9,7 +9,20 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 export default function Profile() {
-  const { musicPosts, deleteSongPost, updateSongPost } = useResource();
+  const {
+    musicPosts,
+    getUserData,
+    downloadSong,
+    audio,
+    handlePlayMusic,
+    playSong,
+  } = useResource();
+  if (playSong == true) {
+    audio.play();
+  }
+  if (playSong == false) {
+    audio.pause();
+  }
   const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
   const { createSongPost } = useResource();
 
@@ -71,7 +84,26 @@ export default function Profile() {
       <div className="music-post" key={i}>
         <h1>{data.artist}</h1>
         <small>{data.created_at}</small>
-        <p>{data.song_url}</p>
+        <br></br>
+
+        <svg
+          cursor="pointer"
+          onClick={() => handlePlayMusic(data, i)}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+          width={100}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
+          />
+        </svg>
+
         <p>{data.genre}</p>
         <p>{data.description}</p>
         <p>{data.needs}</p>
@@ -100,13 +132,12 @@ export default function Profile() {
           cursor={"pointer"}
           onClick={() => handleOpenModal(data)}
           width={25}
-          className="edit-icon"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          className="w-6 h-6 edit-icon"
         >
           <path
             stroke-linecap="round"

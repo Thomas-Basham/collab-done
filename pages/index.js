@@ -5,7 +5,7 @@ import SongFeed from "../components/SongFeed";
 export default function Home(props) {
   return (
     <div className="container row">
-      <SongFeed />
+      <SongFeed profilePage={false} />
     </div>
   );
 }

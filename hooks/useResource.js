@@ -9,6 +9,10 @@ export default function useResource() {
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
+  const [songUrl, setSongUrl] = useState(null);
+  const [playSong, setPlaySong] = useState(false);
+  const [audio, setAudio] = useState(new Audio());
+  const [currentKey, setCurrentKey] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -89,7 +93,34 @@ export default function useResource() {
       setLoading(false);
     }
   }
-
+  async function downloadSong(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("songs")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      if (data) {
+        setAudio(new Audio(url));
+        // set(new Audio(url));
+        console.log(audio);
+      }
+    } catch (error) {
+      console.log("Error downloading Audio File: ", error.message);
+    }
+  }
+  async function handlePlayMusic(data, key) {
+    setCurrentKey(key);
+    if (key != currentKey) {
+      setPlaySong(false);
+      await downloadSong(data.song_url);
+      setPlaySong(true);
+    } else {
+      setPlaySong(!playSong);
+    }
+  }
 
   return {
     createSongPost,
@@ -98,7 +129,11 @@ export default function useResource() {
     musicPosts,
     deleteSongPost,
     updateSongPost,
-
-
+    downloadSong,
+    audio,
+    handlePlayMusic,
+    playSong,
+    setCurrentKey,
+    
   };
 }
