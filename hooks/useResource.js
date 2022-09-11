@@ -95,6 +95,7 @@ export default function useResource() {
   }
   async function downloadSong(path) {
     try {
+      setLoading(true)
       const { data, error } = await supabase.storage
         .from("songs")
         .download(path);
@@ -104,6 +105,7 @@ export default function useResource() {
       const url = URL.createObjectURL(data);
       if (data) {
         setAudio(new Audio(url));
+        setLoading(false)
         // set(new Audio(url));
         console.log(audio);
       }
@@ -134,6 +136,6 @@ export default function useResource() {
     handlePlayMusic,
     playSong,
     setCurrentKey,
-    
+
   };
 }

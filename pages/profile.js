@@ -17,8 +17,13 @@ export default function Profile() {
     handlePlayMusic,
     playSong,
     deleteSongPost,
+    loading,
+    setLoading,
+
+
     
   } = useResource();
+
   if (playSong == true) {
     audio.play();
   }
@@ -32,7 +37,7 @@ export default function Profile() {
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -174,7 +179,7 @@ export default function Profile() {
           <input id="email" type="text" value={session?.user.email} disabled />
         </div>
         <div>
-          <label htmlFor="username">Name</label>
+          <label htmlFor="username">Artist Name</label>
           <input
             id="username"
             type="text"
@@ -231,7 +236,7 @@ export default function Profile() {
         <div>
           <button
             className="button primary block"
-            onClick={() => updateProfile({ username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url })}
+            onClick={(e) => updateProfile({ e, username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url })}
             disabled={isLoading}
           >
             {isLoading ? "Loading ..." : "Update"}

@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
 
 
   async function getProfile() {
+    if (session){
     try {
       setIsLoading(true);
       const user = await getCurrentUser();
@@ -85,6 +86,7 @@ export function AuthProvider({ children }) {
     } finally {
         setIsLoading(false);
     }
+}
   }
   async function getCurrentUser() {
     const {
@@ -105,8 +107,10 @@ export function AuthProvider({ children }) {
     return session.user;
   }
 
-  async function updateProfile({ username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url }) {
+  async function updateProfile({ e, username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url }) {
+    e.preventDefault()
     try {
+
       setIsLoading(true);
       const user = await getCurrentUser();
 
