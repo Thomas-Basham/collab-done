@@ -1,7 +1,7 @@
 import { supabase } from "../utils/supabaseClient";
 import { useState, useEffect } from "react";
 import useResource from "../hooks/useResource";
-import Link from 'next/link'
+import Link from "next/link";
 export default function SongFeed({ profilePage }) {
   const {
     musicPosts,
@@ -52,7 +52,48 @@ export default function SongFeed({ profilePage }) {
           <p>{data.potential_collaborators}</p>
           <p>{data.finished_song && ""}</p>
 
-      {   data.instagram_url && <a href={data.instagram_url} target='blank' rel="noopener noreferrer">Instagram</a>}
+          {data.instagram_url && (
+            <a
+              href={data.instagram_url}
+              target="blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          )}
+          <br></br>
+
+          {data.twitter_url && (
+            <a
+              href={data.instagram_url}
+              target="blank"
+              rel="noopener noreferrer"
+            >
+              Twitter
+            </a>
+          )}
+
+          <br></br>
+          {data.spotify_url && (
+            <a
+              href={data.instagram_url}
+              target="blank"
+              rel="noopener noreferrer"
+            >
+              Spotify
+            </a>
+          )}
+          <br></br>
+
+          {data.soundcloud_url && (
+            <a
+              href={data.instagram_url}
+              target="blank"
+              rel="noopener noreferrer"
+            >
+              Soundcloud
+            </a>
+          )}
         </div>
       );
     });
