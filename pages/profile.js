@@ -16,6 +16,8 @@ export default function Profile() {
     audio,
     handlePlayMusic,
     playSong,
+    deleteSongPost,
+    
   } = useResource();
   if (playSong == true) {
     audio.play();
