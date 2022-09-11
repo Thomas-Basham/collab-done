@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/auth";
 import SongFeed from "../components/SongFeed";
 export default function Home(props) {
   return (
-    <div className="container">
+    <div className="container row">
       <SongFeed />
     </div>
   );
