@@ -11,7 +11,6 @@ export default function Form() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  console.log(email, password);
 
   const registerUser = async (email, password) => {
     try {

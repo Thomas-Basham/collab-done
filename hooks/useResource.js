@@ -30,7 +30,6 @@ export default function useResource() {
 
       if (data) {
         setmusicPosts(data.reverse());
-        // console.log(data);
       }
     } catch (error) {
       alert(error.message);
@@ -106,7 +105,6 @@ export default function useResource() {
       if (data) {
         setAudio(new Audio(url));
         setLoading(false)
-        // set(new Audio(url));
         console.log(audio);
       }
     } catch (error) {

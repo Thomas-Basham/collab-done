@@ -53,40 +53,39 @@ export function AuthProvider({ children }) {
     getProfile();
   }, [session]);
 
-
   async function getProfile() {
-    if (session){
-    try {
-      setIsLoading(true);
-      const user = await getCurrentUser();
+    if (session) {
+      try {
+        setIsLoading(true);
+        const user = await getCurrentUser();
 
-      let { data, error, status } = await supabase
-        .from("profiles")
-        // .select(`username, website, avatar_url`)
-        .select(`*`)
-        .eq("id", user.id)
-        .single();
+        let { data, error, status } = await supabase
+          .from("profiles")
+          // .select(`username, website, avatar_url`)
+          .select(`*`)
+          .eq("id", user.id)
+          .single();
 
-      if (error && status !== 406) {
-        throw error;
-      }
+        if (error && status !== 406) {
+          throw error;
+        }
 
-      if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-        setInstagram_url(data.instagram_url);
-        setTwitter_url(data.twitter_url);
-        setSpotify_url(data.spotify_url);
-        setSoundcloud_url(data.soundcloud_url);
-        // return(data)
-      }
-    } catch (error) {
-      alert(error.message);
-    } finally {
+        if (data) {
+          setUsername(data.username);
+          setWebsite(data.website);
+          setAvatarUrl(data.avatar_url);
+          setInstagram_url(data.instagram_url);
+          setTwitter_url(data.twitter_url);
+          setSpotify_url(data.spotify_url);
+          setSoundcloud_url(data.soundcloud_url);
+          // return(data)
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
         setIsLoading(false);
+      }
     }
-}
   }
   async function getCurrentUser() {
     const {
@@ -107,10 +106,18 @@ export function AuthProvider({ children }) {
     return session.user;
   }
 
-  async function updateProfile({ e, username, website, avatar_url, instagram_url, twitter_url, spotify_url, soundcloud_url }) {
-    e.preventDefault()
+  async function updateProfile({
+    e,
+    username,
+    website,
+    avatar_url,
+    instagram_url,
+    twitter_url,
+    spotify_url,
+    soundcloud_url,
+  }) {
+    e.preventDefault();
     try {
-
       setIsLoading(true);
       const user = await getCurrentUser();
 
@@ -127,15 +134,18 @@ export function AuthProvider({ children }) {
       };
 
       //   let { error } = await supabase.from("profiles").upsert(updates);
-        let { error } = await supabase.from("profiles").update(updates).eq('id', user.id);
-      
+      let { error } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("id", user.id);
+
       if (error) {
         throw error;
       }
     } catch (error) {
       alert(error.message);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -165,12 +175,9 @@ export function AuthProvider({ children }) {
     setTwitter_url,
     spotify_url,
     setSpotify_url,
-    soundcloud_url, 
+    soundcloud_url,
     setSoundcloud_url,
-
-
   };
-  
 
   return (
     <AuthContext.Provider value={value}>
