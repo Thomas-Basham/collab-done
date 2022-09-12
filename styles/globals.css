@@ -629,3 +629,8 @@ small {
     display: none;
   }
 }
+
+.brand-text{
+  color: var(--custom-color-brand);
+  padding-right: 10px;
+}

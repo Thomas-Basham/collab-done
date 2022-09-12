@@ -1,6 +1,8 @@
 import { supabase } from "../utils/supabaseClient";
 import { useState, useEffect } from "react";
 import useResource from "../hooks/useResource";
+import { useAuth } from "../contexts/auth";
+
 import Link from "next/link";
 export default function SongFeed({ profilePage }) {
   const {
@@ -10,8 +12,11 @@ export default function SongFeed({ profilePage }) {
     audio,
     handlePlayMusic,
     playSong,
+    getProfileByID,
+    socials,
+    selectedPostKey
   } = useResource();
-  const [songUrl, setSongUrl] = useState(null);
+  // const {getProfileByID} = useAuth();
 
   if (playSong == true) {
     audio.play();
@@ -24,6 +29,11 @@ export default function SongFeed({ profilePage }) {
     let feed = musicPosts.map((data, i) => {
       return (
         <div className="music-post col-6" key={i}>
+          {/* <p>BLAHHH {getProfileByID(data.artist_id).username}</p> */}
+          <button onClick={(event) => getProfileByID(data.artist_id, i)}>
+            SOCIALS
+          </button>
+
           <h1>{data.artist}</h1>
           <small>{data.created_at}</small>
           <br></br>
@@ -46,53 +56,64 @@ export default function SongFeed({ profilePage }) {
             />
           </svg>
           <br></br>
-          <p>{data.genre}</p>
-          <p>{data.description}</p>
-          <p>{data.needs}</p>
+          <div className="d-inline-flex">
+          <span className="brand-text">GENRE</span>
+
+            <p >{data.genre}</p>
+          </div>
+          <br></br>
+          <div className="d-inline-flex">
+            <span className="brand-text">NEEDS</span>
+            <p>{data.needs}</p>
+          </div>
+            <p>{data.description}</p>
           <p>{data.potential_collaborators}</p>
+
           <p>{data.finished_song && ""}</p>
 
-          {data.instagram_url && (
-            <a
-              href={data.instagram_url}
-              target="blank"
-              rel="noopener noreferrer"
-            >
-              Instagram
-            </a>
-          )}
-          <br></br>
+          {selectedPostKey == i && ( // displays socials when button is collected. 
+            <div>
+              {socials && (
+                <Link href={socials.instagram_url}>
+                  <a target="blank" rel="noopener noreferrer">
+                    Instagram
+                  </a>
+                </Link>
+              )}
+              <br></br>
 
-          {data.twitter_url && (
-            <a
-              href={data.instagram_url}
-              target="blank"
-              rel="noopener noreferrer"
-            >
-              Twitter
-            </a>
-          )}
+              {socials && (
+                <a
+                  href={socials.twitter_url}
+                  target="blank"
+                  rel="noopener noreferrer"
+                >
+                  Twitter
+                </a>
+              )}
 
-          <br></br>
-          {data.spotify_url && (
-            <a
-              href={data.instagram_url}
-              target="blank"
-              rel="noopener noreferrer"
-            >
-              Spotify
-            </a>
-          )}
-          <br></br>
+              <br></br>
+              {socials && (
+                <a
+                  href={socials.spotify_url}
+                  target="blank"
+                  rel="noopener noreferrer"
+                >
+                  Spotify
+                </a>
+              )}
+              <br></br>
 
-          {data.soundcloud_url && (
-            <a
-              href={data.instagram_url}
-              target="blank"
-              rel="noopener noreferrer"
-            >
-              Soundcloud
-            </a>
+              {socials && (
+                <a
+                  target="blank"
+                  href={socials.soundcloud_url}
+                  rel="noopener noreferrer"
+                >
+                  Soundcloud
+                </a>
+              )}
+            </div>
           )}
         </div>
       );

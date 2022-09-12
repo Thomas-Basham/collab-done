@@ -60,10 +60,10 @@ export default function UploadSong() {
       description,
       needs,
       song_url: songUrl,
-      instagram_url,
-      twitter_url,
-      spotify_url,
-      soundcloud_url,
+      // instagram_url,
+      // twitter_url,
+      // spotify_url,
+      // soundcloud_url,
     };
     createSongPost(values);
   }

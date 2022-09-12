@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function useResource() {
   const router = useRouter();
+  const {session} = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
@@ -13,6 +14,9 @@ export default function useResource() {
   const [playSong, setPlaySong] = useState(false);
   const [audio, setAudio] = useState(new Audio());
   const [currentKey, setCurrentKey] = useState(null);
+  const [socials, setSocials] = useState(null);
+  const [selectedPostKey, setSelectedPostKey] = useState();
+
 
   useEffect(() => {
     getmusicPosts();
@@ -122,6 +126,36 @@ export default function useResource() {
     }
   }
 
+
+  async function getProfileByID(id, i) {
+    if (session) {
+      try {
+        setLoading(true);
+
+        let { data, error, status } = await supabase
+          .from("profiles")
+          // .select(`username, website, avatar_url`)
+          .select(`*`)
+          .eq("id", id)
+          .single();
+
+        if (error && status !== 406) {
+          throw error;
+        }
+        
+        if (data) {
+          console.log(data)
+          setSocials(data)
+          setSelectedPostKey(i)
+          // return(data)
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
   return {
     createSongPost,
     getmusicPosts,
@@ -134,6 +168,8 @@ export default function useResource() {
     handlePlayMusic,
     playSong,
     setCurrentKey,
-
+    getProfileByID,
+    socials,
+    selectedPostKey
   };
 }

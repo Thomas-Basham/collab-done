@@ -87,6 +87,7 @@ export function AuthProvider({ children }) {
       }
     }
   }
+
   async function getCurrentUser() {
     const {
       data: { session },
