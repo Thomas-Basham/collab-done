@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function useResource() {
   const router = useRouter();
-  const {session} = useAuth();
+  const {session, username} = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
@@ -96,6 +96,39 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
+  async function addCollaborator(oldCollabsArray, id) {
+    try {
+      setLoading(true);
+      if (oldCollabsArray == null){
+        
+        let newCollabsArray = [username]
+        
+        let { error } = await supabase.from("songs").update([{potential_collaborators: newCollabsArray}]).match({id: id});
+        
+        if (error) {
+          throw error;
+        }
+      } else {
+        console.log({oldCollabsArray})
+        oldCollabsArray.push(username)
+        // console.log({newCollabsArray})
+        let { error } = await supabase.from("songs").update({potential_collaborators: oldCollabsArray}).match({id: id});
+        
+        if (error) {
+          throw error;
+        }
+
+      }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        getmusicPosts()
+        setLoading(false);
+      }
+  }
+
+
   async function downloadSong(path) {
     try {
       setLoading(true)
@@ -144,7 +177,7 @@ export default function useResource() {
         }
         
         if (data) {
-          console.log(data)
+          // console.log(data)
           setSocials(data)
           setSelectedPostKey(i)
           // return(data)
@@ -170,6 +203,7 @@ export default function useResource() {
     setCurrentKey,
     getProfileByID,
     socials,
-    selectedPostKey
+    selectedPostKey,
+    addCollaborator
   };
 }

@@ -2,6 +2,9 @@ import { supabase } from "../utils/supabaseClient";
 import { useState, useEffect } from "react";
 import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
+import { FiTwitter, FiInstagram } from "react-icons/fi";
+import { RiSpotifyLine } from "react-icons/ri";
+import { GrSoundcloud } from "react-icons/gr";
 
 import Link from "next/link";
 export default function SongFeed({ profilePage }) {
@@ -14,9 +17,10 @@ export default function SongFeed({ profilePage }) {
     playSong,
     getProfileByID,
     socials,
-    selectedPostKey
+    selectedPostKey,
+    addCollaborator,
   } = useResource();
-  // const {getProfileByID} = useAuth();
+  const { session, username } = useAuth();
 
   if (playSong == true) {
     audio.play();
@@ -28,11 +32,64 @@ export default function SongFeed({ profilePage }) {
   function songPostFeed() {
     let feed = musicPosts.map((data, i) => {
       return (
-        <div className="music-post col-6" key={i}>
-          {/* <p>BLAHHH {getProfileByID(data.artist_id).username}</p> */}
-          <button onClick={(event) => getProfileByID(data.artist_id, i)}>
-            SOCIALS
-          </button>
+        <div on className="music-post col-6" key={i}>
+          <image href="" />
+          {selectedPostKey != i && (
+            <button
+              className="socials-container"
+              onClick={() => getProfileByID(data.artist_id, i)}
+            >
+              CONNECT
+            </button>
+          )}
+
+          {selectedPostKey == i && ( // displays socials when button is collected.
+            <div
+              className="socials-container"
+              // style={{width: "500px"}}
+            >
+              {socials && (
+                <Link href={socials.instagram_url}>
+                  <a target="blank" rel="noopener noreferrer">
+                    <FiInstagram />
+                  </a>
+                </Link>
+              )}
+              <br></br>
+
+              {socials && (
+                <a
+                  href={socials.twitter_url}
+                  target="blank"
+                  rel="noopener noreferrer"
+                >
+                  <FiTwitter />
+                </a>
+              )}
+
+              <br></br>
+              {socials && (
+                <a
+                  href={socials.spotify_url}
+                  target="blank"
+                  rel="noopener noreferrer"
+                >
+                  <RiSpotifyLine />
+                </a>
+              )}
+              <br></br>
+
+              {socials && (
+                <a
+                  target="blank"
+                  href={socials.soundcloud_url}
+                  rel="noopener noreferrer"
+                >
+                  <GrSoundcloud />
+                </a>
+              )}
+            </div>
+          )}
 
           <h1>{data.artist}</h1>
           <small>{data.created_at}</small>
@@ -57,64 +114,34 @@ export default function SongFeed({ profilePage }) {
           </svg>
           <br></br>
           <div className="d-inline-flex">
-          <span className="brand-text">GENRE</span>
+            <span className="brand-text">GENRE</span>
 
-            <p >{data.genre}</p>
+            <p>{data.genre}</p>
           </div>
           <br></br>
           <div className="d-inline-flex">
             <span className="brand-text">NEEDS</span>
             <p>{data.needs}</p>
           </div>
-            <p>{data.description}</p>
+          <p>{data.description}</p>
+
+          {!data.potential_collaborators?.includes(username)  && (
+           <>
+           <button className="collab-button"
+              onClick={() =>
+                addCollaborator(data.potential_collaborators, data.id)
+              }
+            >
+              LET'S COLLAB
+            </button>
+            <br></br>
+            <br></br>
+            </>
+          )}
+          <span className="brand-text">POTENTIAL COLLABORATORS</span>
           <p>{data.potential_collaborators}</p>
 
           <p>{data.finished_song && ""}</p>
-
-          {selectedPostKey == i && ( // displays socials when button is collected. 
-            <div>
-              {socials && (
-                <Link href={socials.instagram_url}>
-                  <a target="blank" rel="noopener noreferrer">
-                    Instagram
-                  </a>
-                </Link>
-              )}
-              <br></br>
-
-              {socials && (
-                <a
-                  href={socials.twitter_url}
-                  target="blank"
-                  rel="noopener noreferrer"
-                >
-                  Twitter
-                </a>
-              )}
-
-              <br></br>
-              {socials && (
-                <a
-                  href={socials.spotify_url}
-                  target="blank"
-                  rel="noopener noreferrer"
-                >
-                  Spotify
-                </a>
-              )}
-              <br></br>
-
-              {socials && (
-                <a
-                  target="blank"
-                  href={socials.soundcloud_url}
-                  rel="noopener noreferrer"
-                >
-                  Soundcloud
-                </a>
-              )}
-            </div>
-          )}
         </div>
       );
     });

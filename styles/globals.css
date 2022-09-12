@@ -634,3 +634,23 @@ small {
   color: var(--custom-color-brand);
   padding-right: 10px;
 }
+
+.socials-container {
+  float: right;
+  text-align: right;
+  /* justify-content: end; */
+  width: 100px !important;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+
+} 
+
+.collab-button{
+  display: flex;
+
+  float: right;
+
+  justify-content: end;
+
+}
