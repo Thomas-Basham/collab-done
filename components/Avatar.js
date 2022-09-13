@@ -68,6 +68,7 @@ export default function Avatar({ url, size, onUpload }) {
           style={{ height: size, width: size }}
         />
       )}
+      { onUpload &&
       <div style={{ width: size }}>
         <label className="button primary block" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
@@ -84,6 +85,7 @@ export default function Avatar({ url, size, onUpload }) {
           disabled={uploading}
         />
       </div>
+}
     </div>
   );
 }

@@ -109,7 +109,6 @@ export function AuthProvider({ children }) {
   }
 
   async function updateProfile({
-    e,
     username,
     website,
     avatar_url,
@@ -118,7 +117,6 @@ export function AuthProvider({ children }) {
     spotify_url,
     soundcloud_url,
   }) {
-    e.preventDefault();
     try {
       setIsLoading(true);
       const user = await getCurrentUser();

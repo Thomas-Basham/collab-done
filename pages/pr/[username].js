@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/auth";
 import { useEffect } from "react";
 import useResource from "../../hooks/useResource";
 import Avatar from "../../components/Avatar";
-
+import Socials from "../../components/socials";
 export default function ForeignUserProfile() {
   const router = useRouter();
   const { getProfileByID, socials } = useResource();
@@ -22,21 +22,14 @@ export default function ForeignUserProfile() {
   // const resource = resources.find(item => item.id == id)
 
   return (
-    <>
-              <Avatar
-          url={socials?.avatar_url}
-          size={150}
-          onUpload={(url) => {
-            setAvatarUrl(url);
-            updateProfile({ avatar_url: url }); // username, website,
-          }}
-        />
+    <> 
+    <div >
       <h1>{socials?.username}</h1>
-      <p>{socials?.website}</p>  
-      <p>{socials?.website}</p>  
-      <p>{socials?.website}</p>  
-      <p>{socials?.website}</p>  
-
+      <div className="d-flex ">
+        <Avatar url={socials?.avatar_url} size={150} />
+        <Socials data={socials} />
+      </div>
+      </div>
     </>
   );
 }

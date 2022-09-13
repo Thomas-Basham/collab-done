@@ -15,6 +15,7 @@ export default function useResource() {
   const [audio, setAudio] = useState(new Audio());
   const [currentKey, setCurrentKey] = useState(null);
   const [socials, setSocials] = useState(null);
+  const [allAvatars, setAllAvatars] = useState(null);
   const [selectedPostKey, setSelectedPostKey] = useState();
 
   useEffect(() => {
@@ -33,6 +34,25 @@ export default function useResource() {
 
       if (data) {
         setmusicPosts(data.reverse());
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function getAllAvatars() {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase.from("avatars").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setAllAvatars(data);
       }
     } catch (error) {
       alert(error.message);
@@ -211,5 +231,7 @@ export default function useResource() {
     socials,
     selectedPostKey,
     addCollaborator,
+    allAvatars,
+    
   };
 }

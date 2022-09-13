@@ -2,10 +2,8 @@ import { supabase } from "../utils/supabaseClient";
 import { useState, useEffect } from "react";
 import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
-import { FiTwitter, FiInstagram } from "react-icons/fi";
-import { RiSpotifyLine } from "react-icons/ri";
-import { GrSoundcloud } from "react-icons/gr";
-
+import Avatar from "./Avatar";
+import Socials from "./socials";
 import Link from "next/link";
 export default function SongFeed({ profilePage }) {
   const {
@@ -19,6 +17,7 @@ export default function SongFeed({ profilePage }) {
     socials,
     selectedPostKey,
     addCollaborator,
+    allAvatars,
   } = useResource();
   const { session, username } = useAuth();
 
@@ -33,7 +32,7 @@ export default function SongFeed({ profilePage }) {
     let feed = musicPosts.map((data, i) => {
       return (
         <div on className="music-post col-6" key={i}>
-          <image href="" />
+          <Avatar url={data?.avatar_url} size={150} />
           {selectedPostKey != i && (
             <button
               className="socials-container"
@@ -43,50 +42,11 @@ export default function SongFeed({ profilePage }) {
             </button>
           )}
           {selectedPostKey == i && ( // displays socials when button is collected.
-            <div className="socials-container">
-              {socials && (
-                <Link href={socials.instagram_url}>
-                  <a target="blank" rel="noopener noreferrer">
-                    <FiInstagram />
-                  </a>
-                </Link>
-              )}
-              <br></br>
-
-              {socials && (
-                <a
-                  href={socials.twitter_url}
-                  target="blank"
-                  rel="noopener noreferrer"
-                >
-                  <FiTwitter />
-                </a>
-              )}
-
-              <br></br>
-              {socials && (
-                <a
-                  href={socials.spotify_url}
-                  target="blank"
-                  rel="noopener noreferrer"
-                >
-                  <RiSpotifyLine />
-                </a>
-              )}
-              <br></br>
-
-              {socials && (
-                <a
-                  target="blank"
-                  href={socials.soundcloud_url}
-                  rel="noopener noreferrer"
-                >
-                  <GrSoundcloud />
-                </a>
-              )}
-            </div>
+            <Socials data={socials} />
           )}
-          <h1>{data.artist}</h1>
+          <Link href={`/pr/${data.artist_id}`}>
+            <h1 style={{ cursor: "pointer" }}>{data.artist}</h1>
+          </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
           <svg
@@ -133,12 +93,13 @@ export default function SongFeed({ profilePage }) {
               <br></br>
             </>
           )}
-          <span className="brand-text">POTENTIAL COLLABORATORS</span>{" "}
-          {/* <p>{data.potential_collaborators}</p> */}
+          <span className="brand-text">POTENTIAL COLLABORATORS</span>
+          <br></br>
+
           {data.potential_collaborators.map((collaborator, i) => {
             if (collaborator) {
               return (
-                <Link key={i} href={`/pr/${data.artist_id}`}  >  
+                <Link key={i} href={`/pr/${data.artist_id}`}>
                   {collaborator}
                 </Link>
               );
