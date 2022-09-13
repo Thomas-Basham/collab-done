@@ -60,6 +60,7 @@ export default function UploadSong() {
       description,
       needs,
       song_url: songUrl,
+      potential_collaborators: [null]
       // instagram_url,
       // twitter_url,
       // spotify_url,

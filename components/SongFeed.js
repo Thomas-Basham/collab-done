@@ -46,7 +46,6 @@ export default function SongFeed({ profilePage }) {
           {selectedPostKey == i && ( // displays socials when button is collected.
             <div
               className="socials-container"
-              // style={{width: "500px"}}
             >
               {socials && (
                 <Link href={socials.instagram_url}>
@@ -92,7 +91,7 @@ export default function SongFeed({ profilePage }) {
           )}
 
           <h1>{data.artist}</h1>
-          <small>{data.created_at}</small>
+          <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
 
           <svg
@@ -124,22 +123,31 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-
-          {!data.potential_collaborators?.includes(username)  && (
-           <>
-           <button className="collab-button"
-              onClick={() =>
-                addCollaborator(data.potential_collaborators, data.id)
-              }
-            >
-              LET'S COLLAB
-            </button>
-            <br></br>
-            <br></br>
+      
+           
+          {!data.potential_collaborators?.includes(username) && (
+            <>
+              <button
+                className="collab-button"
+                onClick={() =>
+                  addCollaborator(data.potential_collaborators, data.id)
+                }
+              >
+                LET'S COLLAB
+              </button>
+              <br></br>
+              <br></br>
+              <br></br>
             </>
           )}
+              
           <span className="brand-text">POTENTIAL COLLABORATORS</span>
-          <p>{data.potential_collaborators}</p>
+          {/* <p>{data.potential_collaborators}</p> */}
+          {data.potential_collaborators.map((data) => {
+            return (
+              <p>{data}</p>
+            )
+          })}
 
           <p>{data.finished_song && ""}</p>
         </div>

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function useResource() {
   const router = useRouter();
-  const {session, username} = useAuth();
+  const { session, username } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
@@ -16,7 +16,6 @@ export default function useResource() {
   const [currentKey, setCurrentKey] = useState(null);
   const [socials, setSocials] = useState(null);
   const [selectedPostKey, setSelectedPostKey] = useState();
-
 
   useEffect(() => {
     getmusicPosts();
@@ -38,7 +37,6 @@ export default function useResource() {
     } catch (error) {
       alert(error.message);
     } finally {
-      
       setLoading(false);
     }
   }
@@ -65,16 +63,16 @@ export default function useResource() {
       setLoading(true);
 
       const { data, error } = await supabase
-      .from('songs')
-      .delete()
-      .match({ id: id })
+        .from("songs")
+        .delete()
+        .match({ id: id });
       if (error) {
         throw error;
       }
     } catch (error) {
       alert(error.message);
     } finally {
-      getmusicPosts()
+      getmusicPosts();
       router.push("/profile");
       setLoading(false);
     }
@@ -84,7 +82,10 @@ export default function useResource() {
     try {
       setLoading(true);
 
-      let { error } = await supabase.from("songs").update(values).match({id: id});
+      let { error } = await supabase
+        .from("songs")
+        .update(values)
+        .match({ id: id });
 
       if (error) {
         throw error;
@@ -92,46 +93,52 @@ export default function useResource() {
     } catch (error) {
       alert(error.message);
     } finally {
-      getmusicPosts()
+      getmusicPosts();
       setLoading(false);
     }
   }
 
   async function addCollaborator(oldCollabsArray, id) {
+    if (!session){
+      router.push('/login')
+    }
     try {
       setLoading(true);
-      if (oldCollabsArray == null){
-        
-        let newCollabsArray = [username]
-        
-        let { error } = await supabase.from("songs").update([{potential_collaborators: newCollabsArray}]).match({id: id});
-        
+      if (oldCollabsArray == null) {
+        let newCollabsArray = [username, null];
+
+        let { error } = await supabase
+          .from("songs")
+          .update([{ potential_collaborators: newCollabsArray }])
+          .match({ id: id });
+
         if (error) {
           throw error;
         }
       } else {
-        console.log({oldCollabsArray})
-        oldCollabsArray.push(username)
+        console.log({ oldCollabsArray });
+        oldCollabsArray.push(username);
         // console.log({newCollabsArray})
-        let { error } = await supabase.from("songs").update({potential_collaborators: oldCollabsArray}).match({id: id});
-        
+        let { error } = await supabase
+          .from("songs")
+          .update({ potential_collaborators: oldCollabsArray })
+          .match({ id: id });
+
         if (error) {
           throw error;
         }
-
       }
-      } catch (error) {
-        alert(error.message);
-      } finally {
-        getmusicPosts()
-        setLoading(false);
-      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      getmusicPosts();
+      setLoading(false);
+    }
   }
-
 
   async function downloadSong(path) {
     try {
-      setLoading(true)
+      setLoading(true);
       const { data, error } = await supabase.storage
         .from("songs")
         .download(path);
@@ -141,7 +148,7 @@ export default function useResource() {
       const url = URL.createObjectURL(data);
       if (data) {
         setAudio(new Audio(url));
-        setLoading(false)
+        setLoading(false);
         console.log(audio);
       }
     } catch (error) {
@@ -159,9 +166,8 @@ export default function useResource() {
     }
   }
 
-
   async function getProfileByID(id, i) {
-    if (session) {
+
       try {
         setLoading(true);
 
@@ -175,11 +181,11 @@ export default function useResource() {
         if (error && status !== 406) {
           throw error;
         }
-        
+
         if (data) {
           // console.log(data)
-          setSocials(data)
-          setSelectedPostKey(i)
+          setSocials(data);
+          setSelectedPostKey(i);
           // return(data)
         }
       } catch (error) {
@@ -187,7 +193,7 @@ export default function useResource() {
       } finally {
         setLoading(false);
       }
-    }
+    
   }
   return {
     createSongPost,
@@ -204,6 +210,6 @@ export default function useResource() {
     getProfileByID,
     socials,
     selectedPostKey,
-    addCollaborator
+    addCollaborator,
   };
 }
