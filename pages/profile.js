@@ -92,7 +92,7 @@ export default function Profile() {
     return (
       <div className="music-post" key={i}>
         <h1>{data.artist}</h1>
-        <small>{data.created_at}</small>
+        <small>{new Date(data.created_at).toLocaleDateString()}</small>
         <br></br>
 
         <svg
@@ -116,7 +116,18 @@ export default function Profile() {
         <p>{data.genre}</p>
         <p>{data.description}</p>
         <p>{data.needs}</p>
-        <p>{data.potential_collaborators}</p>
+        <span className="brand-text">POTENTIAL COLLABORATORS</span>          {/* <p>{data.potential_collaborators}</p> */}
+        <br></br>
+
+        {data.potential_collaborators.map((data, i) => {
+            return (
+              <>
+              <a key={i} >{data}</a>
+              <br></br>
+              </>
+              
+            )
+          })}        
         <p>{data.finished_song && ""}</p>
         <svg
           cursor={"pointer"}

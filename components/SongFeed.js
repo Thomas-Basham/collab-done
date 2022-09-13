@@ -42,11 +42,8 @@ export default function SongFeed({ profilePage }) {
               CONNECT
             </button>
           )}
-
           {selectedPostKey == i && ( // displays socials when button is collected.
-            <div
-              className="socials-container"
-            >
+            <div className="socials-container">
               {socials && (
                 <Link href={socials.instagram_url}>
                   <a target="blank" rel="noopener noreferrer">
@@ -89,11 +86,9 @@ export default function SongFeed({ profilePage }) {
               )}
             </div>
           )}
-
           <h1>{data.artist}</h1>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
-
           <svg
             cursor="pointer"
             onClick={() => handlePlayMusic(data, i)}
@@ -123,8 +118,6 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-      
-           
           {!data.potential_collaborators?.includes(username) && (
             <>
               <button
@@ -140,15 +133,17 @@ export default function SongFeed({ profilePage }) {
               <br></br>
             </>
           )}
-              
-          <span className="brand-text">POTENTIAL COLLABORATORS</span>
+          <span className="brand-text">POTENTIAL COLLABORATORS</span>{" "}
           {/* <p>{data.potential_collaborators}</p> */}
-          {data.potential_collaborators.map((data) => {
-            return (
-              <p>{data}</p>
-            )
+          {data.potential_collaborators.map((collaborator, i) => {
+            if (collaborator) {
+              return (
+                <Link key={i} href={`/pr/${data.artist_id}`}  >  
+                  {collaborator}
+                </Link>
+              );
+            }
           })}
-
           <p>{data.finished_song && ""}</p>
         </div>
       );

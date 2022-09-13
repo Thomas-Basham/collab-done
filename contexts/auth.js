@@ -71,6 +71,7 @@ export function AuthProvider({ children }) {
         }
 
         if (data) {
+          console.log(data.id)
           setUsername(data.username);
           setWebsite(data.website);
           setAvatarUrl(data.avatar_url);
@@ -153,6 +154,8 @@ export function AuthProvider({ children }) {
   async function signOut() {
     // Ends user session
     // router.push("/");
+    setSession(null)
+    setUsername(null)
     await supabase.auth.signOut();
   }
   const value = {

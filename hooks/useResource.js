@@ -183,10 +183,10 @@ export default function useResource() {
         }
 
         if (data) {
-          // console.log(data)
+          console.log(data) 
           setSocials(data);
           setSelectedPostKey(i);
-          // return(data)
+          return(data)
         }
       } catch (error) {
         alert(error.message);
