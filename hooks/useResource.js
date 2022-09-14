@@ -17,6 +17,7 @@ export default function useResource() {
   const [socials, setSocials] = useState(null);
   const [allAvatars, setAllAvatars] = useState(null);
   const [selectedPostKey, setSelectedPostKey] = useState();
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -206,6 +207,8 @@ export default function useResource() {
           console.log(data) 
           setSocials(data);
           setSelectedPostKey(i);
+          setAvatarUrl(data.avatar_url);
+
           return(data)
         }
       } catch (error) {
@@ -214,6 +217,21 @@ export default function useResource() {
         setLoading(false);
       }
     
+  }
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
+    } catch (error) {
+      console.log("Error downloading image: ", error.message);
+    }
   }
   return {
     createSongPost,
@@ -232,6 +250,8 @@ export default function useResource() {
     selectedPostKey,
     addCollaborator,
     allAvatars,
-    
+    downloadImage,
+    avatarUrl,
+
   };
 }

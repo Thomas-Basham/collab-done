@@ -133,7 +133,6 @@ export function AuthProvider({ children }) {
         updated_at: new Date(),
       };
 
-      //   let { error } = await supabase.from("profiles").upsert(updates);
       let { error } = await supabase
         .from("profiles")
         .update(updates)

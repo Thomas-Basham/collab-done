@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function Header({ session, signOut }) {
 
   return (
-    <header>
+    <header >
       {" "}
-      <nav>
+      <nav style={{zIndex: 1}}>
         <Link href="/">
           <a>
             <h3>COLLAB DONE </h3>

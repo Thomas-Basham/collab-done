@@ -18,8 +18,11 @@ export default function SongFeed({ profilePage }) {
     selectedPostKey,
     addCollaborator,
     allAvatars,
+    downloadImage,
+    avatarUrl,
   } = useResource();
   const { session, username } = useAuth();
+  const [postUserData, setPostUserData] = useState(null);
 
   if (playSong == true) {
     audio.play();
@@ -28,11 +31,65 @@ export default function SongFeed({ profilePage }) {
     audio.pause();
   }
 
+  // useEffect(() => {
+
+  //   musicPosts.map((data, i) => {
+
+  //     postUserData.push(getProfileByID(data.artist_id, i))
+  //   })
+  // }, [postUserData]);
+
+  // useEffect(() => {
+  //   if (!postUserData) {
+
+  //     cleanUpData()
+  //   }
+  // });
+
+  // async function cleanUpData() {
+  //   try {
+  //     let dataStuff = []
+  //      await Promise.all(
+  //       musicPosts.forEach( async (data, i) => {
+  //         dataStuff.push(getProfileByID(data.artist_id, i))
+  //       })
+  //       ).then(
+  //         () => {
+
+  //           let newData = {};
+  //           newData["profiles"] =  dataStuff;
+
+  //           setPostUserData(newData);
+
+  //         }
+
+  //       );
+
+  //   } catch (error) {
+  //     alert(error.message);
+  //   } finally {
+  //   }
+  // }
+
+  console.log(avatarUrl);
+
   function songPostFeed() {
     let feed = musicPosts.map((data, i) => {
       return (
-        <div on className="music-post col-6" key={i}>
-          <Avatar url={data?.avatar_url} size={150} />
+        <div
+          onMouseOver={() => downloadImage(getProfileByID(data.artist_id, i))}
+          className="music-post col"
+          key={i}
+        >
+          {selectedPostKey == i ? (
+            <Avatar url={avatarUrl} size={150} />
+          ) : (
+            <div
+            className="avatar no-image"
+            style={{ height: 150, width: 150 }}
+          />
+          )}
+
           {selectedPostKey != i && (
             <button
               className="socials-container"
@@ -113,5 +170,9 @@ export default function SongFeed({ profilePage }) {
     return feed;
   }
 
-  return <>{songPostFeed()}</>;
+  return (
+    <>
+      <div>{songPostFeed()}</div>
+    </>
+  );
 }

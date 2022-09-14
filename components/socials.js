@@ -47,6 +47,8 @@ export default function Socials({ data }) {
         <GrSoundcloud />
       </a>
     )}
+
+    <button>MESSAGE</button>
   </div>
 );
 }
