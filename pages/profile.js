@@ -196,45 +196,45 @@ export default function Profile() {
           <label htmlFor="website">Website</label>
           <input
             id="website"
-            type="website"
+            type="text"
             value={website || ""}
             onChange={(e) => setWebsite(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="instagram">Instagram</label>
+          <label htmlFor="instagram">Instagram username</label>
           <input
             id="instagram"
-            type="website"
+            type="text"
             value={instagram_url || ""}
             onChange={(e) => setInstagram_url(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="twitter">Twitter</label>
+          <label htmlFor="twitter">Twitter username</label>
           <input
             id="twitter"
-            type="website"
+            type="text"
             value={twitter_url || ""}
             onChange={(e) => setTwitter_url(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="Spotify">Spotify</label>
-          <input
-            id="Spotify"
-            type="website"
-            value={spotify_url || ""}
-            onChange={(e) => setSpotify_url(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="soundcloud">Soundcloud</label>
+          <label htmlFor="soundcloud">Soundcloud username</label>
           <input
             id="soundcloud"
             type="website"
             value={soundcloud_url || ""}
             onChange={(e) => setSoundcloud_url(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="Spotify">Spotify artist id</label>
+          <input
+            id="Spotify"
+            type="website"
+            value={spotify_url || ""}
+            onChange={(e) => setSpotify_url(e.target.value)}
           />
         </div>
 
@@ -243,7 +243,7 @@ export default function Profile() {
             className="button primary block"
             onClick={(e) =>
               updateProfile({
-                e,
+                
                 username,
                 website,
                 avatar_url,

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import useResource from "../hooks/useResource";
 
 const AuthContext = React.createContext();
 
@@ -107,6 +108,44 @@ export function AuthProvider({ children }) {
 
     return session.user;
   }
+  async function getMusicPosts() {
+    try {
+      setIsLoading(true);
+
+      let { data, error, status } = await supabase.from("songs").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        return(data.reverse());
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function updateSongPost(values, id) {
+    try {
+      setIsLoading(true);
+
+      let { error } = await supabase
+        .from("songs")
+        .update(values)
+        .match({ id: id });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function updateProfile({
     username,
@@ -138,6 +177,26 @@ export function AuthProvider({ children }) {
         .update(updates)
         .eq("id", user.id);
 
+
+        let musicPosts = await getMusicPosts();
+
+        let fillteredPosts = musicPosts.filter(
+          (post) => post.artist_id === user.id
+        );    
+        
+        const values = {
+          artist: username,
+
+        };
+
+        await Promise.all(fillteredPosts.map(async (post) => {
+          return(
+            
+            updateSongPost(values, post.id)
+          )
+        }))   
+
+        
       if (error) {
         throw error;
       }

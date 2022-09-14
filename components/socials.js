@@ -8,7 +8,7 @@ export default function Socials({ data }) {
   return (
     <div className="socials-container">
     {data && (
-      <Link href={data.instagram_url}>
+      <Link href={`https://www.instagram.com/${data.instagram_url}`}>
         <a target="blank" rel="noopener noreferrer">
           <FiInstagram />
         </a>
@@ -18,7 +18,7 @@ export default function Socials({ data }) {
 
     {data && (
       <a
-        href={data.twitter_url}
+        href={`https://twitter.com/${data.twitter_url}`}
         target="blank"
         rel="noopener noreferrer"
       >
@@ -29,7 +29,7 @@ export default function Socials({ data }) {
     <br></br>
     {data && (
       <a
-        href={data.spotify_url}
+        href={`https://open.spotify.com/artist/${data.spotify_url}`}
         target="blank"
         rel="noopener noreferrer"
       >
@@ -41,7 +41,7 @@ export default function Socials({ data }) {
     {data && (
       <a
         target="blank"
-        href={data.soundcloud_url}
+        href={`https://soundcloud.com/${data.soundcloud_url}`}
         rel="noopener noreferrer"
       >
         <GrSoundcloud />
