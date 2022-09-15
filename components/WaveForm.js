@@ -56,7 +56,7 @@ export default function IndexPage(props) {
     <div className="audio-container row">
       <div className="controls col-2">
         {/* <div onClick={handlePlayPause}>{!playing ? "Paused" : "Playing"}</div> */}
-        <a onClick={handlePlayPause} className="play-button">
+        <a onClick={handlePlayPause} className="play-button" style={{cursor: "pointer"}}>
           {!playing ? <FiPlay size={80} /> : <FiPause size={80} />}
         </a>
       </div>

@@ -658,10 +658,10 @@ small {
 
 .wave-container{
 height: 150px;
-overflow: hidden;
+/* overflow: hidden; */
 }
 .wave-song:first-child{
   position: relative;
-  top: -150px;
+  /* top: -150px; */
 }
 
