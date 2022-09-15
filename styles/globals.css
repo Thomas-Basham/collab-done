@@ -616,6 +616,7 @@ code {
 .music-post{
   border: var(--custom-border);
   padding: .75rem;
+  /* height: 80vh; */
 }
 
 small {
@@ -654,3 +655,13 @@ small {
   justify-content: end;
 
 }
+
+.wave-container{
+height: 150px;
+overflow: hidden;
+}
+.wave-song:first-child{
+  position: relative;
+  top: -150px;
+}
+

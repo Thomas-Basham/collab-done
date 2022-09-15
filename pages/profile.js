@@ -4,9 +4,9 @@ import Avatar from "../components/Avatar";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
-
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+// import Waveform from "../components/WaveForm";
 
 export default function Profile() {
   const {
@@ -170,6 +170,8 @@ export default function Profile() {
 
   return (
     <div className="row flex-center flex">
+              
+
       <div className="col-6 form-widget">
         <Avatar
           url={avatar_url}

@@ -18,6 +18,8 @@ export default function useResource() {
   const [allAvatars, setAllAvatars] = useState(null);
   const [selectedPostKey, setSelectedPostKey] = useState();
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [absoluteSongUrl, setAbsoluteSongUrl] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -166,16 +168,45 @@ export default function useResource() {
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
       if (data) {
+        console.log(data)
+        const url = URL.createObjectURL(data);
         setAudio(new Audio(url));
+        setAudioUrl(url);
+
         setLoading(false);
-        console.log(audio);
+        console.log(audioUrl);
+        return(url)
       }
     } catch (error) {
       console.log("Error downloading Audio File: ", error.message);
     }
   }
+ 
+  async function getAbsoluteSongUrl(path) {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.storage
+        .from("songs")
+        .getPublicUrl(path);
+      if (error) {
+        throw error;
+      }
+      console.log(data)
+      if (data) {
+
+        setAbsoluteSongUrl(data.publicUrl);
+
+        setLoading(false);
+        // return(data)
+      }
+    } catch (error) {
+      console.log("Error downloading Audio File: ", error.message);
+    }
+  }
+
+
+  
   async function handlePlayMusic(data, key) {
     setCurrentKey(key);
     if (key != currentKey) {
@@ -207,7 +238,7 @@ export default function useResource() {
           console.log(data) 
           setSocials(data);
           setSelectedPostKey(i);
-          setAvatarUrl(data.avatar_url);
+                    setAvatarUrl(data.avatar_url);
 
           return(data)
         }
@@ -252,6 +283,8 @@ export default function useResource() {
     allAvatars,
     downloadImage,
     avatarUrl,
-
+    audioUrl,
+    getAbsoluteSongUrl,
+    absoluteSongUrl,
   };
 }

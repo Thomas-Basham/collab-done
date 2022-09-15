@@ -12,7 +12,7 @@ export default function UploadSong() {
     spotify_url,
     soundcloud_url,
   } = useAuth();
-  const { createSongPost } = useResource();
+  const { createSongPost,getAbsoluteSongUrl, absoluteSongUrl} = useResource();
 
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
@@ -42,7 +42,7 @@ export default function UploadSong() {
       if (uploadError) {
         throw uploadError;
       }
-
+      await getAbsoluteSongUrl(filePath)
       setSongUrl(filePath);
       setFileName(file.name);
     } catch (error) {
@@ -51,7 +51,7 @@ export default function UploadSong() {
       setUploading(false);
     }
   }
-
+console.log(absoluteSongUrl)
   function handleSubmit() {
     const values = {
       artist: username,
@@ -60,7 +60,8 @@ export default function UploadSong() {
       description,
       needs,
       song_url: songUrl,
-      potential_collaborators: [null]
+      absolute_song_url:absoluteSongUrl, 
+      potential_collaborators: [null],
       // instagram_url,
       // twitter_url,
       // spotify_url,
