@@ -20,6 +20,7 @@ export default function useResource() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [absoluteSongUrl, setAbsoluteSongUrl] = useState(null);
+  const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -122,8 +123,8 @@ export default function useResource() {
   }
 
   async function addCollaborator(oldCollabsArray, id) {
-    if (!session){
-      router.push('/login')
+    if (!session) {
+      router.push("/login");
     }
     try {
       setLoading(true);
@@ -169,20 +170,20 @@ export default function useResource() {
         throw error;
       }
       if (data) {
-        console.log(data)
+        console.log(data);
         const url = URL.createObjectURL(data);
         setAudio(new Audio(url));
         setAudioUrl(url);
 
         setLoading(false);
         console.log(audioUrl);
-        return(url)
+        return url;
       }
     } catch (error) {
       console.log("Error downloading Audio File: ", error.message);
     }
   }
- 
+
   async function getAbsoluteSongUrl(path) {
     try {
       setLoading(true);
@@ -192,9 +193,8 @@ export default function useResource() {
       if (error) {
         throw error;
       }
-      console.log(data)
+      console.log(data);
       if (data) {
-
         setAbsoluteSongUrl(data.publicUrl);
 
         setLoading(false);
@@ -205,8 +205,6 @@ export default function useResource() {
     }
   }
 
-
-  
   async function handlePlayMusic(data, key) {
     setCurrentKey(key);
     if (key != currentKey) {
@@ -219,35 +217,33 @@ export default function useResource() {
   }
 
   async function getProfileByID(id, i) {
+    try {
+      setLoading(true);
 
-      try {
-        setLoading(true);
+      let { data, error, status } = await supabase
+        .from("profiles")
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
+        .eq("id", id)
+        .single();
 
-        let { data, error, status } = await supabase
-          .from("profiles")
-          // .select(`username, website, avatar_url`)
-          .select(`*`)
-          .eq("id", id)
-          .single();
-
-        if (error && status !== 406) {
-          throw error;
-        }
-
-        if (data) {
-          console.log(data) 
-          setSocials(data);
-          setSelectedPostKey(i);
-                    setAvatarUrl(data.avatar_url);
-
-          return(data)
-        }
-      } catch (error) {
-        alert(error.message);
-      } finally {
-        setLoading(false);
+      if (error && status !== 406) {
+        throw error;
       }
-    
+
+      if (data) {
+        console.log(data);
+        setSocials(data);
+        setSelectedPostKey(i);
+        setAvatarUrl(data.avatar_url);
+
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function downloadImage(path) {
@@ -262,6 +258,26 @@ export default function useResource() {
       setAvatarUrl(url);
     } catch (error) {
       console.log("Error downloading image: ", error.message);
+    }
+  }
+
+  async function getAbsoluteAvatarUrl(path) {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .getPublicUrl(path);
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        console.log(data.publicUrl)
+        setAbsoluteAvatar_Url(data.publicUrl);
+        setLoading(false);
+        return(data.publicUrl)
+      }
+    } catch (error) {
+      console.log("Error downloading Audio File: ", error.message);
     }
   }
   return {
@@ -286,5 +302,8 @@ export default function useResource() {
     audioUrl,
     getAbsoluteSongUrl,
     absoluteSongUrl,
+    getAbsoluteAvatarUrl,
+    absoluteAvatar_url,
+    setAbsoluteAvatar_Url,
   };
 }

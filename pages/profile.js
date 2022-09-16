@@ -19,6 +19,7 @@ export default function Profile() {
     deleteSongPost,
     loading,
     setLoading,
+    setAbsoluteAvatar_Url
   } = useResource();
 
   if (playSong == true) {
@@ -176,9 +177,9 @@ export default function Profile() {
         <Avatar
           url={avatar_url}
           size={150}
-          onUpload={(url) => {
+          onUpload={(url,absoluteAvatar_url) => {
             setAvatarUrl(url);
-            updateProfile({ avatar_url: url }); // username, website,
+            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_url }); // username, website,
           }}
         />
         <div>
@@ -249,6 +250,7 @@ export default function Profile() {
                 username,
                 website,
                 avatar_url,
+                absolute_avatar_url: absoluteAvatar_url,
                 instagram_url,
                 twitter_url,
                 spotify_url,

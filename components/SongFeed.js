@@ -6,6 +6,7 @@ import Avatar from "./Avatar";
 import Socials from "./socials";
 import Link from "next/link";
 import dynamic from 'next/dynamic'
+import Image from "next/image";
 const Waveform = dynamic(
   () => import('../components/WaveForm'),
   { ssr: false }
@@ -80,7 +81,7 @@ export default function SongFeed({ profilePage }) {
 
   function songPostFeed() {
     let feed = musicPosts.map((data, i) => {
-      console.log(data.absolute_song_url)
+      console.log(data.absolute_avatar_url)
       return (
         <div
         
@@ -89,15 +90,23 @@ export default function SongFeed({ profilePage }) {
           key={i}
         >
                
-
           {selectedPostKey == i ? (
             <Avatar url={avatarUrl} size={150} />
-          ) : (
-            <div
-            className="avatar no-image"
-            style={{ height: 150, width: 150 }}
-          />
-          )}
+            ) : (
+              <div
+              className="avatar no-image"
+              style={{ height: 150, width: 150 }}
+              />
+              )}
+
+
+                {/* TODO:  Update image rendering to use absolute url */}
+
+              {/* {data.absolute_avatar_url && <Image alt="blah" width={100} height={100} src={data.absolute_avatar_url}/>} */}
+
+
+
+
 
           {selectedPostKey != i && (
             <button

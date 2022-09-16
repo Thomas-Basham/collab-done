@@ -16,6 +16,7 @@ export function AuthProvider({ children }) {
   const [twitter_url, setTwitter_url] = useState(null);
   const [spotify_url, setSpotify_url] = useState(null);
   const [soundcloud_url, setSoundcloud_url] = useState(null);
+  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -80,6 +81,7 @@ export function AuthProvider({ children }) {
           setTwitter_url(data.twitter_url);
           setSpotify_url(data.spotify_url);
           setSoundcloud_url(data.soundcloud_url);
+          setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url)
           // return(data)
         }
       } catch (error) {
@@ -151,6 +153,7 @@ export function AuthProvider({ children }) {
     username,
     website,
     avatar_url,
+    absolute_avatar_url,
     instagram_url,
     twitter_url,
     spotify_url,
@@ -165,6 +168,7 @@ export function AuthProvider({ children }) {
         username,
         website,
         avatar_url,
+        absolute_avatar_url,
         instagram_url,
         twitter_url,
         spotify_url,
@@ -186,7 +190,7 @@ export function AuthProvider({ children }) {
         
         const values = {
           artist: username,
-
+          // absolute_avatar_url
         };
 
         await Promise.all(fillteredPosts.map(async (post) => {
@@ -237,6 +241,7 @@ export function AuthProvider({ children }) {
     setSpotify_url,
     soundcloud_url,
     setSoundcloud_url,
+    absoluteAvatar_urlAuth,
   };
 
   return (

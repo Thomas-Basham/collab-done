@@ -11,6 +11,7 @@ export default function UploadSong() {
     twitter_url,
     spotify_url,
     soundcloud_url,
+    absoluteAvatar_urlAuth
   } = useAuth();
   const { createSongPost,getAbsoluteSongUrl, absoluteSongUrl} = useResource();
 
@@ -21,7 +22,7 @@ export default function UploadSong() {
   const [songUrl, setSongUrl] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-
+  console.log(absoluteAvatar_urlAuth)
   async function uploadSong(event) {
     try {
       setUploading(true);
@@ -51,7 +52,6 @@ export default function UploadSong() {
       setUploading(false);
     }
   }
-console.log(absoluteSongUrl)
   function handleSubmit() {
     const values = {
       artist: username,
@@ -62,6 +62,7 @@ console.log(absoluteSongUrl)
       song_url: songUrl,
       absolute_song_url:absoluteSongUrl, 
       potential_collaborators: [null],
+      absolute_avatar_url: absoluteAvatar_urlAuth,
       // instagram_url,
       // twitter_url,
       // spotify_url,
