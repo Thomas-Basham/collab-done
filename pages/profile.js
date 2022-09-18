@@ -44,7 +44,6 @@ export default function Profile() {
     isLoading,
     setIsLoading,
     updateProfile,
-    absoluteAvatar_urlAuth,
   } = useAuth();
 
   if (playSong == true) {
@@ -182,7 +181,7 @@ export default function Profile() {
           size={150}
           onUpload={(url,absoluteAvatar_url) => {
             setAvatarUrl(url);
-            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_urlAuth  }); // username, website,
+            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_url,  }); // username, website,
           }}
         />
         <div>
@@ -253,7 +252,7 @@ export default function Profile() {
                 username,
                 website,
                 avatar_url,
-                absolute_avatar_url: absoluteAvatar_urlAuth,
+                absolute_avatar_url: absoluteAvatar_url,
                 instagram_url,
                 twitter_url,
                 spotify_url,

@@ -122,6 +122,7 @@ export default function useResource() {
     }
   }
 
+  // TODO: Convert this function to accept and push the user's UUID instead of username
   async function addCollaborator(oldCollabsArray, id) {
     if (!session) {
       router.push("/login");
@@ -129,7 +130,7 @@ export default function useResource() {
     try {
       setLoading(true);
       if (oldCollabsArray == null) {
-        let newCollabsArray = [username, null];
+        let newCollabsArray = [username];
 
         let { error } = await supabase
           .from("songs")

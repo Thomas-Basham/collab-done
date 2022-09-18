@@ -11,6 +11,8 @@ A full stack web application for musicians to connect and collaborate.
 - Reactjs
 - Nextjs
 - Supabase
+- Wavesurferjs
+- React-Icons
 - Vercel
 
 ## References
