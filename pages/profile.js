@@ -19,28 +19,9 @@ export default function Profile() {
     deleteSongPost,
     loading,
     setLoading,
-    setAbsoluteAvatar_Url
+    setAbsoluteAvatar_Url,
+    updateSongPost, 
   } = useResource();
-
-  if (playSong == true) {
-    audio.play();
-  }
-  if (playSong == false) {
-    audio.pause();
-  }
-  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
-  const { createSongPost } = useResource();
-
-  const [songPostData, SetSongPostData] = useState(null);
-  const [genre, setGenre] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [needs, setNeeds] = useState(null);
-  // const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const {
     session,
     signIn,
@@ -63,7 +44,29 @@ export default function Profile() {
     isLoading,
     setIsLoading,
     updateProfile,
+    absoluteAvatar_urlAuth,
   } = useAuth();
+
+  if (playSong == true) {
+    audio.play();
+  }
+  if (playSong == false) {
+    audio.pause();
+  }
+  const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
+  const { createSongPost } = useResource();
+
+  const [songPostData, SetSongPostData] = useState(null);
+  const [genre, setGenre] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [needs, setNeeds] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
 
 
   function handleOpenModal(data) {
@@ -179,7 +182,7 @@ export default function Profile() {
           size={150}
           onUpload={(url,absoluteAvatar_url) => {
             setAvatarUrl(url);
-            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_url }); // username, website,
+            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_urlAuth  }); // username, website,
           }}
         />
         <div>
@@ -250,7 +253,7 @@ export default function Profile() {
                 username,
                 website,
                 avatar_url,
-                absolute_avatar_url: absoluteAvatar_url,
+                absolute_avatar_url: absoluteAvatar_urlAuth,
                 instagram_url,
                 twitter_url,
                 spotify_url,

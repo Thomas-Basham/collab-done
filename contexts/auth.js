@@ -190,7 +190,7 @@ export function AuthProvider({ children }) {
         
         const values = {
           artist: username,
-          // absolute_avatar_url
+          absolute_avatar_url,
         };
 
         await Promise.all(fillteredPosts.map(async (post) => {
