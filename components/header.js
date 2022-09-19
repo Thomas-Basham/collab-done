@@ -1,11 +1,10 @@
 import Link from "next/link";
 
 export default function Header({ session, signOut }) {
-
   return (
-    <header >
+    <header className=" col-6">
       {" "}
-      <nav style={{zIndex: 1}}>
+      <nav style={{ zIndex: 1, width: "500px" }}>
         <Link href="/">
           <a>
             <h3>COLLAB DONE </h3>
@@ -14,11 +13,10 @@ export default function Header({ session, signOut }) {
         <div className="actions">
           {session ? (
             <>
-                    <Link href="/">
-
-              <a >
-                <h3 onClick={signOut()}>Sign Out &rarr;</h3>
-              </a>
+              <Link href="/">
+                <a>
+                  <h3 onClick={signOut()}>Sign Out &rarr;</h3>
+                </a>
               </Link>
 
               <Link href="/profile">

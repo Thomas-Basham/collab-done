@@ -5,12 +5,18 @@ import useResource from "../hooks/useResource";
 export default function Avatar({ url, size, onUpload }) {
   // const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const {downloadImage, avatarUrl, setAvatarUrl, absoluteAvatar_url, setAbsoluteAvatarUrl, getAbsoluteAvatarUrl } = useResource();
+  const {
+    downloadImage,
+    avatarUrl,
+    setAvatarUrl,
+    absoluteAvatar_url,
+    setAbsoluteAvatarUrl,
+    getAbsoluteAvatarUrl,
+  } = useResource();
 
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
-
 
   async function uploadAvatar(event) {
     try {
@@ -28,12 +34,11 @@ export default function Avatar({ url, size, onUpload }) {
       let { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(filePath, file);
-      
+
       if (uploadError) {
         throw uploadError;
       }
-      const absoluteUrl = await getAbsoluteAvatarUrl(filePath)
-      console.log(absoluteUrl)
+      const absoluteUrl = await getAbsoluteAvatarUrl(filePath);
       onUpload(filePath, absoluteUrl);
     } catch (error) {
       alert(error.message);
@@ -50,31 +55,31 @@ export default function Avatar({ url, size, onUpload }) {
           alt="Avatar"
           className="avatar image"
           style={{ height: size, width: size }}
-        /> 
+        />
       ) : (
         <div
           className="avatar no-image"
           style={{ height: size, width: size }}
         />
       )}
-      { onUpload &&
-      <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? "Uploading ..." : "Upload"}
-        </label>
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
-}
+      {onUpload && (
+        <div style={{ width: size }}>
+          <label className="button primary block" htmlFor="single">
+            {uploading ? "Uploading ..." : "Upload"}
+          </label>
+          <input
+            style={{
+              visibility: "hidden",
+              position: "absolute",
+            }}
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
+        </div>
+      )}
     </div>
   );
 }

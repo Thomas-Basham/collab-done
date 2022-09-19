@@ -37,45 +37,18 @@ export default function SongFeed({ profilePage }) {
     audio.pause();
   }
 
-  // useEffect(() => {
-
-  //   musicPosts.map((data, i) => {
-
-  //     postUserData.push(getProfileByID(data.artist_id, i))
-  //   })
-  // }, [postUserData]);
-
-  // useEffect(() => {
-  //   if (!postUserData) {
-
-  //     cleanUpData()
-  //   }
-  // });
-
-  // async function cleanUpData() {
-  //   try {
-  //     let dataStuff = []
-  //      await Promise.all(
-  //       musicPosts.forEach( async (data, i) => {
-  //         dataStuff.push(getProfileByID(data.artist_id, i))
-  //       })
-  //       ).then(
-  //         () => {
-
-  //           let newData = {};
-  //           newData["profiles"] =  dataStuff;
-
-  //           setPostUserData(newData);
-
-  //         }
-
-  //       );
-
-  //   } catch (error) {
-  //     alert(error.message);
-  //   } finally {
-  //   }
-  // }
+  function collabButton(data) {
+    if (!data.potential_collaborators?.includes(username) && data.artist_id === session.user.id) {
+      return (
+        <button
+          className="collab-button"
+          onClick={() => addCollaborator(data.potential_collaborators, data.id)}
+        >
+          LET'S COLLAB
+        </button>
+      );
+    }
+  }
 
   function songPostFeed() {
     let feed = musicPosts.map((data, i) => {
@@ -84,7 +57,7 @@ export default function SongFeed({ profilePage }) {
         <div
           // with this feature uncommented, each photo will be rendered upon mouse enter
           // onMouseEnter={() => downloadImage(getProfileByID(data.artist_id, i))}
-          className="music-post col"
+          className="music-post "
           key={i}
         >
           {/* {selectedPostKey == i ? (
@@ -119,6 +92,8 @@ export default function SongFeed({ profilePage }) {
           </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
+
+          {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
           {/* <svg
             cursor="pointer"
             onClick={() => handlePlayMusic(data, i)}
@@ -136,6 +111,8 @@ export default function SongFeed({ profilePage }) {
               d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
             />
           </svg> */}
+
+          {/* WAVESURFER-JS */}
           <Waveform
             url={data.absolute_song_url}
             indexNumber={data.id.toString()}
@@ -153,7 +130,7 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-          {!data.potential_collaborators?.includes(username) && (
+          {/* {!data.potential_collaborators?.includes(username) && (
             <>
               <button
                 className="collab-button"
@@ -167,7 +144,9 @@ export default function SongFeed({ profilePage }) {
               <br></br>
               <br></br>
             </>
-          )}
+          )} */}
+
+          {collabButton(data)}
           <span className="brand-text">POTENTIAL COLLABORATORS</span>
           <br></br>
 

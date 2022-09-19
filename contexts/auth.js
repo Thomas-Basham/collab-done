@@ -73,7 +73,7 @@ export function AuthProvider({ children }) {
         }
 
         if (data) {
-          console.log(data.id)
+          console.log(data.id);
           setUsername(data.username);
           setWebsite(data.website);
           setAvatarUrl(data.avatar_url);
@@ -81,7 +81,7 @@ export function AuthProvider({ children }) {
           setTwitter_url(data.twitter_url);
           setSpotify_url(data.spotify_url);
           setSoundcloud_url(data.soundcloud_url);
-          setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url)
+          setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
           // return(data)
         }
       } catch (error) {
@@ -121,7 +121,7 @@ export function AuthProvider({ children }) {
       }
 
       if (data) {
-        return(data.reverse());
+        return data.reverse();
       }
     } catch (error) {
       alert(error.message);
@@ -181,26 +181,23 @@ export function AuthProvider({ children }) {
         .update(updates)
         .eq("id", user.id);
 
+      let musicPosts = await getMusicPosts();
 
-        let musicPosts = await getMusicPosts();
+      let fillteredPosts = musicPosts.filter(
+        (post) => post.artist_id === user.id
+      );
 
-        let fillteredPosts = musicPosts.filter(
-          (post) => post.artist_id === user.id
-        );    
-        
-        const values = {
-          artist: username,
-          absolute_avatar_url,
-        };
+      const values = {
+        artist: username,
+        absolute_avatar_url,
+      };
 
-        await Promise.all(fillteredPosts.map(async (post) => {
-          return(
-            
-            updateSongPost(values, post.id)
-          )
-        }))   
+      await Promise.all(
+        fillteredPosts.map(async (post) => {
+          return updateSongPost(values, post.id);
+        })
+      );
 
-        
       if (error) {
         throw error;
       }
@@ -214,8 +211,8 @@ export function AuthProvider({ children }) {
   async function signOut() {
     // Ends user session
     // router.push("/");
-    setSession(null)
-    setUsername(null)
+    setSession(null);
+    setUsername(null);
     await supabase.auth.signOut();
   }
   const value = {

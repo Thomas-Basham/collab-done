@@ -22,13 +22,13 @@ export default function ForeignUserProfile() {
   // const resource = resources.find(item => item.id == id)
 
   return (
-    <> 
-    <div >
-      <h1>{socials?.username}</h1>
-      <div className="d-flex ">
-        <Avatar url={socials?.avatar_url} size={150} />
-        <Socials data={socials} />
-      </div>
+    <>
+      <div>
+        <h1>{socials?.username}</h1>
+        <div className="d-flex ">
+          <Avatar url={socials?.avatar_url} size={150} />
+          <Socials data={socials} />
+        </div>
       </div>
     </>
   );

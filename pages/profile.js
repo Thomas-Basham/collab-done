@@ -20,7 +20,7 @@ export default function Profile() {
     loading,
     setLoading,
     setAbsoluteAvatar_Url,
-    updateSongPost, 
+    updateSongPost,
   } = useResource();
   const {
     session,
@@ -44,6 +44,7 @@ export default function Profile() {
     isLoading,
     setIsLoading,
     updateProfile,
+    absoluteAvatar_urlAuth,
   } = useAuth();
 
   if (playSong == true) {
@@ -64,9 +65,6 @@ export default function Profile() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
-
 
   function handleOpenModal(data) {
     setShow(true);
@@ -97,7 +95,6 @@ export default function Profile() {
         <h1>{data.artist}</h1>
         <small>{new Date(data.created_at).toLocaleDateString()}</small>
         <br></br>
-
         <svg
           cursor="pointer"
           onClick={() => handlePlayMusic(data, i)}
@@ -115,22 +112,20 @@ export default function Profile() {
             d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
           />
         </svg>
-
         <p>{data.genre}</p>
         <p>{data.description}</p>
         <p>{data.needs}</p>
-        <span className="brand-text">POTENTIAL COLLABORATORS</span>          {/* <p>{data.potential_collaborators}</p> */}
+        <span className="brand-text">POTENTIAL COLLABORATORS</span>{" "}
+        {/* <p>{data.potential_collaborators}</p> */}
         <br></br>
-
         {data.potential_collaborators.map((data, i) => {
-            return (
-              <>
-              <a key={i} >{data}</a>
+          return (
+            <>
+              <a key={i}>{data}</a>
               <br></br>
-              </>
-              
-            )
-          })}        
+            </>
+          );
+        })}
         <p>{data.finished_song && ""}</p>
         <svg
           cursor={"pointer"}
@@ -149,7 +144,6 @@ export default function Profile() {
             d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
           />
         </svg>
-
         <svg
           cursor={"pointer"}
           onClick={() => handleOpenModal(data)}
@@ -173,15 +167,16 @@ export default function Profile() {
 
   return (
     <div className="row flex-center flex">
-              
-
       <div className="col-6 form-widget">
         <Avatar
           url={avatar_url}
           size={150}
-          onUpload={(url,absoluteAvatar_url) => {
+          onUpload={(url, absoluteAvatar_url) => {
             setAvatarUrl(url);
-            updateProfile({ avatar_url: url, absolute_avatar_url: absoluteAvatar_url,  }); // username, website,
+            updateProfile({
+              avatar_url: url,
+              absolute_avatar_url: absoluteAvatar_url,
+            }); // username, website,
           }}
         />
         <div>
@@ -246,13 +241,12 @@ export default function Profile() {
         <div>
           <button
             className="button primary block"
-            onClick={(e) =>
+            onClick={() =>
               updateProfile({
-                
                 username,
                 website,
                 avatar_url,
-                absolute_avatar_url: absoluteAvatar_url,
+                absolute_avatar_url: absoluteAvatar_urlAuth,
                 instagram_url,
                 twitter_url,
                 spotify_url,
@@ -280,7 +274,7 @@ export default function Profile() {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Click Submit To Update This Post</Modal.Title>
         </Modal.Header>
         <div className="row flex-center flex">
           <div className="col-6 form-widget">

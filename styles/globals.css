@@ -40,16 +40,6 @@ body,
   margin-right: auto;
 }
 
-.row {
-  position: relative;
-  width: 100%;
-}
-
-.row [class^='col'] {
-  float: left;
-  margin: 0.5rem 2%;
-  min-height: 0.125rem;
-}
 
 .col-1,
 .col-2,
@@ -328,7 +318,7 @@ button.primary,
 }
 
 .footer {
-  position: absolute;
+  position: relative;
   max-width: 100%;
   height: 100px;
   max-height: 100px;
@@ -613,7 +603,7 @@ code {
   height: 1em;
 }
 
-.music-post{
+.music-post {
   border: var(--custom-border);
   padding: .75rem;
   /* height: 80vh; */
@@ -631,7 +621,7 @@ small {
   }
 }
 
-.brand-text{
+.brand-text {
   color: var(--custom-color-brand);
   padding-right: 10px;
 }
@@ -645,9 +635,9 @@ small {
   flex-direction: column;
   align-content: space-between;
 
-} 
+}
 
-.collab-button{
+.collab-button {
   display: flex;
 
   float: right;
@@ -656,12 +646,21 @@ small {
 
 }
 
-.wave-container{
-height: 150px;
-/* overflow: hidden; */
+.wave-container {
+  height: 150px;
+  /* overflow: hidden; */
 }
-.wave-song:first-child{
+
+.wave-song:first-child {
   position: relative;
   /* top: -150px; */
 }
 
+.modal-content {
+  background-color: #101010 !important;
+}
+
+.play-button {
+  position: relative !important;
+  margin: 36px auto !important;
+}

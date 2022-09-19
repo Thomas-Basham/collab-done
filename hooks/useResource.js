@@ -272,10 +272,10 @@ export default function useResource() {
         throw error;
       }
       if (data) {
-        console.log(data.publicUrl)
+        console.log(data.publicUrl);
         setAbsoluteAvatar_Url(data.publicUrl);
         setLoading(false);
-        return(data.publicUrl)
+        return data.publicUrl;
       }
     } catch (error) {
       console.log("Error downloading Audio File: ", error.message);
