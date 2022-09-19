@@ -4,7 +4,7 @@ export default function Header({ session, signOut }) {
   return (
     <header className="">
       {" "}
-      <nav style={{ zIndex: 1 }}>
+      <nav >
       <Row>
         <Col>
         <Link href="/">
