@@ -7,7 +7,7 @@ import useResource from "../hooks/useResource";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 // import Waveform from "../components/WaveForm";
-
+import { Container } from "react-bootstrap";
 export default function Profile() {
   const {
     musicPosts,
@@ -166,8 +166,10 @@ export default function Profile() {
   });
 
   return (
-    <div className="row flex-center flex">
-      <div className="col-6 form-widget">
+    < >
+    <Container fluid='md'>
+    <div className="row ">
+      <div className="col form-widget">
         <Avatar
           url={avatar_url}
           size={150}
@@ -266,6 +268,9 @@ export default function Profile() {
         </div>
         {userFeed}
       </div>
+      </div>
+      </Container>
+
       <Modal
         show={show}
         onHide={() => setShow(false)}
@@ -322,6 +327,6 @@ export default function Profile() {
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

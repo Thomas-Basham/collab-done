@@ -38,7 +38,10 @@ export default function SongFeed({ profilePage }) {
   }
 
   function collabButton(data) {
-    if (!data.potential_collaborators?.includes(username) && data.artist_id === session.user.id) {
+    if (
+      !data.potential_collaborators?.includes(username) &&
+      data.artist_id != session.user.id
+    ) {
       return (
         <button
           className="collab-button"
@@ -130,21 +133,7 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-          {/* {!data.potential_collaborators?.includes(username) && (
-            <>
-              <button
-                className="collab-button"
-                onClick={() =>
-                  addCollaborator(data.potential_collaborators, data.id)
-                }
-              >
-                LET'S COLLAB
-              </button>
-              <br></br>
-              <br></br>
-              <br></br>
-            </>
-          )} */}
+
 
           {collabButton(data)}
           <span className="brand-text">POTENTIAL COLLABORATORS</span>

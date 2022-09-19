@@ -489,12 +489,12 @@ header {
 nav {
   box-sizing: border-box;
   margin: 0;
-  min-width: 100vw;
+  width: 100vw;
   border-bottom: 5px solid var(--custom-color-brand);
   background-color: var(--custom-bg-color);
   margin-bottom: 2em;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left:320px;
+  padding-right: 320px;
   align-items: center;
   display: flex;
   position: fixed;
@@ -517,6 +517,8 @@ nav {
   flex-direction: row;
   position: absolute;
   right: 10px;
+  padding-right: 320px;
+
 }
 
 .actions h3 {

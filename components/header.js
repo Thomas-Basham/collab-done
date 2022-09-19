@@ -1,15 +1,19 @@
 import Link from "next/link";
-
+import { Container, Row, Col } from "react-bootstrap";
 export default function Header({ session, signOut }) {
   return (
-    <header className=" col-6">
+    <header className="">
       {" "}
-      <nav style={{ zIndex: 1, width: "500px" }}>
+      <nav style={{ zIndex: 1 }}>
+      <Row>
+        <Col>
         <Link href="/">
           <a>
             <h3>COLLAB DONE </h3>
           </a>
         </Link>{" "}
+        </Col>
+        <Col>
         <div className="actions">
           {session ? (
             <>
@@ -46,6 +50,8 @@ export default function Header({ session, signOut }) {
             </>
           )}
         </div>
+        </Col>
+      </Row>
       </nav>
     </header>
   );

@@ -2,6 +2,7 @@ import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
 import { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
+import { Container } from "react-bootstrap";
 
 export default function UploadSong() {
   const {
@@ -73,68 +74,80 @@ export default function UploadSong() {
   let size = 150;
 
   return (
-    <div className="row flex-center flex">
-      <div className="col-6 form-widget">
-        <div>
-          <label htmlFor="artist">Artist</label>
-          <input id="artist" type="text" value={username} disabled />
-        </div>
-        <p>{fileName}</p>
-        <div style={{ width: size }}>
-          <label className="button primary block" htmlFor="single">
-            {uploading ? "Uploading ..." : "Upload"}
-          </label>
-          <input
-            style={{
-              visibility: "hidden",
-              position: "absolute",
-            }}
-            type="file"
-            id="single"
-            accept="audio/*"
-            onChange={uploadSong}
-            disabled={uploading}
-          />
-        </div>
+    <Container fluid="md">
+      <div className="row flex-center flex">
+        <div className="col-6 form-widget">
+          <div>
+            <label htmlFor="artist">Artist</label>
+            <input id="artist" type="text" value={username} disabled />
+          </div>
+          <p>
+            {fileName ? (
+              fileName
+            ) : (
+              <small style={{ color: "grey" }}>no file uploaded</small>
+            )}
+          </p>
+          <div style={{ width: size }}>
+            <label className="button primary block" htmlFor="single">
+              {uploading ? "Uploading ..." : "Upload"}
+            </label>
+            <input
+              style={{
+                visibility: "hidden",
+                position: "absolute",
+              }}
+              type="file"
+              id="single"
+              accept="audio/*"
+              onChange={uploadSong}
+              disabled={uploading}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="genre">Genre</label>
-          <input
-            id="genre"
-            type="text"
-            value={genre || ""}
-            onChange={(e) => setGenre(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="website">Description</label>
-          <input
-            id="description"
-            type="text"
-            value={description || ""}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="needs">Needs</label>
-          <input
-            id="needs"
-            type="text"
-            value={needs || ""}
-            onChange={(e) => setNeeds(e.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="genre">Genre</label>
+            <input
+              required
+              id="genre"
+              type="text"
+              value={genre || ""}
+              onChange={(e) => setGenre(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="website">Description</label>
+            <input
+              id="description"
+              required
+              type="text"
+              value={description || ""}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="needs">Needs</label>
+            <input
+              required
+              id="needs"
+              type="text"
+              value={needs || ""}
+              onChange={(e) => setNeeds(e.target.value)}
+            />
+          </div>
 
-        <div>
-          <button
-            className="button primary block"
-            onClick={() => handleSubmit()}
-            disabled={loading}
-          >
-            {loading ? "Loading ..." : "Upload"}
-          </button>
+          <div>
+            {!fileName && <div> UPLOAD A SONG TO START COLLABING </div>}
+            <button
+              className="button primary block"
+              onClick={() => handleSubmit()}
+              disabled={loading || !fileName}
+            >
+              {loading ? "Loading ..." : "Start Collabing"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
