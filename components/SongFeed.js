@@ -87,12 +87,12 @@ export default function SongFeed({ profilePage }) {
               CONNECT
             </button>
           )}
-          {selectedPostKey == i && ( // displays socials when button is collected.
-            <Socials data={socials} />
-          )}
           <Link href={`/pr/${data.artist_id}`}>
             <h1 style={{ cursor: "pointer" }}>{data.artist}</h1>
           </Link>
+          {selectedPostKey == i && ( // displays socials when button is collected.
+            <Socials data={socials} />
+          )}
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
 

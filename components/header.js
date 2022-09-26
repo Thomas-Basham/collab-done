@@ -61,16 +61,18 @@ export default function Header({ session, signOut }) {
         <Navbar.Brand href="/"><h1>COLLAB DONE</h1></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+  <Nav className="me-auto" style={{display: session && "none"}}>
             <Nav.Link href="/login">Login</Nav.Link>
             <Nav.Link href="/signup">Signup</Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
-              Dank memes
+            
+          </Nav> 
+{      <Nav style={{display:  !session?.user &&   "none"}}>
+            <Nav.Link  onClick={signOut()}>Sign Out</Nav.Link>
+            <Nav.Link href="/profile">Profile</Nav.Link>
+            <Nav.Link  href="/upload-song">
+              Upload
             </Nav.Link>
-          </Nav>
+          </Nav>}
         </Navbar.Collapse>
       </Container>
     </Navbar>

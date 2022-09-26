@@ -11,8 +11,8 @@ export default function ForeignUserProfile() {
   // if (!resources) return <h2>Loading...</h2>
   useEffect(() => {
     if (!socials) {
-      const { username } = router.query;
-      getProfileByID(username, 0);
+      const { id } = router.query;
+      getProfileByID(id, 0);
     }
   });
 
