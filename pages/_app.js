@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import Layout from "../components/layout";
 import { AuthProvider } from "../contexts/auth";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import GithubCorner from 'react-github-corner';
+
 
 import ThemeProvider from "react-bootstrap/ThemeProvider";
 function MyApp({ Component, pageProps }) {
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
             crossOrigin="anonymous"
           />
         </Layout>
-      <GithubCorner href="https://github.com/username/repo" />
+      <GithubCorner href="https://github.com/Thomas-Basham/collab-done" />
       </ThemeProvider>
     </AuthProvider>
   );

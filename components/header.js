@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
 export default function Header({ session, signOut }) {
   return (
     <header className="">
-      {" "}
-      <nav >
+      {/* <nav >
       <Row>
         <Col>
         <Link href="/">
           <a>
-            <h3>COLLAB DONE </h3>
+            <h1>COLLAB DONE </h1>
           </a>
         </Link>{" "}
         </Col>
@@ -52,7 +51,29 @@ export default function Header({ session, signOut }) {
         </div>
         </Col>
       </Row>
-      </nav>
+      </nav> */}
+
+
+
+
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Container>
+        <Navbar.Brand href="/"><h1>COLLAB DONE</h1></Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/login">Login</Nav.Link>
+            <Nav.Link href="/signup">Signup</Nav.Link>
+          </Nav>
+          <Nav>
+            <Nav.Link href="#deets">More deets</Nav.Link>
+            <Nav.Link eventKey={2} href="#memes">
+              Dank memes
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
     </header>
   );
 }

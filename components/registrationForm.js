@@ -63,6 +63,8 @@ export default function Form() {
           onChange={(e) => setEmailConfirmation(e.target.value)}
         />
         <small>{emailError}</small>
+        <br></br>
+        <br></br>
         <input
           className="inputField"
           type="password"
