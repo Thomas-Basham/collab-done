@@ -54,7 +54,11 @@ export default function SongFeed({ profilePage }) {
   }
 
   function songPostFeed() {
-    let feed = musicPosts.map((data, i) => {
+    const sortedMusicPosts = musicPosts.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    let feed = sortedMusicPosts.map((data, i) => {
       console.log(data.absolute_avatar_url);
       return (
         <div
@@ -133,7 +137,6 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-
 
           {collabButton(data)}
           <span className="brand-text">POTENTIAL COLLABORATORS</span>
