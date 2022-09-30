@@ -66,6 +66,9 @@ export default function Profile() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  // TODO: add use effect that re-routes to index page if session is null
+
   function handleOpenModal(data) {
     setShow(true);
     setGenre(data.genre);

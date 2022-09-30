@@ -34,6 +34,7 @@ export default function Login() {
         <div>
           <input
             className="inputField"
+            id="email"
             type="email"
             placeholder="Email"
             value={email}
@@ -41,6 +42,7 @@ export default function Login() {
           />
           <input
             className="inputField"
+            id="password"
             type="password"
             value={password}
             placeholder="Password"
