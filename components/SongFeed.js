@@ -123,7 +123,6 @@ export default function SongFeed({ profilePage }) {
             url={data.absolute_song_url}
             indexNumber={data.id.toString()}
           />
-
           <br></br>
           <div className="d-inline-flex">
             <span className="brand-text">GENRE</span>

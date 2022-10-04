@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { HiPlay, HiPause } from "react-icons/hi";
 import { FiPlay, FiPause } from "react-icons/fi";
+import CommentSection from "./CommentSection";
 
 // *************** Thank you to https://codesandbox.io/s/gjn3t ***************
 
@@ -19,10 +20,11 @@ const formWaveSurferOptions = (ref) => ({
   mediaControls: true,
 });
 
-export default function IndexPage(props) {
+export default function WaveForm(props) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(false);
 
   // const url =
   //   "https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3";
@@ -31,11 +33,11 @@ export default function IndexPage(props) {
   useEffect(() => {
     create();
 
-    return () => {
-      if (wavesurfer.current) {
-        wavesurfer.current.destroy();
-      }
-    };
+    // return () => {
+    //   if (wavesurfer.current) {
+    //     wavesurfer.current.destroy();
+    //   }
+    // };
   }, []);
 
   const create = async () => {
@@ -44,14 +46,19 @@ export default function IndexPage(props) {
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
 
+    let songDuration = await wavesurfer.current.getDuration();
     wavesurfer.current.load(url);
-    
+
+    setDuration(songDuration);
+    if (songDuration) {
+      console.log(wavesurfer.current.getDuration());
+    }
   };
 
   const handlePlayPause = () => {
     setPlaying(!playing);
     wavesurfer.current.playPause();
-
+    // console.log(wavesurfer.current.getDuration())
   };
 
   return (
@@ -68,6 +75,7 @@ export default function IndexPage(props) {
       <div className="wave-container col">
         <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
+      <CommentSection songDetails={wavesurfer.current} />
     </div>
   );
 }
