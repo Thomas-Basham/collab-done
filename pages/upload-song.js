@@ -23,7 +23,6 @@ export default function UploadSong() {
   const [songUrl, setSongUrl] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-  console.log(absoluteAvatar_urlAuth);
   async function uploadSong(event) {
     try {
       setUploading(true);

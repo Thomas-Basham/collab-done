@@ -59,7 +59,6 @@ export default function SongFeed({ profilePage }) {
     );
 
     let feed = sortedMusicPosts.map((data, i) => {
-      console.log(data.absolute_avatar_url);
       return (
         <div
           // with this feature uncommented, each photo will be rendered upon mouse enter
@@ -91,12 +90,12 @@ export default function SongFeed({ profilePage }) {
               CONNECT
             </button>
           )}
-          <Link href={`/pr/${data.artist_id}`}>
-            <h1 style={{ cursor: "pointer" }}>{data.artist}</h1>
-          </Link>
           {selectedPostKey == i && ( // displays socials when button is collected.
             <Socials data={socials} />
           )}
+          <Link href={`/pr/${data.artist_id}`}>
+            <h1 style={{ cursor: "pointer" }}>{data.artist}</h1>
+          </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
 

@@ -141,7 +141,6 @@ export default function useResource() {
           throw error;
         }
       } else {
-        console.log({ oldCollabsArray });
         oldCollabsArray.push(username);
         // console.log({newCollabsArray})
         let { error } = await supabase
@@ -171,13 +170,11 @@ export default function useResource() {
         throw error;
       }
       if (data) {
-        console.log(data);
         const url = URL.createObjectURL(data);
         setAudio(new Audio(url));
         setAudioUrl(url);
 
         setLoading(false);
-        console.log(audioUrl);
         return url;
       }
     } catch (error) {
@@ -194,7 +191,6 @@ export default function useResource() {
       if (error) {
         throw error;
       }
-      console.log(data);
       if (data) {
         setAbsoluteSongUrl(data.publicUrl);
 
@@ -233,7 +229,6 @@ export default function useResource() {
       }
 
       if (data) {
-        console.log(data);
         setSocials(data);
         setSelectedPostKey(i);
         setAvatarUrl(data.avatar_url);
@@ -272,7 +267,6 @@ export default function useResource() {
         throw error;
       }
       if (data) {
-        console.log(data.publicUrl);
         setAbsoluteAvatar_Url(data.publicUrl);
         setLoading(false);
         return data.publicUrl;

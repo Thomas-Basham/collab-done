@@ -17,7 +17,6 @@ export default function ForeignUserProfile() {
   });
 
   // let data = getProfileByID(username, 0 )
-  // console.log(data)
 
   // const resource = resources.find(item => item.id == id)
 
