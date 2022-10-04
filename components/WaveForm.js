@@ -45,17 +45,18 @@ export default function IndexPage(props) {
     wavesurfer.current = WaveSurfer.create(options);
 
     wavesurfer.current.load(url);
+    
   };
 
   const handlePlayPause = () => {
     setPlaying(!playing);
     wavesurfer.current.playPause();
+
   };
 
   return (
     <div className="audio-container row">
       <div className="controls col-2">
-        {/* <div onClick={handlePlayPause}>{!playing ? "Paused" : "Playing"}</div> */}
         <div
           onClick={handlePlayPause}
           className="play-button"

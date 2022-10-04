@@ -73,7 +73,6 @@ export function AuthProvider({ children }) {
         }
 
         if (data) {
-          console.log(data.id);
           setUsername(data.username);
           setWebsite(data.website);
           setAvatarUrl(data.avatar_url);

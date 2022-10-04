@@ -27,7 +27,6 @@ export default function Form() {
 
   });
 
-  console.log(email, emailConfirmation)
   const registerUser = async (email, password) => {
     try {
       setLoading(true);
