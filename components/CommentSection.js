@@ -37,14 +37,16 @@ export default function CommentSection(props) {
     setViewCommentPosition(position);
     setViewComment(comment);
   };
-
+  let fillteredComments = comments.filter(
+    (comment) => comment.songID === props.songID
+  );
   return (
     session?.user && (
       <>
         <div className="row ">
           <div id="spacer" className="col-2"></div>
           <div className="col ">
-            {comments.map((data, i) => {
+            {fillteredComments.map((data, i) => {
               return (
                 <div
                   key={i}
