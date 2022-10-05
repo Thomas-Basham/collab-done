@@ -66,7 +66,6 @@ export default function Profile() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
   // TODO: add use effect that re-routes to index page if session is null
 
   function handleOpenModal(data) {
@@ -169,109 +168,114 @@ export default function Profile() {
   });
 
   return (
-    < >
-    <Container fluid='md'>
-    <div className="row ">
-      <div className="col form-widget">
-        <Avatar
-          url={avatar_url}
-          size={150}
-          onUpload={(url, absoluteAvatar_url) => {
-            setAvatarUrl(url);
-            updateProfile({
-              avatar_url: url,
-              absolute_avatar_url: absoluteAvatar_url,
-            }); // username, website,
-          }}
-        />
-        <div>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="text" value={session?.user.email} disabled />
-        </div>
-        <div>
-          <label htmlFor="username">Artist Name</label>
-          <input
-            id="username"
-            type="text"
-            value={username || ""}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="website">Website</label>
-          <input
-            id="website"
-            type="text"
-            value={website || ""}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="instagram">Instagram username</label>
-          <input
-            id="instagram"
-            type="text"
-            value={instagram_url || ""}
-            onChange={(e) => setInstagram_url(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="twitter">Twitter username</label>
-          <input
-            id="twitter"
-            type="text"
-            value={twitter_url || ""}
-            onChange={(e) => setTwitter_url(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="soundcloud">Soundcloud username</label>
-          <input
-            id="soundcloud"
-            type="website"
-            value={soundcloud_url || ""}
-            onChange={(e) => setSoundcloud_url(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="Spotify">Spotify artist id</label>
-          <input
-            id="Spotify"
-            type="website"
-            value={spotify_url || ""}
-            onChange={(e) => setSpotify_url(e.target.value)}
-          />
-        </div>
+    <>
+      <Container fluid="md">
+        <div className="row ">
+          <div className="col form-widget">
+            <Avatar
+              url={avatar_url}
+              size={150}
+              onUpload={(url, absoluteAvatar_url) => {
+                setAvatarUrl(url);
+                updateProfile({
+                  avatar_url: url,
+                  absolute_avatar_url: absoluteAvatar_url,
+                }); // username, website,
+              }}
+            />
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="text"
+                value={session?.user.email}
+                disabled
+              />
+            </div>
+            <div>
+              <label htmlFor="username">Artist Name</label>
+              <input
+                id="username"
+                type="text"
+                value={username || ""}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                type="text"
+                value={website || ""}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="instagram">Instagram username</label>
+              <input
+                id="instagram"
+                type="text"
+                value={instagram_url || ""}
+                onChange={(e) => setInstagram_url(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="twitter">Twitter username</label>
+              <input
+                id="twitter"
+                type="text"
+                value={twitter_url || ""}
+                onChange={(e) => setTwitter_url(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="soundcloud">Soundcloud username</label>
+              <input
+                id="soundcloud"
+                type="website"
+                value={soundcloud_url || ""}
+                onChange={(e) => setSoundcloud_url(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="Spotify">Spotify artist id</label>
+              <input
+                id="Spotify"
+                type="website"
+                value={spotify_url || ""}
+                onChange={(e) => setSpotify_url(e.target.value)}
+              />
+            </div>
 
-        <div>
-          <button
-            className="button primary block"
-            onClick={() =>
-              updateProfile({
-                username,
-                website,
-                avatar_url,
-                absolute_avatar_url: absoluteAvatar_urlAuth,
-                instagram_url,
-                twitter_url,
-                spotify_url,
-                soundcloud_url,
-              })
-            }
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading ..." : "Update"}
-          </button>
-        </div>
+            <div>
+              <button
+                className="button primary block"
+                onClick={() =>
+                  updateProfile({
+                    username,
+                    website,
+                    avatar_url,
+                    absolute_avatar_url: absoluteAvatar_urlAuth,
+                    instagram_url,
+                    twitter_url,
+                    spotify_url,
+                    soundcloud_url,
+                  })
+                }
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading ..." : "Update"}
+              </button>
+            </div>
 
-        <div>
-          <button className="button block" onClick={signOut()}>
-            Sign Out
-          </button>
+            <div>
+              <button className="button block" onClick={signOut()}>
+                Sign Out
+              </button>
+            </div>
+            {userFeed}
+          </div>
         </div>
-        {userFeed}
-      </div>
-      </div>
       </Container>
 
       <Modal

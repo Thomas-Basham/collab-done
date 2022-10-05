@@ -18,7 +18,7 @@ export default function SongFeed({ profilePage }) {
     audio,
     handlePlayMusic,
     playSong,
-    getProfileByID,
+    getSocials,
     socials,
     selectedPostKey,
     addCollaborator,
@@ -58,22 +58,16 @@ export default function SongFeed({ profilePage }) {
       (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
 
-    let feed = sortedMusicPosts.map((data, i) => {
+    return sortedMusicPosts.map((data, i) => {
+      console.log(data)
       return (
         <div
           // with this feature uncommented, each photo will be rendered upon mouse enter
-          // onMouseEnter={() => downloadImage(getProfileByID(data.artist_id, i))}
+          // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
           className="music-post "
           key={i}
         >
-          {/* {selectedPostKey == i ? (
-            <Avatar url={avatarUrl} size={150} />
-            ) : (
-              <div
-              className="avatar no-image"
-              style={{ height: 150, width: 150 }}
-              />
-              )} */}
+
 
           <img
             src={data.absolute_avatar_url}
@@ -85,7 +79,7 @@ export default function SongFeed({ profilePage }) {
           {selectedPostKey != i && (
             <button
               className="socials-container"
-              onClick={() => getProfileByID(data.artist_id, i)}
+              onClick={() => getSocials(data.artist_id, i)}
             >
               CONNECT
             </button>
@@ -122,8 +116,8 @@ export default function SongFeed({ profilePage }) {
           <Waveform
             url={data.absolute_song_url}
             indexNumber={data.id.toString()}
+            songID= {data.id}
           />
-
           <br></br>
           <div className="d-inline-flex">
             <span className="brand-text">GENRE</span>
@@ -155,7 +149,6 @@ export default function SongFeed({ profilePage }) {
       );
     });
 
-    return feed;
   }
 
   return (

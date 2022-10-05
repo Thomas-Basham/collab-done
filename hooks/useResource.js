@@ -10,6 +10,7 @@ export default function useResource() {
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [songUrl, setSongUrl] = useState(null);
   const [playSong, setPlaySong] = useState(false);
   const [audio, setAudio] = useState(new Audio());
@@ -24,6 +25,10 @@ export default function useResource() {
 
   useEffect(() => {
     getmusicPosts();
+  }, []);
+
+  useEffect(() => {
+    getComments();
   }, []);
 
   async function getmusicPosts() {
@@ -82,6 +87,59 @@ export default function useResource() {
     }
   }
 
+  async function getComments() {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase.from("comments").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setComments(data);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function createComment(values) {
+    try {
+      setLoading(true);
+
+      let { error } = await supabase.from("comments").insert(values);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteComment(id) {
+    try {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("comments")
+        .delete()
+        .match({ id: id });
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      getComments();
+      setLoading(false);
+    }
+  }
   async function deleteSongPost(id) {
     try {
       setLoading(true);
@@ -213,7 +271,7 @@ export default function useResource() {
     }
   }
 
-  async function getProfileByID(id, i) {
+  async function getSocials(id, i) {
     try {
       setLoading(true);
 
@@ -233,6 +291,30 @@ export default function useResource() {
         setSelectedPostKey(i);
         setAvatarUrl(data.avatar_url);
 
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function getProfileByID(id) {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
+        .eq("id", id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
         return data;
       }
     } catch (error) {
@@ -300,5 +382,10 @@ export default function useResource() {
     getAbsoluteAvatarUrl,
     absoluteAvatar_url,
     setAbsoluteAvatar_Url,
+    getComments,
+    createComment,
+    comments,
+    getSocials,
+    deleteComment
   };
 }
