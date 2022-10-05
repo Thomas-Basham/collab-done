@@ -24,7 +24,7 @@ export default function CommentSection(props) {
   const [viewCommentProfile, setViewCommentProfile] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = async (e) => {
     e.preventDefault();
     console.log(comment);
     setComment("");
@@ -41,7 +41,7 @@ export default function CommentSection(props) {
       avatarURl: absoluteAvatar_urlAuth,
     };
     createComment(values);
-    getComments();
+    await getComments();
   };
 
   const displayComment = async (data) => {
@@ -60,61 +60,66 @@ export default function CommentSection(props) {
     setShowDeleteModal(false);
   };
 
+  const DeleteButton = () => {
+    if (session?.user && session?.user.id == viewCommentData?.user) {
+      return <HiOutlineTrash cursor={"pointer"} onClick={() => setShowDeleteModal(true)} />;
+    }
+  };
+
   let fillteredComments = comments.filter(
     (comment) => comment.songID === props.songID
   );
   return (
-    session?.user && (
-      <>
-        <div className="row ">
-          <div id="spacer" className="col-2"></div>
-          <div className="col ">
-            {fillteredComments.map((data, i) => {
-              return (
-                <div
-                  key={i}
-                  className=""
-                  onMouseEnter={() => displayComment(data)}
-                  style={{
-                    display: "inline",
-                    cursor: "default",
-                    position: "relative",
-                    left:
-                      data.commentPosition < 90
-                        ? `${data.commentPosition}%`
-                        : `${data.commentPosition - 24}%`,
-                  }}
-                >
-                  <img
-                    src={data.avatarURl}
-                    alt="Avatar"
-                    className="avatar image d-inline"
-                    style={{ height: "15px", width: "15px" }}
-                  />
-                </div>
-              );
-            })}
-            <div
-              className=""
-              style={{
-                position: "relative",
-                left:
-                  viewCommentPosition < 90
-                    ? `${viewCommentPosition}% `
-                    : `${viewCommentPosition - 13}%`,
-              }}
-            >
-              <p className="brand-text">{viewCommentProfile?.username}</p>
-              {viewCommentData?.comment}
-              {session.user.id == viewCommentData?.user && (
-                <HiOutlineTrash onClick={() => setShowDeleteModal(true)} />
-              )}
-            </div>
+    <>
+      <div className="row ">
+        <div id="spacer" className="col-2"></div>
+        <div className="col ">
+          {fillteredComments.map((data, i) => {
+            return (
+              <div
+                key={i}
+                className=""
+                onMouseEnter={() => displayComment(data)}
+                style={{
+                  display: "inline",
+                  cursor: "default",
+                  position: "relative",
+                  left:
+                    data.commentPosition < 90
+                      ? `${data.commentPosition}%`
+                      : `${data.commentPosition - 24}%`,
+                }}
+              >
+                <img
+                  src={data.avatarURl}
+                  alt="Avatar"
+                  className="avatar image d-inline"
+                  style={{ height: "15px", width: "15px" }}
+                />
+              </div>
+            );
+          })}
+          <div
+            className=""
+            style={{
+              position: "relative",
+              left:
+                viewCommentPosition < 90
+                  ? `${viewCommentPosition}% `
+                  : `${viewCommentPosition - 13}%`,
+            }}
+          >
+            <p className="brand-text">{viewCommentProfile?.username}</p>
+            {viewCommentData?.comment}
+
+            <DeleteButton />
           </div>
         </div>
-        <div className="row">
-          <div id="spacer" className="col-2"></div>
-          <div className="col">
+      </div>
+      <div className="row">
+        <div id="spacer" className="col-2"></div>
+        <div className="col">
+          {session?.user && (
             <form onSubmit={onFormSubmit}>
               <input
                 type="text"
@@ -129,31 +134,31 @@ export default function CommentSection(props) {
                 Submit
               </button>
             </form>
-          </div>
+          )}
         </div>
+      </div>
 
-        <Modal
-          show={showDeleteModal}
-          onHide={() => setShowDeleteModal(false)}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Are you sure you want to delete this comment?
-            </Modal.Title>
-          </Modal.Header>
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Are you sure you want to delete this comment?
+          </Modal.Title>
+        </Modal.Header>
 
-          <Button onClick={() => handleDeleteComment(viewCommentData.id)}>
-            Delete Comment
-          </Button>
+        <button className="bg-danger" onClick={() => handleDeleteComment(viewCommentData.id)}>
+          Delete Comment
+        </button>
 
-          <Button className="danger" onClick={() => setShowDeleteModal(false)}>
-            Cancel
-          </Button>
-        </Modal>
-      </>
-    )
+        <button   onClick={() => setShowDeleteModal(false)}>
+          Cancel
+        </button>
+      </Modal>
+    </>
   );
 }
