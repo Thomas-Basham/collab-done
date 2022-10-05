@@ -10,6 +10,7 @@ export default function useResource() {
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [songUrl, setSongUrl] = useState(null);
   const [playSong, setPlaySong] = useState(false);
   const [audio, setAudio] = useState(new Audio());
@@ -24,6 +25,12 @@ export default function useResource() {
 
   useEffect(() => {
     getmusicPosts();
+    
+  }, []);
+
+  useEffect(() => {
+    getComments();
+    
   }, []);
 
   async function getmusicPosts() {
@@ -79,6 +86,41 @@ export default function useResource() {
     } finally {
       setLoading(false);
       router.push("/profile");
+    }
+  }
+
+  async function getComments() {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase.from("comments").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setComments(data);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function createComment(values) {
+    try {
+      setLoading(true);
+
+      let { error } = await supabase.from("comments").insert(values);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -300,5 +342,10 @@ export default function useResource() {
     getAbsoluteAvatarUrl,
     absoluteAvatar_url,
     setAbsoluteAvatar_Url,
+    getComments,
+    createComment,
+    comments,
+
+
   };
 }

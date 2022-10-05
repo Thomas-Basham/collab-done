@@ -6,31 +6,26 @@ import CommentSection from "./CommentSection";
 
 // *************** Thank you to https://codesandbox.io/s/gjn3t ***************
 
-const formWaveSurferOptions = (ref) => ({
-  container: ref,
-  waveColor: "#24b47e",
-  progressColor: "#eee",
-  cursorColor: "white",
-  barWidth: 3,
-  barRadius: 3,
-  responsive: false,
-  height: 150,
-  normalize: true,
-  partialRender: true,
-  mediaControls: true,
-
-});
-
 export default function WaveForm(props) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(false);
 
-  // const url =
-  //   "https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3";
   const url = props.url;
-
+  const formWaveSurferOptions = (ref) => ({
+    container: ref,
+    waveColor: "#24b47e",
+    progressColor: "#eee",
+    cursorColor: "white",
+    barWidth: 3,
+    barRadius: 3,
+    responsive: false,
+    height: 150,
+    normalize: true,
+    partialRender: true,
+    mediaControls: true,
+  });
   useEffect(() => {
     create();
 
@@ -63,7 +58,7 @@ export default function WaveForm(props) {
   };
 
   return (
-    <div className="audio-container row">
+    <div className="audio-container row" style={{width: "95%"}}>
       <div className="controls col-2">
         <div
           onClick={handlePlayPause}
@@ -76,7 +71,7 @@ export default function WaveForm(props) {
       <div className="wave-container col">
         <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
-      <CommentSection songDetails={wavesurfer.current} />
+      <CommentSection songDetails={wavesurfer.current} songID={props.songID}/>
     </div>
   );
 }
