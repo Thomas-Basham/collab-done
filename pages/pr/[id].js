@@ -6,17 +6,17 @@ import Avatar from "../../components/Avatar";
 import Socials from "../../components/socials";
 export default function ForeignUserProfile() {
   const router = useRouter();
-  const { getProfileByID, socials } = useResource();
+  const { getSocials, socials } = useResource();
 
   // if (!resources) return <h2>Loading...</h2>
   useEffect(() => {
     if (!socials) {
       const { id } = router.query;
-      getProfileByID(id, 0);
+      getSocials(id, 0);
     }
   });
 
-  // let data = getProfileByID(username, 0 )
+  // let data = getSocials(username, 0 )
 
   // const resource = resources.find(item => item.id == id)
 

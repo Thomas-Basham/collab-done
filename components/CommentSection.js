@@ -4,14 +4,25 @@ import { useState, useEffect } from "react";
 import Avatar from "./Avatar";
 import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
+import { HiOutlineTrash } from "react-icons/hi";
+import { Modal, Button } from "react-bootstrap";
 
 export default function CommentSection(props) {
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
-  const { createComment, comments, getComments } = useResource();
+  const {
+    createComment,
+    comments,
+    getComments,
+    getProfileByID,
+    deleteComment,
+  } = useResource();
 
   const [comment, setComment] = useState(null);
-  const [viewComment, setViewComment] = useState(null);
+  const [commenter, setCommenter] = useState(null);
+  const [viewCommentData, setViewCommentData] = useState(null);
   const [viewCommentPosition, setViewCommentPosition] = useState(null);
+  const [viewCommentProfile, setViewCommentProfile] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -33,10 +44,22 @@ export default function CommentSection(props) {
     getComments();
   };
 
-  const displayComment = (comment, position) => {
-    setViewCommentPosition(position);
-    setViewComment(comment);
+  const displayComment = async (data) => {
+    setViewCommentPosition(data.commentPosition);
+    setViewCommentData(data);
+
+    let profile = await getProfileByID(data.user);
+
+    setViewCommentProfile(profile);
+    console.log(viewCommentProfile);
   };
+  const handleDeleteComment = async (id) => {
+    await deleteComment(id);
+    setViewCommentData(null);
+    setViewCommentProfile(null);
+    setShowDeleteModal(false);
+  };
+
   let fillteredComments = comments.filter(
     (comment) => comment.songID === props.songID
   );
@@ -51,9 +74,7 @@ export default function CommentSection(props) {
                 <div
                   key={i}
                   className=""
-                  onMouseEnter={() =>
-                    displayComment(data.comment, data.commentPosition)
-                  }
+                  onMouseEnter={() => displayComment(data)}
                   style={{
                     display: "inline",
                     cursor: "default",
@@ -73,7 +94,7 @@ export default function CommentSection(props) {
                 </div>
               );
             })}
-            <p
+            <div
               className=""
               style={{
                 position: "relative",
@@ -83,8 +104,12 @@ export default function CommentSection(props) {
                     : `${viewCommentPosition - 13}%`,
               }}
             >
-              {viewComment}
-            </p>
+              <p className="brand-text">{viewCommentProfile?.username}</p>
+              {viewCommentData?.comment}
+              {session.user.id == viewCommentData?.user && (
+                <HiOutlineTrash onClick={() => setShowDeleteModal(true)} />
+              )}
+            </div>
           </div>
         </div>
         <div className="row">
@@ -106,6 +131,28 @@ export default function CommentSection(props) {
             </form>
           </div>
         </div>
+
+        <Modal
+          show={showDeleteModal}
+          onHide={() => setShowDeleteModal(false)}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Are you sure you want to delete this comment?
+            </Modal.Title>
+          </Modal.Header>
+
+          <Button onClick={() => handleDeleteComment(viewCommentData.id)}>
+            Delete Comment
+          </Button>
+
+          <Button className="danger" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+        </Modal>
       </>
     )
   );

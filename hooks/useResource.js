@@ -25,12 +25,10 @@ export default function useResource() {
 
   useEffect(() => {
     getmusicPosts();
-    
   }, []);
 
   useEffect(() => {
     getComments();
-    
   }, []);
 
   async function getmusicPosts() {
@@ -124,6 +122,24 @@ export default function useResource() {
     }
   }
 
+  async function deleteComment(id) {
+    try {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("comments")
+        .delete()
+        .match({ id: id });
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      getComments();
+      setLoading(false);
+    }
+  }
   async function deleteSongPost(id) {
     try {
       setLoading(true);
@@ -255,7 +271,7 @@ export default function useResource() {
     }
   }
 
-  async function getProfileByID(id, i) {
+  async function getSocials(id, i) {
     try {
       setLoading(true);
 
@@ -275,6 +291,30 @@ export default function useResource() {
         setSelectedPostKey(i);
         setAvatarUrl(data.avatar_url);
 
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function getProfileByID(id) {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
+        .eq("id", id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
         return data;
       }
     } catch (error) {
@@ -345,7 +385,7 @@ export default function useResource() {
     getComments,
     createComment,
     comments,
-
-
+    getSocials,
+    deleteComment
   };
 }

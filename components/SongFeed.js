@@ -18,7 +18,7 @@ export default function SongFeed({ profilePage }) {
     audio,
     handlePlayMusic,
     playSong,
-    getProfileByID,
+    getSocials,
     socials,
     selectedPostKey,
     addCollaborator,
@@ -63,7 +63,7 @@ export default function SongFeed({ profilePage }) {
       return (
         <div
           // with this feature uncommented, each photo will be rendered upon mouse enter
-          // onMouseEnter={() => downloadImage(getProfileByID(data.artist_id, i))}
+          // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
           className="music-post "
           key={i}
         >
@@ -79,7 +79,7 @@ export default function SongFeed({ profilePage }) {
           {selectedPostKey != i && (
             <button
               className="socials-container"
-              onClick={() => getProfileByID(data.artist_id, i)}
+              onClick={() => getSocials(data.artist_id, i)}
             >
               CONNECT
             </button>
