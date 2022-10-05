@@ -13,11 +13,12 @@ const formWaveSurferOptions = (ref) => ({
   cursorColor: "white",
   barWidth: 3,
   barRadius: 3,
-  responsive: true,
+  responsive: false,
   height: 150,
   normalize: true,
   partialRender: true,
   mediaControls: true,
+
 });
 
 export default function WaveForm(props) {
