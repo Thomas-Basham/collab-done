@@ -64,6 +64,7 @@ export default function CommentSection(props) {
     if (session?.user && session?.user.id == viewCommentData?.user) {
       return (
         <HiOutlineTrash
+          className="brand-hover"
           cursor={"pointer"}
           onClick={() => setShowDeleteModal(true)}
         />
@@ -116,7 +117,7 @@ export default function CommentSection(props) {
           >
             <p className="brand-text">{viewCommentProfile?.username}</p>
             {viewCommentData?.comment}
-
+            &nbsp;
             <DeleteButton />
           </div>
         </div>

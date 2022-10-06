@@ -211,6 +211,16 @@ input {
   color: var(--custom-color);
 }
 
+.bio {
+  width: 40vw;
+  border-radius: 5px;
+  border: var(--custom-border);
+  padding: 8px;
+  font-size: 0.9rem;
+  background-color: var(--custom-bg-color);
+  color: var(--custom-color);
+}
+
 
 textarea {
   width: 100%;
@@ -225,6 +235,8 @@ textarea {
 input[disabled] {
   color: var(--custom-color-secondary);
 }
+
+
 
 /* Utils */
 
@@ -285,6 +297,8 @@ input[disabled] {
 
 /* Button */
 
+
+
 button,
 .button {
   color: var(--custom-color);
@@ -300,9 +314,23 @@ button,
   text-transform: uppercase;
 }
 
+button:hover,
+.button:hover {
+  color: var(--custom-color-brand);
+  border: var(--custom-border);
+  background-color: var(--custom-panel-color);
+
+}
+
 button.primary,
 .button.primary {
   background-color: var(--custom-color-brand);
+  border: 1px solid var(--custom-color-brand);
+}
+
+button.primary:hover,
+.button.primary:hover {
+  background-color: var(--custom-panel-color);
   border: 1px solid var(--custom-color-brand);
 }
 
@@ -631,6 +659,8 @@ code {
 
 .music-post {
   border: var(--custom-border);
+  color: var(--custom-color-secondary);
+  background-color: var(--custom-panel-color);
   padding: .75rem;
   /* height: 80vh; */
 }
@@ -648,7 +678,7 @@ small {
 }
 
 .brand-text {
-  color: var(--custom-color-brand);
+  color: var(--custom-color-brand) !important;
   padding-right: 10px;
 }
 

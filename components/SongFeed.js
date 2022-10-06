@@ -189,16 +189,6 @@ export default function SongFeed({ profilePage }) {
             POTENTIAL COLLABORATORS
           </button>
           <br></br>
-          {/* {data.potential_collaborators_uuid &&
-            getCollaborators.map((collaborator, i) => {
-              if (collaborator) {
-                return (
-                  <Link key={i} href={`/pr/${collaborator}`}>
-                    {collaborator}
-                  </Link>
-                );
-              }
-            })} */}
           <p>{data.finished_song && ""}</p>
         </div>
       );
