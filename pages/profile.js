@@ -27,7 +27,7 @@ export default function Profile() {
     setLoading,
     setAbsoluteAvatar_Url,
     updateSongPost,
-    potentialCollaborators
+    potentialCollaborators,
   } = useResource();
   const {
     session,
@@ -35,6 +35,8 @@ export default function Profile() {
     signOut,
     username,
     setUsername,
+    bio,
+    setBio,
     website,
     setWebsite,
     avatar_url,
@@ -210,6 +212,16 @@ export default function Profile() {
               />
             </div>
             <div>
+              <label htmlFor="bio">BIO</label>
+              <textarea
+              cols="40" rows="5"
+                id="bio"
+                type="text"
+                value={bio || ""}
+                onChange={(e) => setBio(e.target.value)}
+              />
+            </div>
+            <div>
               <label htmlFor="website">Website</label>
               <input
                 id="website"
@@ -261,6 +273,7 @@ export default function Profile() {
                 onClick={() =>
                   updateProfile({
                     username,
+                    bio,
                     website,
                     avatar_url,
                     absolute_avatar_url: absoluteAvatar_urlAuth,

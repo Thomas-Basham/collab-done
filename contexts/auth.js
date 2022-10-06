@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState(null);
+  const [bio, setBio] = useState(null);
   const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
   const [instagram_url, setInstagram_url] = useState(null);
@@ -17,6 +18,7 @@ export function AuthProvider({ children }) {
   const [spotify_url, setSpotify_url] = useState(null);
   const [soundcloud_url, setSoundcloud_url] = useState(null);
   const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState(null);
+  
 
   useEffect(() => {
     let mounted = true;
@@ -81,6 +83,7 @@ export function AuthProvider({ children }) {
           setSpotify_url(data.spotify_url);
           setSoundcloud_url(data.soundcloud_url);
           setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
+          setBio(data.bio)
           // return(data)
         }
       } catch (error) {
@@ -150,6 +153,7 @@ export function AuthProvider({ children }) {
 
   async function updateProfile({
     username,
+    bio,
     website,
     avatar_url,
     absolute_avatar_url,
@@ -165,6 +169,7 @@ export function AuthProvider({ children }) {
       const updates = {
         id: user.id,
         username,
+        bio,
         website,
         avatar_url,
         absolute_avatar_url,
@@ -222,6 +227,8 @@ export function AuthProvider({ children }) {
     getProfile,
     username,
     setUsername,
+    bio,
+    setBio,
     website,
     setWebsite,
     avatar_url,
