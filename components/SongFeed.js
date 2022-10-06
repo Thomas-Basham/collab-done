@@ -53,6 +53,7 @@ export default function SongFeed({ profilePage }) {
       addCollaborator(data.id);
       setShowAddCollabsModal(false);
     };
+
     if (session?.user && !userIDs?.includes(session.user.id)) {
       return (
         <button
@@ -73,6 +74,7 @@ export default function SongFeed({ profilePage }) {
         </button>
       );
     }
+
     if (username == null) {
       return (
         <Link href={"/profile"}>
@@ -110,13 +112,7 @@ export default function SongFeed({ profilePage }) {
           className="music-post "
           key={i}
         >
-          <img
-            src={data.absolute_avatar_url}
-            alt="Avatar"
-            className="avatar image"
-            style={{ height: 150, width: 150 }}
-          />
-
+          {" "}
           {selectedPostKey != i && (
             <button
               className="socials-container"
@@ -125,15 +121,23 @@ export default function SongFeed({ profilePage }) {
               CONNECT
             </button>
           )}
-          {selectedPostKey == i && ( // displays socials when button is collected.
-            <Socials data={socials} />
-          )}
           <Link href={`/pr/${data.artist_id}`}>
-            <h1 style={{ cursor: "pointer" }}>{data.artist}</h1>
+            <div style={{ cursor: "pointer" }}>
+              <img
+                src={data.absolute_avatar_url}
+                alt="Avatar"
+                className="avatar image"
+                style={{ height: 150, width: 150 }}
+              />
+
+              {selectedPostKey == i && ( // displays socials when button is collected.
+                <Socials data={socials} />
+              )}
+              <h1>{data.artist}</h1>
+            </div>
           </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
-
           {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
           {/* <svg
             cursor="pointer"
@@ -152,7 +156,6 @@ export default function SongFeed({ profilePage }) {
               d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
             />
           </svg> */}
-
           {/* WAVESURFER-JS */}
           <Waveform
             url={data.absolute_song_url}
@@ -171,13 +174,14 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-
-          <button
-            className="collab-button"
-            onClick={() => handleShowAddCollabModal(data)}
-          >
-            LET'S COLLAB{" "}
-          </button>
+          {session?.user.id != data.artist_id && (
+            <button
+              className="collab-button"
+              onClick={() => handleShowAddCollabModal(data)}
+            >
+              LET'S COLLAB{" "}
+            </button>
+          )}
           <button
             onClick={() => handleShowPotentialCollabsModal(data.id)}
             className="brand-text"
@@ -185,7 +189,6 @@ export default function SongFeed({ profilePage }) {
             POTENTIAL COLLABORATORS
           </button>
           <br></br>
-
           {/* {data.potential_collaborators_uuid &&
             getCollaborators.map((collaborator, i) => {
               if (collaborator) {

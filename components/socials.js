@@ -9,7 +9,7 @@ export default function Socials({ data }) {
       {data && (
         <Link href={`https://www.instagram.com/${data.instagram_url}`}>
           <a target="blank" rel="noopener noreferrer">
-            <FiInstagram />
+            <FiInstagram className="brand-hover" />
           </a>
         </Link>
       )}
@@ -21,7 +21,7 @@ export default function Socials({ data }) {
           target="blank"
           rel="noopener noreferrer"
         >
-          <FiTwitter />
+          <FiTwitter className="brand-hover" />
         </a>
       )}
 
@@ -32,7 +32,7 @@ export default function Socials({ data }) {
           target="blank"
           rel="noopener noreferrer"
         >
-          <RiSpotifyLine />
+          <RiSpotifyLine className="brand-hover" />
         </a>
       )}
       <br></br>
@@ -43,11 +43,11 @@ export default function Socials({ data }) {
           href={`https://soundcloud.com/${data.soundcloud_url}`}
           rel="noopener noreferrer"
         >
-          <GrSoundcloud />
+          <GrSoundcloud className="brand-hover" />
         </a>
       )}
-
-      <button>MESSAGE</button>
+      {/* TODO: button for messaging  */}
+      {/* <button>MESSAGE</button> */}
     </div>
   );
 }

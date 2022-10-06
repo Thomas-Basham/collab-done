@@ -214,7 +214,8 @@ export default function Profile() {
             <div>
               <label htmlFor="bio">BIO</label>
               <textarea
-              cols="40" rows="5"
+                cols="40"
+                rows="5"
                 id="bio"
                 type="text"
                 value={bio || ""}

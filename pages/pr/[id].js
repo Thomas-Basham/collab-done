@@ -12,26 +12,32 @@ export default function ForeignUserProfile() {
 
   // if (!resources) return <h2>Loading...</h2>
   useEffect(() => {
-    handleGetSocials()
+    handleGetSocials();
   }, []);
 
   const handleGetSocials = async () => {
-
     const { id } = router.query;
     let data = await getSocials(id, 0);
-     setSocials(data)
-  }
-  // let data = getProfileByID(username, 0 )
+    setSocials(data);
+  };
 
-  // const resource = resources.find(item => item.id == id)
-console.log(session.user)
   return (
     <>
       <div>
         <h1>{socials?.username}</h1>
+        <a href={`https://${socials?.website}`} target="_blank" rel="noreferrer">
+
+        <h6>{socials?.website}</h6>
+        </a>
         <div className="d-flex ">
           <Avatar url={socials?.avatar_url} size={150} />
           <Socials data={socials} />
+          
+        </div>
+        <div>
+          <p>
+            {socials?.bio}
+          </p>
         </div>
       </div>
     </>

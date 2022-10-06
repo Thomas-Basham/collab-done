@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');html,
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
+html,
 body {
   --custom-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -516,7 +518,7 @@ nav {
   border-bottom: 5px solid var(--custom-color-brand);
   background-color: var(--custom-bg-color);
   margin-bottom: 2em;
-  padding-left:320px;
+  padding-left: 320px;
   padding-right: 320px;
   align-items: center;
   display: flex;
@@ -684,11 +686,23 @@ small {
   background-color: #101010 !important;
 }
 
+a:hover {
+  color: var(--custom-color-brand-secondary) !important;
+
+}
+
+.brand-hover:hover {
+  background-color: var(--custom-color-brand-secondary) !important;
+  border-radius: 10px;
+  padding: 1px;
+  transform: scale(1.3)
+}
+
 .play-button {
   position: relative !important;
   margin: 36px auto !important;
-}
-
-a:hover {
-  color: var(--custom-color-brand-secondary) !important;
+  background-color: none !important;
+  border-radius: 10px;
+  padding: 0;
+  transform: none !important
 }
