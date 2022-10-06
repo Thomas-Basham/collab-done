@@ -586,12 +586,22 @@ a {
 
 .note {
   background-color: #f2f0ff;
-  color: #3a2d68;
+  color: var(--custom-color-brand-secondary);
   max-width: 400px;
   border-radius: 5px;
   margin-top: 1em;
   padding: 1em;
   margin: 2em;
+}
+
+.note a {
+  color: var(--custom-color-brand-secondary) !important;
+}
+
+.note a:hover {
+  color: var(--custom-color-brand-secondary) !important;
+  font-size: 18px !important;
+
 }
 
 .container {

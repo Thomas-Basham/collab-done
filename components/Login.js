@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { signIn, signUp, signOut, session } = useAuth();
 
-
   const handleLogin = async (email, password) => {
     try {
       setLoading(true);
@@ -29,7 +28,6 @@ export default function Login() {
   return (
     <div className="row flex-center flex ">
       <div className="col-6 form-widget">
-        <h1 className="header">COLLAB DONE</h1>
         <p className="description">Sign in</p>
         <div>
           <input
