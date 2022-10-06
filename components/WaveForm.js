@@ -58,7 +58,7 @@ export default function WaveForm(props) {
   };
 
   return (
-    <div className="audio-container row" style={{width: "95%"}}>
+    <div className="audio-container row" style={{ width: "95%" }}>
       <div className="controls col-2">
         <div
           onClick={handlePlayPause}
@@ -71,7 +71,7 @@ export default function WaveForm(props) {
       <div className="wave-container col">
         <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
-      <CommentSection songDetails={wavesurfer.current} songID={props.songID}/>
+      <CommentSection songDetails={wavesurfer.current} songID={props.songID} />
     </div>
   );
 }

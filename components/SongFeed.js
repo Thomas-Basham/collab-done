@@ -31,9 +31,11 @@ export default function SongFeed({ profilePage }) {
     potentialCollaborators,
   } = useResource();
   const { session, username } = useAuth();
-  const [postUserData, setPostUserData] = useState(null);
+  const [postData, setPostData] = useState(null);
+
   const [showPotentialCollabsModal, setShowPotentialCollabsModal] =
-    useState(null);
+    useState(false);
+  const [showAddCollabsModal, setShowAddCollabsModal] = useState(false);
 
   if (playSong == true) {
     audio.play();
@@ -43,17 +45,31 @@ export default function SongFeed({ profilePage }) {
   }
 
   function collabButton(data) {
-    let userList = potentialCollaborators?.map(
-      ({ collaborator }) => collaborator?.user
-    );
-    console.log(userList);
-    if (session?.user && !potentialCollaborators?.includes(session.user.id)) {
+    let userIDs = potentialCollaborators?.map((data) => {
+      return data.user;
+    });
+
+    let handleAddCollaborator = (id) => {
+      addCollaborator(data.id);
+      setShowAddCollabsModal(false);
+    };
+    if (session?.user && !userIDs?.includes(session.user.id)) {
       return (
         <button
           className="collab-button"
-          onClick={() => addCollaborator(data.id)}
+          onClick={() => handleAddCollaborator(data.id)}
         >
           LET'S COLLAB
+        </button>
+      );
+    }
+    if (session?.user && userIDs?.includes(session.user.id)) {
+      return (
+        <button
+          className="collab-button"
+          onClick={() => setShowAddCollabsModal(false)}
+        >
+          REQUEST SENT
         </button>
       );
     }
@@ -73,6 +89,14 @@ export default function SongFeed({ profilePage }) {
     await getCollaborators(id);
     setShowPotentialCollabsModal(true);
   };
+
+  const handleShowAddCollabModal = async (data) => {
+    await getCollaborators(data.id);
+
+    await setPostData(data);
+    setShowAddCollabsModal(true);
+  };
+
   function songPostFeed() {
     const sortedMusicPosts = musicPosts.sort(
       (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -148,7 +172,12 @@ export default function SongFeed({ profilePage }) {
           </div>
           <p>{data.description}</p>
 
-          {collabButton(data)}
+          <button
+            className="collab-button"
+            onClick={() => handleShowAddCollabModal(data)}
+          >
+            LET'S COLLAB{" "}
+          </button>
           <button
             onClick={() => handleShowPotentialCollabsModal(data.id)}
             className="brand-text"
@@ -178,6 +207,19 @@ export default function SongFeed({ profilePage }) {
       <div>{songPostFeed()}</div>
 
       <Modal
+        show={showAddCollabsModal}
+        onHide={() => setShowAddCollabsModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Let user know you want to connect</Modal.Title>
+        </Modal.Header>
+        {collabButton(postData)}
+      </Modal>
+
+      <Modal
         show={showPotentialCollabsModal}
         onHide={() => setShowPotentialCollabsModal(false)}
         size="lg"
@@ -190,7 +232,6 @@ export default function SongFeed({ profilePage }) {
 
         {potentialCollaborators &&
           potentialCollaborators.map((collaborator, i) => {
-            console.log(collaborator.username);
             return (
               <Link key={i} href={`/pr/${collaborator.user}`}>
                 {collaborator.username}
