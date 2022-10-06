@@ -22,6 +22,7 @@ export default function useResource() {
   const [audioUrl, setAudioUrl] = useState(null);
   const [absoluteSongUrl, setAbsoluteSongUrl] = useState(null);
   const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
+  const [potentialCollaborators, setPotentialCollaborators] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -180,43 +181,91 @@ export default function useResource() {
     }
   }
 
-  // TODO: Convert this function to accept and push the user's UUID instead of username
-  async function addCollaborator(oldCollabsArray, id) {
+  async function addCollaborator(id) {
     if (!session) {
       router.push("/login");
     }
     try {
       setLoading(true);
-      if (oldCollabsArray == null) {
-        let newCollabsArray = [username];
+      let values = {
+        songID: id,
+        user: session.user.id,
+        username: username,
+      };
+      let { error } = await supabase
+        .from("potentialCollaborators")
+        .insert(values);
 
-        let { error } = await supabase
-          .from("songs")
-          .update([{ potential_collaborators: newCollabsArray }])
-          .match({ id: id });
-
-        if (error) {
-          throw error;
-        }
-      } else {
-        oldCollabsArray.push(username);
-        // console.log({newCollabsArray})
-        let { error } = await supabase
-          .from("songs")
-          .update({ potential_collaborators: oldCollabsArray })
-          .match({ id: id });
-
-        if (error) {
-          throw error;
-        }
+      if (error) {
+        throw error;
       }
     } catch (error) {
       alert(error.message);
     } finally {
-      getmusicPosts();
       setLoading(false);
     }
   }
+
+  async function getCollaborators(id) {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("potentialCollaborators")
+        .select("*")
+        .eq("songID", id);
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setPotentialCollaborators(data);
+
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // async function addCollaborator(oldCollabsArray, id) {
+  //   if (!session) {
+  //     router.push("/login");
+  //   }
+  //   try {
+  //     setLoading(true);
+  //     if (oldCollabsArray == null) {
+  //       let newCollabsArray = [session.user.id];
+
+  //       let { error } = await supabase
+  //         .from("songs")
+  //         .update([{ potential_collaborators_uuid: newCollabsArray }])
+  //         .match({ id: id });
+
+  //       if (error) {
+  //         throw error;
+  //       }
+  //     } else {
+  //       oldCollabsArray.push(session.user.id);
+  //       let { error } = await supabase
+  //         .from("songs")
+  //         .update({ potential_collaborators_uuid: oldCollabsArray })
+  //         .match({ id: id });
+
+  //       if (error) {
+  //         throw error;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     alert(error.message);
+  //   } finally {
+  //     getmusicPosts();
+  //     setLoading(false);
+  //   }
+  // }
 
   async function downloadSong(path) {
     try {
@@ -386,6 +435,8 @@ export default function useResource() {
     createComment,
     comments,
     getSocials,
-    deleteComment
+    deleteComment,
+    getCollaborators,
+    potentialCollaborators,
   };
 }

@@ -6,9 +6,16 @@ import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Router from "next/router";
 // import Waveform from "../components/WaveForm";
 import { Container } from "react-bootstrap";
 export default function Profile() {
+
+    useEffect(() => {
+    if (!session) {
+      Router.push('/login')
+    }
+  });  
   const {
     musicPosts,
     getUserData,
@@ -53,6 +60,9 @@ export default function Profile() {
   if (playSong == false) {
     audio.pause();
   }
+
+
+
   const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
   const { createSongPost } = useResource();
 
@@ -89,7 +99,7 @@ export default function Profile() {
     setShow(false);
   }
   let fillteredPosts = musicPosts.filter(
-    (post) => post.artist_id === session.user.id
+    (post) => post.artist_id === session?.user.id
   );
   const userFeed = fillteredPosts.map((data, i) => {
     return (

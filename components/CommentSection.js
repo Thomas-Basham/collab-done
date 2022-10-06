@@ -62,7 +62,12 @@ export default function CommentSection(props) {
 
   const DeleteButton = () => {
     if (session?.user && session?.user.id == viewCommentData?.user) {
-      return <HiOutlineTrash cursor={"pointer"} onClick={() => setShowDeleteModal(true)} />;
+      return (
+        <HiOutlineTrash
+          cursor={"pointer"}
+          onClick={() => setShowDeleteModal(true)}
+        />
+      );
     }
   };
 
@@ -151,13 +156,14 @@ export default function CommentSection(props) {
           </Modal.Title>
         </Modal.Header>
 
-        <button className="bg-danger" onClick={() => handleDeleteComment(viewCommentData.id)}>
+        <button
+          className="bg-danger"
+          onClick={() => handleDeleteComment(viewCommentData.id)}
+        >
           Delete Comment
         </button>
 
-        <button   onClick={() => setShowDeleteModal(false)}>
-          Cancel
-        </button>
+        <button onClick={() => setShowDeleteModal(false)}>Cancel</button>
       </Modal>
     </>
   );

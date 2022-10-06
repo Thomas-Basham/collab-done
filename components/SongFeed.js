@@ -7,6 +7,7 @@ import Socials from "./socials";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { Modal } from "react-bootstrap";
 const Waveform = dynamic(() => import("../components/WaveForm"), {
   ssr: false,
 });
@@ -26,9 +27,13 @@ export default function SongFeed({ profilePage }) {
     downloadImage,
     avatarUrl,
     audioUrl,
+    getCollaborators,
+    potentialCollaborators,
   } = useResource();
   const { session, username } = useAuth();
   const [postUserData, setPostUserData] = useState(null);
+  const [showPotentialCollabsModal, setShowPotentialCollabsModal] =
+    useState(null);
 
   if (playSong == true) {
     audio.play();
@@ -38,28 +43,42 @@ export default function SongFeed({ profilePage }) {
   }
 
   function collabButton(data) {
-    if (
-      !data.potential_collaborators?.includes(username) &&
-      data.artist_id != session.user.id
-    ) {
+    let userList = potentialCollaborators?.map(
+      ({ collaborator }) => collaborator?.user
+    );
+    console.log(userList);
+    if (session?.user && !potentialCollaborators?.includes(session.user.id)) {
       return (
         <button
           className="collab-button"
-          onClick={() => addCollaborator(data.potential_collaborators, data.id)}
+          onClick={() => addCollaborator(data.id)}
         >
           LET'S COLLAB
         </button>
       );
     }
+    if (username == null) {
+      return (
+        <Link href={"/profile"}>
+          <button className="collab-button">
+            Complete your profile to collaborate
+          </button>
+        </Link>
+      );
+    }
   }
+  console.log(potentialCollaborators);
 
+  const handleShowPotentialCollabsModal = async (id) => {
+    await getCollaborators(id);
+    setShowPotentialCollabsModal(true);
+  };
   function songPostFeed() {
     const sortedMusicPosts = musicPosts.sort(
       (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
 
     return sortedMusicPosts.map((data, i) => {
-      console.log(data)
       return (
         <div
           // with this feature uncommented, each photo will be rendered upon mouse enter
@@ -67,8 +86,6 @@ export default function SongFeed({ profilePage }) {
           className="music-post "
           key={i}
         >
-
-
           <img
             src={data.absolute_avatar_url}
             alt="Avatar"
@@ -116,7 +133,7 @@ export default function SongFeed({ profilePage }) {
           <Waveform
             url={data.absolute_song_url}
             indexNumber={data.id.toString()}
-            songID= {data.id}
+            songID={data.id}
           />
           <br></br>
           <div className="d-inline-flex">
@@ -132,28 +149,55 @@ export default function SongFeed({ profilePage }) {
           <p>{data.description}</p>
 
           {collabButton(data)}
-          <span className="brand-text">POTENTIAL COLLABORATORS</span>
+          <button
+            onClick={() => handleShowPotentialCollabsModal(data.id)}
+            className="brand-text"
+          >
+            POTENTIAL COLLABORATORS
+          </button>
           <br></br>
 
-          {data.potential_collaborators.map((collaborator, i) => {
-            if (collaborator) {
-              return (
-                <Link key={i} href={`/pr/${data.artist_id}`}>
-                  {collaborator}
-                </Link>
-              );
-            }
-          })}
+          {/* {data.potential_collaborators_uuid &&
+            getCollaborators.map((collaborator, i) => {
+              if (collaborator) {
+                return (
+                  <Link key={i} href={`/pr/${collaborator}`}>
+                    {collaborator}
+                  </Link>
+                );
+              }
+            })} */}
           <p>{data.finished_song && ""}</p>
         </div>
       );
     });
-
   }
 
   return (
     <>
       <div>{songPostFeed()}</div>
+
+      <Modal
+        show={showPotentialCollabsModal}
+        onHide={() => setShowPotentialCollabsModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Potential Collaborators</Modal.Title>
+        </Modal.Header>
+
+        {potentialCollaborators &&
+          potentialCollaborators.map((collaborator, i) => {
+            console.log(collaborator.username);
+            return (
+              <Link key={i} href={`/pr/${collaborator.user}`}>
+                {collaborator.username}
+              </Link>
+            );
+          })}
+      </Modal>
     </>
   );
 }

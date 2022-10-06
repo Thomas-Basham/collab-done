@@ -1,25 +1,30 @@
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useResource from "../../hooks/useResource";
 import Avatar from "../../components/Avatar";
 import Socials from "../../components/socials";
 export default function ForeignUserProfile() {
   const router = useRouter();
-  const { getSocials, socials } = useResource();
+  const { getSocials } = useResource();
+  const { session } = useAuth();
+  const [socials, setSocials] = useState(null);
 
   // if (!resources) return <h2>Loading...</h2>
   useEffect(() => {
-    if (!socials) {
-      const { id } = router.query;
-      getSocials(id, 0);
-    }
-  });
+    handleGetSocials()
+  }, []);
 
-  // let data = getSocials(username, 0 )
+  const handleGetSocials = async () => {
+
+    const { id } = router.query;
+    let data = await getSocials(id, 0);
+     setSocials(data)
+  }
+  // let data = getProfileByID(username, 0 )
 
   // const resource = resources.find(item => item.id == id)
-
+console.log(session.user)
   return (
     <>
       <div>
