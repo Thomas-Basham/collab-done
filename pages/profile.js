@@ -10,12 +10,11 @@ import Router from "next/router";
 // import Waveform from "../components/WaveForm";
 import { Container } from "react-bootstrap";
 export default function Profile() {
-
-    useEffect(() => {
+  useEffect(() => {
     if (!session) {
-      Router.push('/login')
+      Router.push("/login");
     }
-  });  
+  });
   const {
     musicPosts,
     getUserData,
@@ -28,6 +27,7 @@ export default function Profile() {
     setLoading,
     setAbsoluteAvatar_Url,
     updateSongPost,
+    potentialCollaborators
   } = useResource();
   const {
     session,
@@ -60,8 +60,6 @@ export default function Profile() {
   if (playSong == false) {
     audio.pause();
   }
-
-
 
   const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
   const { createSongPost } = useResource();
@@ -130,7 +128,7 @@ export default function Profile() {
         <span className="brand-text">POTENTIAL COLLABORATORS</span>{" "}
         {/* <p>{data.potential_collaborators}</p> */}
         <br></br>
-        {data.potential_collaborators.map((data, i) => {
+        {potentialCollaborators?.map((data, i) => {
           return (
             <>
               <a key={i}>{data}</a>
