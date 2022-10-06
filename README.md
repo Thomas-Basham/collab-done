@@ -15,6 +15,12 @@ A full stack web application for musicians to connect and collaborate.
 - React-Icons
 - Vercel
 
+<img src="./public/snapShots/collabDone00.png" />
+<img src="./public/snapShots/collabDone01.png" />
+<img src="./public/snapShots/collabDone02.png" />
+<img src="./public/snapShots/collabDone03.png" />
+<img src="./public/snapShots/collabDone04.png" />
+
 ## References
 
 [supabase.com/docs](https://supabase.com/docs/)

@@ -8,7 +8,7 @@ export default function Header({ session, signOut }) {
           <Navbar.Brand href="/">
             <h1>COLLAB DONE</h1>
           </Navbar.Brand>
-          <h5>Finish Your Musical Collaborations</h5>
+          <h5>Finish Your Musical Ideas</h5>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" style={{ display: session && "none" }}>
