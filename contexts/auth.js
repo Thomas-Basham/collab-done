@@ -150,6 +150,47 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function updatePotentialCollaborator(values, id) {
+    try {
+      setIsLoading(true);
+
+      let { error } = await supabase
+        .from("potentialCollaborators")
+        .update(values)
+        .match({ id: id });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function getCollaborators() {
+    try {
+      setIsLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("potentialCollaborators")
+        .select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   async function updateProfile({
     username,
     bio,
@@ -184,6 +225,26 @@ export function AuthProvider({ children }) {
         .update(updates)
         .eq("id", user.id);
 
+      // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
+
+      let collaborators = await getCollaborators();
+
+      let fillteredCollabPosts = collaborators.filter(
+        (post) => post.user === user.id
+      );
+
+      const collabvalues = {
+        username,
+        absolute_avatar_url,
+      };
+
+      await Promise.all(
+        fillteredCollabPosts.map(async (post) => {
+          return updatePotentialCollaborator(collabvalues, post.id);
+        })
+      );
+
+      // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
       let musicPosts = await getMusicPosts();
 
       let fillteredPosts = musicPosts.filter(
