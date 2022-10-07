@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../utils/supabaseClient";
+import { useRouter } from "next/router";
 
 function PasswordReset() {
-  const [password, setPassword] = useState(null);
+  const router = useRouter();
 
-  const [hash, setHash] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [passwordConfirmation, setPasswordConfirmation] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   useEffect(() => {
-    setHash(window.location.hash);
-  }, []);
+   if (password != passwordConfirmation) {
+    setPasswordError('Passwords must match')
+
+   }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,8 +26,11 @@ function PasswordReset() {
         password: password,
       });
 
+
       if (error) {
         throw error;
+      } else {
+        router.push('/profile')
       }
     } catch (error) {
       console.log(error);
@@ -29,15 +38,28 @@ function PasswordReset() {
   };
 
   return (
-    <div>
+    <div className="col-6 form-widget">
+    <h1 className="header">PASSWORD RESET</h1>
+    <p className="description">Change Password</p>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <input
+      <input
+          className="inputField"
           type="password"
-          required
           value={password}
-          placeholder="Please enter your Password"
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <input
+          className="inputField"
+          type="password"
+          value={passwordConfirmation}
+          placeholder="Confirm Password"
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
+        />
+                <small>{passwordError}</small>
+
+                <br></br>
+                <br></br>
 
         <button type="submit">Submit</button>
       </form>
