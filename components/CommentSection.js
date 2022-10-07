@@ -41,7 +41,7 @@ export default function CommentSection(props) {
       avatarURl: absoluteAvatar_urlAuth,
     };
     createComment(values);
-    await getComments();
+    getComments();
   };
 
   const displayComment = async (data) => {

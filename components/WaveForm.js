@@ -10,7 +10,6 @@ export default function WaveForm(props) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [playing, setPlaying] = useState(false);
-  const [duration, setDuration] = useState(false);
 
   const url = props.url;
   const formWaveSurferOptions = (ref) => ({
@@ -38,11 +37,6 @@ export default function WaveForm(props) {
 
     let songDuration = await wavesurfer.current.getDuration();
     wavesurfer.current.load(url);
-
-    setDuration(songDuration);
-    if (songDuration) {
-      console.log(wavesurfer.current.getDuration());
-    }
   };
 
   const handlePlayPause = () => {
@@ -50,7 +44,6 @@ export default function WaveForm(props) {
       setPlaying(!playing);
       wavesurfer.current.playPause();
     }
-    // console.log(wavesurfer.current.getDuration())
   };
 
   return (
