@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
-import { FaSpotify } from "react-icons/fa";
+import { FaGithub, FaGoogle, FaSpotify } from "react-icons/fa";
 export default function Login() {
   const router = useRouter();
 
@@ -24,20 +24,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
-  // const handleProviderLogin = async (provider) => {
-  //   try {
-  //     setLoading(true);
-  //     const { data, error } = await signIn({ email, password });
-
-  //     if (error) throw error;
-  //     router.push("/");
-  //   } catch (error) {
-  //     alert(error.error_description || error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <div className="row flex-center flex ">
@@ -76,6 +62,12 @@ export default function Login() {
         <br></br>
         <button className="col-2 " onClick={() => signInOauth("spotify")}>
           <FaSpotify />
+        </button>
+        <button className="col-2 " onClick={() => signInOauth("github")}>
+          <FaGithub />
+        </button>
+        <button className="col-2 " onClick={() => signInOauth("google")}>
+          <FaGoogle />
         </button>
       </div>
     </div>
