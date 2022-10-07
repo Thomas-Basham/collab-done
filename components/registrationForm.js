@@ -40,6 +40,20 @@ export default function Form() {
       setLoading(false);
     }
   };
+
+  const handleProviderLogin = async (provider) => {
+    try {
+      setLoading(true);
+      const { data, error } = await signIn({ email, password });
+
+      if (error) throw error;
+      router.push("/");
+    } catch (error) {
+      alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="col-6 form-widget">
       <h1 className="header">COLLAB DONE</h1>

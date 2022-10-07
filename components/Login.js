@@ -2,14 +2,14 @@ import { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
-
+import { FaSpotify } from "react-icons/fa";
 export default function Login() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, signUp, signOut, session } = useAuth();
+  const { signIn, signUp, signOut, session, signInOauth } = useAuth();
 
   const handleLogin = async (email, password) => {
     try {
@@ -24,6 +24,20 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  // const handleProviderLogin = async (provider) => {
+  //   try {
+  //     setLoading(true);
+  //     const { data, error } = await signIn({ email, password });
+
+  //     if (error) throw error;
+  //     router.push("/");
+  //   } catch (error) {
+  //     alert(error.error_description || error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="row flex-center flex ">
@@ -59,6 +73,10 @@ export default function Login() {
             <span>{loading ? "Loading" : "sign in"}</span>
           </button>
         </div>
+        <br></br>
+        <button className="col-2 " onClick={() => signInOauth("spotify")}>
+          <FaSpotify />
+        </button>
       </div>
     </div>
   );

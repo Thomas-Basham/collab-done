@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
   const [spotify_url, setSpotify_url] = useState(null);
   const [soundcloud_url, setSoundcloud_url] = useState(null);
   const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState(null);
-  
 
   useEffect(() => {
     let mounted = true;
@@ -83,7 +82,7 @@ export function AuthProvider({ children }) {
           setSpotify_url(data.spotify_url);
           setSoundcloud_url(data.soundcloud_url);
           setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
-          setBio(data.bio)
+          setBio(data.bio);
           // return(data)
         }
       } catch (error) {
@@ -222,6 +221,10 @@ export function AuthProvider({ children }) {
   const value = {
     signUp: (data) => supabase.auth.signUp(data),
     signIn: (data) => supabase.auth.signInWithPassword(data),
+    signInOauth: async (provider) =>
+      await supabase.auth.signInWithOAuth({
+        provider,
+      }),
     signOut: () => signOut,
     session,
     getProfile,
