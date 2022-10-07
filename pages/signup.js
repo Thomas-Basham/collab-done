@@ -7,7 +7,6 @@ export default function Signup() {
 
   return (
     <>
-      <p className="note">Sign Up to Start Collaborating</p>
       <Form />
 
       

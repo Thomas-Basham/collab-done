@@ -27,6 +27,7 @@ export default function WaveForm(props) {
   });
   useEffect(() => {
     create();
+    
   }, []);
 
   const create = async () => {
@@ -58,7 +59,7 @@ export default function WaveForm(props) {
         </div>
       </div>
       <div className="wave-container col">
-        <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
+        <div id={props.indexNumber} onChange={console.log(wavesurfer.current)} ref={waveformRef} className="wave-song" />
       </div>
       <CommentSection songDetails={wavesurfer.current} songID={props.songID} />
     </div>

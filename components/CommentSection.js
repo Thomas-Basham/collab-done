@@ -12,6 +12,7 @@ export default function CommentSection(props) {
   const {
     createComment,
     comments,
+    setComments,
     getComments,
     getProfileByID,
     deleteComment,
@@ -25,23 +26,27 @@ export default function CommentSection(props) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const onFormSubmit = async (e) => {
+    console.log(props.songDetails);
     e.preventDefault();
     console.log(comment);
-    setComment("");
+    if (props.songDetails != null && comment != "") {
+      const songDuration = props.songDetails.getDuration();
+      const currentTime = props.songDetails.getCurrentTime();
 
-    const songDuration = props.songDetails.getDuration();
-    const currentTime = props.songDetails.getCurrentTime();
+      const commentPosition = (currentTime / songDuration) * 100;
+      let values = {
+        commentPosition: commentPosition,
+        user: session.user.id,
+        comment: comment,
+        songID: props.songID,
+        avatarURl: absoluteAvatar_urlAuth,
+      };
+      await createComment(values);
 
-    const commentPosition = (currentTime / songDuration) * 100;
-    let values = {
-      commentPosition: commentPosition,
-      user: session.user.id,
-      comment: comment,
-      songID: props.songID,
-      avatarURl: absoluteAvatar_urlAuth,
-    };
-    createComment(values);
-    getComments();
+      let newComments = await getComments();
+      setComment("");
+      setComments(newComments);
+    }
   };
 
   const displayComment = async (data) => {

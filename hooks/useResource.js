@@ -100,6 +100,7 @@ export default function useResource() {
 
       if (data) {
         setComments(data);
+        return data;
       }
     } catch (error) {
       alert(error.message);
@@ -434,6 +435,7 @@ export default function useResource() {
     getComments,
     createComment,
     comments,
+    setComments,
     getSocials,
     deleteComment,
     getCollaborators,

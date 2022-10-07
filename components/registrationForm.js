@@ -56,7 +56,7 @@ export default function Form() {
   };
   return (
     <div className="col-6 form-widget">
-      <h1 className="header">COLLAB DONE</h1>
+      <h1 className="header">Register here, then check your email for the login link.</h1>
       <p className="description">Register</p>
       <div>
         <input
