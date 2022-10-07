@@ -2,19 +2,24 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import { useAuth } from "../contexts/auth";
 
-function PasswordReset() {
+export default function PasswordReset() {
   const router = useRouter();
+
+  const { session } = useAuth();
 
   const [password, setPassword] = useState(null);
   const [passwordConfirmation, setPasswordConfirmation] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
   useEffect(() => {
-   if (password != passwordConfirmation) {
-    setPasswordError('Passwords must match')
-
-   }
+    if (password != passwordConfirmation) {
+      setPasswordError("Passwords must match");
+    }
+    if (!session?.user) {
+      router.push("/login");
+    }
   });
 
   const handleSubmit = async (e) => {
@@ -26,11 +31,10 @@ function PasswordReset() {
         password: password,
       });
 
-
       if (error) {
         throw error;
       } else {
-        router.push('/profile')
+        router.push("/profile");
       }
     } catch (error) {
       console.log(error);
@@ -39,10 +43,10 @@ function PasswordReset() {
 
   return (
     <div className="col-6 form-widget">
-    <h1 className="header">PASSWORD RESET</h1>
-    <p className="description">Change Password</p>
+      <h1 className="header">PASSWORD RESET</h1>
+      <p className="description">Change Password</p>
       <form onSubmit={(e) => handleSubmit(e)}>
-      <input
+        <input
           className="inputField"
           type="password"
           value={password}
@@ -56,15 +60,12 @@ function PasswordReset() {
           placeholder="Confirm Password"
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-                <small>{passwordError}</small>
-
-                <br></br>
-                <br></br>
-
-        <button type="submit">Submit</button>
+        <small>{passwordError}</small>
+        <br></br>
+        <button className="col-12" disabled={passwordError} type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );
 }
-
-export default PasswordReset;

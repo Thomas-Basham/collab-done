@@ -18,13 +18,11 @@ export default function Form() {
 
   useEffect(() => {
     if (email != emailConfirmation) {
-      setEmailError('Emails must match')
+      setEmailError("Emails must match");
     } else setEmailError(null);
     if (password != passwordConfirmation) {
-      setPasswordError('Passwords must match')
+      setPasswordError("Passwords must match");
     } else setPasswordError(null);
-
-
   });
 
   const registerUser = async (email, password) => {
@@ -78,8 +76,7 @@ export default function Form() {
           placeholder="Confirm Password"
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-                <small>{passwordError}</small>
-
+        <small>{passwordError}</small>
       </div>
       <div>
         <button

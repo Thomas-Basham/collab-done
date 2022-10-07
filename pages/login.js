@@ -12,6 +12,12 @@ export default function Login() {
           If you don't have an account, register here
         </p>
       </Link>
+      <Link href={"/forgot-password"}>
+        <p className="note" style={{ cursor: "pointer" }}>
+          Forgot your password? Reset here. 
+        </p>
+      </Link>
+      
     </>
   );
 }
