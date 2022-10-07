@@ -16,14 +16,14 @@ export default function PasswordReset() {
   useEffect(() => {
     if (password != passwordConfirmation) {
       setPasswordError("Passwords must match");
-    } else {setPasswordError(null)}
-
+    } else {
+      setPasswordError(null);
+    }
   });
   useEffect(() => {
     if (!session?.user) {
       router.push("/login");
     }
-
   });
 
   const handleSubmit = async (e) => {

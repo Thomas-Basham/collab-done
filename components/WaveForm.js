@@ -28,12 +28,6 @@ export default function WaveForm(props) {
   });
   useEffect(() => {
     create();
-
-    // return () => {
-    //   if (wavesurfer.current) {
-    //     wavesurfer.current.destroy();
-    //   }
-    // };
   }, []);
 
   const create = async () => {
@@ -52,8 +46,10 @@ export default function WaveForm(props) {
   };
 
   const handlePlayPause = () => {
-    setPlaying(!playing);
-    wavesurfer.current.playPause();
+    if (wavesurfer.current.isReady) {
+      setPlaying(!playing);
+      wavesurfer.current.playPause();
+    }
     // console.log(wavesurfer.current.getDuration())
   };
 
