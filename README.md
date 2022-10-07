@@ -28,3 +28,5 @@ A full stack web application for musicians to connect and collaborate.
 [creating-new-supabase-users-in-next-js](https://aboutmonica.com/blog/creating-new-supabase-users-in-next-js/)
 
 [supabase-authentication-react](https://ruanmartinelli.com/posts/supabase-authentication-react)
+
+[creating-user-profiles-on-sign-up-in-supabase](https://dev.to/sruhleder/creating-user-profiles-on-sign-up-in-supabase-5037)
