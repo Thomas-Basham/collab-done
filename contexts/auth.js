@@ -235,7 +235,7 @@ export function AuthProvider({ children }) {
 
       const collabvalues = {
         username,
-        absolute_avatar_url,
+        absolute_avatar_url: absoluteAvatar_urlAuth,
       };
 
       await Promise.all(

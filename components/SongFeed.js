@@ -50,26 +50,20 @@ export default function SongFeed({ profilePage }) {
     });
 
     let handleAddCollaborator = (id) => {
-      addCollaborator(data.id);
+      addCollaborator(id);
       setShowAddCollabsModal(false);
     };
 
     if (session?.user && !userIDs?.includes(session.user.id)) {
       return (
-        <button
-          className="collab-button"
-          onClick={() => handleAddCollaborator(data.id)}
-        >
+        <button onClick={() => handleAddCollaborator(data.id)}>
           LET'S COLLAB
         </button>
       );
     }
     if (session?.user && userIDs?.includes(session.user.id)) {
       return (
-        <button
-          className="collab-button"
-          onClick={() => setShowAddCollabsModal(false)}
-        >
+        <button onClick={() => setShowAddCollabsModal(false)}>
           REQUEST SENT
         </button>
       );
@@ -222,12 +216,21 @@ export default function SongFeed({ profilePage }) {
         <Modal.Header closeButton>
           <Modal.Title>Potential Collaborators</Modal.Title>
         </Modal.Header>
+        <br></br>
 
         {potentialCollaborators &&
           potentialCollaborators.map((collaborator, i) => {
             return (
               <Link key={i} href={`/pr/${collaborator.user}`}>
-                {collaborator.username}
+                <div style={{ cursor: "pointer" }}>
+                  <img
+                    alt={collaborator.username}
+                    src={collaborator.absolute_avatar_url}
+                    className="avatar image d-inline"
+                    style={{ height: "15px", width: "15px" }}
+                  />
+                  {collaborator.username}
+                </div>
               </Link>
             );
           })}

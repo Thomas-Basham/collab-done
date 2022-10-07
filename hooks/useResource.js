@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function useResource() {
   const router = useRouter();
-  const { session, username } = useAuth();
+  const { session, username, absoluteAvatar_urlAuth } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
@@ -192,6 +192,7 @@ export default function useResource() {
         songID: id,
         user: session.user.id,
         username: username,
+        absolute_avatar_url: absoluteAvatar_urlAuth,
       };
       let { error } = await supabase
         .from("potentialCollaborators")
@@ -231,42 +232,6 @@ export default function useResource() {
       setLoading(false);
     }
   }
-
-  // async function addCollaborator(oldCollabsArray, id) {
-  //   if (!session) {
-  //     router.push("/login");
-  //   }
-  //   try {
-  //     setLoading(true);
-  //     if (oldCollabsArray == null) {
-  //       let newCollabsArray = [session.user.id];
-
-  //       let { error } = await supabase
-  //         .from("songs")
-  //         .update([{ potential_collaborators_uuid: newCollabsArray }])
-  //         .match({ id: id });
-
-  //       if (error) {
-  //         throw error;
-  //       }
-  //     } else {
-  //       oldCollabsArray.push(session.user.id);
-  //       let { error } = await supabase
-  //         .from("songs")
-  //         .update({ potential_collaborators_uuid: oldCollabsArray })
-  //         .match({ id: id });
-
-  //       if (error) {
-  //         throw error;
-  //       }
-  //     }
-  //   } catch (error) {
-  //     alert(error.message);
-  //   } finally {
-  //     getmusicPosts();
-  //     setLoading(false);
-  //   }
-  // }
 
   async function downloadSong(path) {
     try {

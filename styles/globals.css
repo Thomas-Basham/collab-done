@@ -723,7 +723,8 @@ small {
 }
 
 .modal-content {
-  background-color: #101010 !important;
+  background-color: var(--custom-panel-color) !important;
+  padding: 2vw;
 }
 
 a:hover {
