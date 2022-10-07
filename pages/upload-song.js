@@ -61,12 +61,7 @@ export default function UploadSong() {
       needs,
       song_url: songUrl,
       absolute_song_url: absoluteSongUrl,
-      potential_collaborators: [null],
       absolute_avatar_url: absoluteAvatar_urlAuth,
-      // instagram_url,
-      // twitter_url,
-      // spotify_url,
-      // soundcloud_url,
     };
     createSongPost(values);
   }
