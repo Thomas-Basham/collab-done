@@ -227,8 +227,9 @@ export default function SongFeed({ profilePage }) {
                     alt={collaborator.username}
                     src={collaborator.absolute_avatar_url}
                     className="avatar image d-inline"
-                    style={{ height: "15px", width: "15px" }}
+                    style={{ height: "4vh", width: "4vh" }}
                   />
+                  &nbsp; &nbsp;
                   {collaborator.username}
                 </div>
               </Link>
