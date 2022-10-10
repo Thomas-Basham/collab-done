@@ -8,8 +8,6 @@ export default function Signup() {
   return (
     <>
       <Form />
-
-      
     </>
   );
 }

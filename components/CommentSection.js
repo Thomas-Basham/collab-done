@@ -26,7 +26,6 @@ export default function CommentSection(props) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const onFormSubmit = async (e) => {
-    console.log(props.songDetails);
     e.preventDefault();
     console.log(comment);
     if (props.songDetails != null && comment != "") {
@@ -84,21 +83,21 @@ export default function CommentSection(props) {
     <>
       <div className="row ">
         <div id="spacer" className="col-2"></div>
-        <div className="col ">
+        <div className="col comment-holder">
           {fillteredComments.map((data, i) => {
             return (
               <div
                 key={i}
-                className=""
+                className="comment-icon"
                 onMouseEnter={() => displayComment(data)}
                 style={{
                   display: "inline",
                   cursor: "default",
                   position: "relative",
                   left:
-                    data.commentPosition < 90
+                    data.commentPosition - 12 > 0
                       ? `${data.commentPosition}%`
-                      : `${data.commentPosition - 24}%`,
+                      : `${data.commentPosition}%`,
                 }}
               >
                 <img
@@ -111,13 +110,13 @@ export default function CommentSection(props) {
             );
           })}
           <div
-            className=""
+            className="d-inline comment"
             style={{
               position: "relative",
               left:
-                viewCommentPosition < 90
-                  ? `${viewCommentPosition}% `
-                  : `${viewCommentPosition - 13}%`,
+                viewCommentPosition - 16 > 0
+                  ? `${viewCommentPosition}%`
+                  : `${viewCommentPosition}%`,
             }}
           >
             <p className="brand-text">{viewCommentProfile?.username}</p>

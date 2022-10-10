@@ -679,6 +679,10 @@ svg:hover {
   color: var(--custom-color-brand) !important;
 }
 
+.comment-holder {
+  min-width: 77% !important;
+  max-width: 77% !important;
+}
 
 /* SCREEN WIDTH */
 
@@ -708,7 +712,15 @@ svg:hover {
     font-size: 2.5vw !important;
   }
 
+  .wave-container {
+    padding-left: 45px !important;
+    padding-right: none !important;
+  }
 
+  .comment-holder {
+    min-width: 60% !important;
+    max-width: 60% !important;
+  }
 }
 
 @media only screen and (min-width: 33.75em) {

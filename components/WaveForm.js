@@ -47,7 +47,7 @@ export default function WaveForm(props) {
   };
 
   return (
-    <div className="audio-container row" style={{ width: "95%" }}>
+    <div className="audio-container row">
       <div className="controls col-2">
         <div
           onClick={handlePlayPause}

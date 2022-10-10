@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/auth";
 
 export default function Form() {
   const router = useRouter();
-  const {registerUser, errorMessageAuth } = useAuth();
+  const { registerUser, errorMessageAuth } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -45,7 +45,9 @@ export default function Form() {
 
   return (
     <div className="col-6 form-widget">
-      <h1 className="header">Register here, then check your email for the login link.</h1>
+      <h1 className="header">
+        Register here, then check your email for the login link.
+      </h1>
       <p className="description">Register</p>
       <div>
         <input
@@ -81,10 +83,12 @@ export default function Form() {
         />
         <small>{passwordError}</small>
       </div>
-      {errorMessageAuth != "There is already an account associated with this email address. Forgot your password? Click here"
-      ? <p className="text-danger text-center">{errorMessageAuth}</p>
-      : <Link href='/forgot-password'>{errorMessageAuth}</Link>
-    }
+      {errorMessageAuth !=
+      "There is already an account associated with this email address. Forgot your password? Click here" ? (
+        <p className="text-danger text-center">{errorMessageAuth}</p>
+      ) : (
+        <Link href="/forgot-password">{errorMessageAuth}</Link>
+      )}
 
       <div>
         <button
