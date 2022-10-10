@@ -48,8 +48,7 @@ export default function useResource() {
         setmusicPosts(data.reverse());
       }
     } catch (error) {
-      setErrorMessage(error.message)
-      // alert(error.message);
+      alert(error.message);
 
 
     } finally {
@@ -378,7 +377,6 @@ export default function useResource() {
     }
   }
   return {
-    errorMessage,
     createSongPost,
     getmusicPosts,
     loading,

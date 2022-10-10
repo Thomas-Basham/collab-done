@@ -7,6 +7,8 @@ const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
   const router = useRouter();
+
+  const [errorMessageAuth, setErrorMessageAuth] = useState(true);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState(null);
@@ -57,15 +59,36 @@ export function AuthProvider({ children }) {
   }, [session]);
 
 
+  const registerUser = async (email, password) => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+      if (error) throw error;
+      if (data.user){
+        setErrorMessageAuth('There is already an account associated with this email address. Forgot your password? Click here')
+      }
+    } catch (error) {
+      setErrorMessageAuth( error.message || error.error_description );
+      // alert( error.message || error.error_description );
+
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleLogin = async (email, password) => {
     try {
       setIsLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({email, password});
 
       if (error) throw error;
-      router.push("/");
+      if (data)router.push("/");
     } catch (error) {
-      alert(error.message || error.error_description);
+      setErrorMessageAuth(error.message || error.error_description)
+      // alert(error.message || error.error_description);
     } finally {
       setIsLoading(false);
     }
@@ -296,12 +319,13 @@ export function AuthProvider({ children }) {
   }
   const value = {
     signUp: (data) => supabase.auth.signUp(data),
-    signIn: (data) => supabase.auth.signInWithPassword(data),
     signInOauth: async (provider) =>
       await supabase.auth.signInWithOAuth({
         provider,
       }),
     signOut: () => signOut,
+    errorMessageAuth,
+    registerUser,
     handleLogin,
     session,
     getProfile,

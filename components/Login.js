@@ -9,7 +9,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin, signUp, signOut, session, signInOauth } = useAuth();
+  const { handleLogin, errorMessageAuth, signOut, session, signInOauth } = useAuth();
 
   return (
     <div className="row flex-center flex ">
@@ -23,7 +23,7 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
+            />
           <input
             className="inputField"
             id="password"
@@ -31,8 +31,9 @@ export default function Login() {
             value={password}
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
-          />
+            />
         </div>
+            {errorMessageAuth && <p className="text-danger text-center">{errorMessageAuth}</p>}
         <div>
           <button
             onClick={(e) => {

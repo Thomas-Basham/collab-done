@@ -1,11 +1,13 @@
 import styles from "../styles/form.module.css";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-
+import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
+import { useAuth } from "../contexts/auth";
 
 export default function Form() {
   const router = useRouter();
+  const {registerUser, errorMessageAuth } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -25,35 +27,22 @@ export default function Form() {
     } else setPasswordError(null);
   });
 
-  const registerUser = async (email, password) => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-      });
-      if (error) throw error;
-      router.push("/login");
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const registerUser = async (email, password) => {
+  //   try {
+  //     setLoading(true);
+  //     const { data, error } = await supabase.auth.signUp({
+  //       email: email,
+  //       password: password,
+  //     });
+  //     if (error) throw error;
+  //     router.push("/login");
+  //   } catch (error) {
+  //     alert(error.error_description || error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const handleProviderLogin = async (provider) => {
-    try {
-      setLoading(true);
-      const { data, error } = await signIn({ email, password });
-
-      if (error) throw error;
-      router.push("/");
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <div className="col-6 form-widget">
       <h1 className="header">Register here, then check your email for the login link.</h1>
@@ -92,6 +81,11 @@ export default function Form() {
         />
         <small>{passwordError}</small>
       </div>
+      {errorMessageAuth != "There is already an account associated with this email address. Forgot your password? Click here"
+      ? <p className="text-danger text-center">{errorMessageAuth}</p>
+      : <Link href='/forgot-password'>{errorMessageAuth}</Link>
+    }
+
       <div>
         <button
           onClick={(e) => {
