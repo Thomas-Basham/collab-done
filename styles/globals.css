@@ -747,3 +747,12 @@ a:hover {
   padding: 0;
   transform: none !important
 }
+
+
+.delete-button {
+  border: var(--custom-border) !important
+}
+
+.delete-button:hover {
+  color: var(--custom-color-secondary) !important;
+}

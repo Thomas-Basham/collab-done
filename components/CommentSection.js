@@ -163,7 +163,7 @@ export default function CommentSection(props) {
         </Modal.Header>
 
         <button
-          className="bg-danger"
+          className="bg-danger delete-button"
           onClick={() => handleDeleteComment(viewCommentData.id)}
         >
           Delete Comment
