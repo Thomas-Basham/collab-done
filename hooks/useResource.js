@@ -8,6 +8,8 @@ export default function useResource() {
   const router = useRouter();
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
 
+  
+  const [errorMessage, setErrorMessage] = useState(true);
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -46,7 +48,10 @@ export default function useResource() {
         setmusicPosts(data.reverse());
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(error.message)
+      // alert(error.message);
+
+
     } finally {
       setLoading(false);
     }
@@ -373,6 +378,7 @@ export default function useResource() {
     }
   }
   return {
+    errorMessage,
     createSongPost,
     getmusicPosts,
     loading,

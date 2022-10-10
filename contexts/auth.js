@@ -56,6 +56,21 @@ export function AuthProvider({ children }) {
     getProfile();
   }, [session]);
 
+
+  const handleLogin = async (email, password) => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({email, password});
+
+      if (error) throw error;
+      router.push("/");
+    } catch (error) {
+      alert(error.message || error.error_description);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   async function getProfile() {
     if (session) {
       try {
@@ -287,6 +302,7 @@ export function AuthProvider({ children }) {
         provider,
       }),
     signOut: () => signOut,
+    handleLogin,
     session,
     getProfile,
     username,

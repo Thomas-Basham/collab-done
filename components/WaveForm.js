@@ -27,7 +27,6 @@ export default function WaveForm(props) {
   });
   useEffect(() => {
     create();
-    
   }, []);
 
   const create = async () => {
@@ -55,11 +54,18 @@ export default function WaveForm(props) {
           className="play-button"
           style={{ cursor: "pointer" }}
         >
-          {!playing ? <FiPlay size={80} /> : <FiPause size={80} />}
+          {!playing ? (
+            <FiPlay
+              value={{ color: "blue", className: "play-button" }}
+              size={80}
+            />
+          ) : (
+            <FiPause size={80} />
+          )}
         </div>
       </div>
       <div className="wave-container col">
-        <div id={props.indexNumber}  ref={waveformRef} className="wave-song" />
+        <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
       <CommentSection songDetails={wavesurfer.current} songID={props.songID} />
     </div>

@@ -14,10 +14,9 @@ export default function Login() {
       </Link>
       <Link href={"/forgot-password"}>
         <p className="note" style={{ cursor: "pointer" }}>
-          Forgot your password? Reset here. 
+          Forgot your password? Reset here.
         </p>
       </Link>
-      
     </>
   );
 }

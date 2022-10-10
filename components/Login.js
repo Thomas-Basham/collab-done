@@ -9,21 +9,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, signUp, signOut, session, signInOauth } = useAuth();
-
-  const handleLogin = async (email, password) => {
-    try {
-      setLoading(true);
-      const { data, error } = await signIn({ email, password });
-
-      if (error) throw error;
-      router.push("/");
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { handleLogin, signUp, signOut, session, signInOauth } = useAuth();
 
   return (
     <div className="row flex-center flex ">
