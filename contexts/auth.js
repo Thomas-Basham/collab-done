@@ -88,7 +88,7 @@ export function AuthProvider({ children }) {
       });
 
       if (error) throw error;
-      if (data) router.push("/login");
+      if (data) router.push("/");
     } catch (error) {
       setErrorMessageAuth(error.message || error.error_description);
       // alert(error.message || error.error_description);

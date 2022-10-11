@@ -27,21 +27,6 @@ export default function Form() {
     } else setPasswordError(null);
   });
 
-  // const registerUser = async (email, password) => {
-  //   try {
-  //     setLoading(true);
-  //     const { data, error } = await supabase.auth.signUp({
-  //       email: email,
-  //       password: password,
-  //     });
-  //     if (error) throw error;
-  //     router.push("/login");
-  //   } catch (error) {
-  //     alert(error.error_description || error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <div className="col-6 form-widget">

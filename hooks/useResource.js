@@ -47,30 +47,13 @@ export default function useResource() {
         setmusicPosts(data.reverse());
       }
     } catch (error) {
+      setErrorMessage('')
       alert(error.message);
     } finally {
       setLoading(false);
     }
   }
-  async function getAllAvatars() {
-    try {
-      setLoading(true);
 
-      let { data, error, status } = await supabase.from("avatars").select("*");
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setAllAvatars(data);
-      }
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function createSongPost(values) {
     try {
