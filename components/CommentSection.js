@@ -37,7 +37,7 @@ export default function CommentSection(props) {
         commentPosition: commentPosition,
         user: session.user.id,
         comment: comment,
-        songID: props.songID,
+        song_id: props.song_id,
         avatarURl: absoluteAvatar_urlAuth,
       };
       await createComment(values);
@@ -77,7 +77,7 @@ export default function CommentSection(props) {
   };
 
   let fillteredComments = comments.filter(
-    (comment) => comment.songID === props.songID
+    (comment) => comment.song_id === props.song_id
   );
   return (
     <>

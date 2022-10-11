@@ -67,7 +67,7 @@ export default function WaveForm(props) {
       <div className="wave-container col">
         <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
-      <CommentSection songDetails={wavesurfer.current} songID={props.songID} />
+      <CommentSection songDetails={wavesurfer.current} song_id={props.song_id} />
     </div>
   );
 }

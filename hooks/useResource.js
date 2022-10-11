@@ -69,18 +69,18 @@ export default function useResource() {
 
       // USE THIS TO MASK THE FILE NAME. NOT USED FOR AUDIO FILES
       // const fileExt = file.name.split(".").pop();
-      // const fileName = `${Math.random()}.${fileExt}`;
+      const fileName = `${file.name}.${new Date()}`;
       // const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
         .from("songs")
-        .upload(file.name, file);
+        .upload(fileName, file);
 
       if (uploadError) {
         throw uploadError;
       }
-      await getAbsoluteSongUrl(file.name);
-      setSongUrl(file.name);
+      await getAbsoluteSongUrl(fileName);
+      setSongUrl(fileName);
       setFileName(file.name);
     } catch (error) {
       alert(error.message);
@@ -207,7 +207,7 @@ export default function useResource() {
     try {
       setLoading(true);
       let values = {
-        songID: id,
+        song_id: id,
         user: session.user.id,
         username: username,
         absolute_avatar_url: absoluteAvatar_urlAuth,
@@ -233,7 +233,7 @@ export default function useResource() {
       let { data, error, status } = await supabase
         .from("potentialCollaborators")
         .select("*")
-        .eq("songID", id);
+        .eq("song_id", id);
 
       if (error && status !== 406) {
         throw error;

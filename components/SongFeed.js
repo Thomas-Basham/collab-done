@@ -154,7 +154,7 @@ export default function SongFeed({ profilePage }) {
           <Waveform
             url={data.absolute_song_url}
             indexNumber={data.id.toString()}
-            songID={data.id}
+            song_id={data.id}
           />
           <br></br>
           <div className="d-inline-flex">
