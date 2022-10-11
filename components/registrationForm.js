@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
+import { FaGithub, FaGoogle, FaSpotify } from "react-icons/fa";
 
 export default function Form() {
   const router = useRouter();
-  const { registerUser, errorMessageAuth } = useAuth();
+  const { registerUser, errorMessageAuth, signInOauth } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -27,18 +28,19 @@ export default function Form() {
     } else setPasswordError(null);
   });
 
-
   return (
     <div className="col-6 form-widget">
       <h1 className="header">
         Register here, then check your email for the login link.
       </h1>
       <p className="description">Register</p>
+
       <div>
         <input
           className="inputField"
           type="email"
           placeholder="Email"
+          autoComplete="off"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -46,6 +48,7 @@ export default function Form() {
           className="inputField"
           type="email"
           placeholder="Confirm Email"
+          autoComplete="off"
           value={emailConfirmation}
           onChange={(e) => setEmailConfirmation(e.target.value)}
         />
@@ -57,12 +60,14 @@ export default function Form() {
           type="password"
           value={password}
           placeholder="Password"
+          autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           className="inputField"
           type="password"
           value={passwordConfirmation}
+          autoComplete="off"
           placeholder="Confirm Password"
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
@@ -87,6 +92,20 @@ export default function Form() {
           <span>{loading ? "Loading" : "Register"}</span>
         </button>
       </div>
+      <br></br>
+      <br></br>
+      <h1 className="header">Or you can register with socials, here</h1>
+      <br></br>
+      <br></br>
+      <button className="col-2 " onClick={() => signInOauth("spotify")}>
+        <FaSpotify />
+      </button>
+      <button className="col-2 " onClick={() => signInOauth("github")}>
+        <FaGithub />
+      </button>
+      <button className="col-2 " onClick={() => signInOauth("google")}>
+        <FaGoogle />
+      </button>
     </div>
   );
 }

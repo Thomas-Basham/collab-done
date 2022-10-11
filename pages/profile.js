@@ -28,6 +28,12 @@ export default function Profile() {
     setAbsoluteAvatar_Url,
     updateSongPost,
     potentialCollaborators,
+    uploading,
+    fileName,
+    setFileName,
+    uploadSong,
+    songUrl,
+    absoluteSongUrl,
   } = useResource();
   const {
     session,
@@ -62,6 +68,7 @@ export default function Profile() {
   if (playSong == false) {
     audio.pause();
   }
+  let size = 150;
 
   const [currentUserSongPosts, setCurrentUserSongPosts] = useState([]);
   const { createSongPost } = useResource();
@@ -84,6 +91,7 @@ export default function Profile() {
     setDescription(data.description);
     setNeeds(data.needs);
     SetSongPostData(data);
+    setFileName(data.song_url);
     return;
   }
 
@@ -91,6 +99,8 @@ export default function Profile() {
     const values = {
       artist: username,
       artist_id: session.user.id,
+      song_url: songUrl,
+      absolute_song_url: absoluteSongUrl,
       genre,
       description,
       needs,
@@ -316,6 +326,32 @@ export default function Profile() {
               <label htmlFor="artist">Artist</label>
               <input id="artist" type="text" value={username} disabled />
             </div>
+            <div>
+              <p>
+                {fileName ? (
+                  fileName
+                ) : (
+                  <small style={{ color: "grey" }}>no file uploaded</small>
+                )}
+              </p>
+              <div style={{ width: size }}>
+                <label className="button primary block" htmlFor="audio-file">
+                  {uploading ? "Uploading ..." : "Upload"}
+                </label>
+                <input
+                  style={{
+                    visibility: "hidden",
+                    position: "absolute",
+                  }}
+                  type="file"
+                  id="audio-file"
+                  accept="audio/*"
+                  onChange={uploadSong}
+                  disabled={uploading}
+                />
+              </div>
+            </div>
+
             <div>
               <label htmlFor="genre">Genre</label>
               <input

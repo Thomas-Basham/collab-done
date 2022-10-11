@@ -24,6 +24,8 @@ export default function useResource() {
   const [absoluteSongUrl, setAbsoluteSongUrl] = useState(null);
   const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
   const [potentialCollaborators, setPotentialCollaborators] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState(null);
 
   useEffect(() => {
     getmusicPosts();
@@ -47,13 +49,45 @@ export default function useResource() {
         setmusicPosts(data.reverse());
       }
     } catch (error) {
-      setErrorMessage('')
-      alert(error.message);
+      setErrorMessage("There seems to be an error with our servers");
+      console.log(error.message);
+      // alert(error.message);
     } finally {
       setLoading(false);
     }
   }
 
+  async function uploadSong(event) {
+    try {
+      setUploading(true);
+
+      if (!event.target.files || event.target.files.length === 0) {
+        throw new Error("You must select an audio file to upload.");
+      }
+
+      const file = event.target.files[0];
+
+      // USE THIS TO MASK THE FILE NAME. NOT USED FOR AUDIO FILES
+      // const fileExt = file.name.split(".").pop();
+      // const fileName = `${Math.random()}.${fileExt}`;
+      // const filePath = `${fileName}`;
+
+      let { error: uploadError } = await supabase.storage
+        .from("songs")
+        .upload(file.name, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+      await getAbsoluteSongUrl(file.name);
+      setSongUrl(file.name);
+      setFileName(file.name);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function createSongPost(values) {
     try {
@@ -389,5 +423,10 @@ export default function useResource() {
     deleteComment,
     getCollaborators,
     potentialCollaborators,
+    uploadSong,
+    uploading,
+    songUrl,
+    fileName,
+    setFileName,
   };
 }

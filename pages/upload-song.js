@@ -5,53 +5,22 @@ import { supabase } from "../utils/supabaseClient";
 import { Container } from "react-bootstrap";
 
 export default function UploadSong() {
+  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+
   const {
-    session,
-    username,
-    instagram_url,
-    twitter_url,
-    spotify_url,
-    soundcloud_url,
-    absoluteAvatar_urlAuth,
-  } = useAuth();
-  const { createSongPost, getAbsoluteSongUrl, absoluteSongUrl } = useResource();
+    uploadSong,
+    uploading,
+    songUrl,
+    fileName,
+    createSongPost,
+    absoluteSongUrl,
+    loading,
+  } = useResource();
 
   const [genre, setGenre] = useState(null);
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [songUrl, setSongUrl] = useState(null);
-  const [fileName, setFileName] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  async function uploadSong(event) {
-    try {
-      setUploading(true);
 
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error("You must select an audio file to upload.");
-      }
-
-      const file = event.target.files[0];
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      let { error: uploadError } = await supabase.storage
-        .from("songs")
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw uploadError;
-      }
-      await getAbsoluteSongUrl(filePath);
-      setSongUrl(filePath);
-      setFileName(file.name);
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setUploading(false);
-    }
-  }
   function handleSubmit() {
     const values = {
       artist: username,
