@@ -8,7 +8,7 @@ const AuthContext = React.createContext();
 export function AuthProvider({ children }) {
   const router = useRouter();
 
-  const [errorMessageAuth, setErrorMessageAuth] = useState(true);
+  const [errorMessageAuth, setErrorMessageAuth] = useState(null);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState(null);
@@ -58,6 +58,8 @@ export function AuthProvider({ children }) {
     getProfile();
   }, [session]);
 
+  const generalErrorMessage = "There seems to be an error with our servers";
+
   const registerUser = async (email, password) => {
     try {
       setIsLoading(true);
@@ -73,7 +75,6 @@ export function AuthProvider({ children }) {
       }
     } catch (error) {
       setErrorMessageAuth(error.message || error.error_description);
-      // alert( error.message || error.error_description );
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +92,6 @@ export function AuthProvider({ children }) {
       if (data) router.push("/");
     } catch (error) {
       setErrorMessageAuth(error.message || error.error_description);
-      // alert(error.message || error.error_description);
     } finally {
       setIsLoading(false);
     }
@@ -127,8 +127,8 @@ export function AuthProvider({ children }) {
           // return(data)
         }
       } catch (error) {
-        router.push("/");
-        // alert(error.message);
+        setErrorMessageAuth(generalErrorMessage);
+        console.log(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -168,9 +168,8 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      console.log(error);
-      // router.push("/");
-      // alert(error.message);
+      setErrorMessageAuth(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -188,9 +187,8 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      console.log(error);
-      // router.push("/");
-      // alert(error.message);
+      setErrorMessageAuth(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -209,9 +207,8 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      router.push("/");
+      setErrorMessageAuth(generalErrorMessage);
       console.log(error.message);
-      // alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -233,9 +230,8 @@ export function AuthProvider({ children }) {
         return data;
       }
     } catch (error) {
-      setErrorMessageAuth("Database Servers Down");
+      setErrorMessageAuth(generalErrorMessage);
       console.log(error.message);
-      // alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -254,9 +250,8 @@ export function AuthProvider({ children }) {
         return data;
       }
     } catch (error) {
-      setErrorMessageAuth("There seems to be an error with our servers");
+      setErrorMessageAuth(generalErrorMessage);
       console.log(error.message);
-      // alert(error.message);
     } finally {
       setIsLoading(true);
       false;
@@ -277,7 +272,7 @@ export function AuthProvider({ children }) {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessageAuth(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -376,11 +371,8 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      setErrorMessageAuth(error.message);
-      alert(error.message);
-
-      // router.push("/");
-      // alert(error.message);
+      setErrorMessageAuth(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -401,6 +393,7 @@ export function AuthProvider({ children }) {
       }),
     signOut: () => signOut,
     errorMessageAuth,
+    setErrorMessageAuth,
     registerUser,
     handleLogin,
     session,

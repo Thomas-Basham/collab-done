@@ -2,13 +2,11 @@ import Header from "./header";
 import Footer from "./footer";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
-
 import { useAuth } from "../contexts/auth";
+import ErrorModal from './ErrorModal'
 
 export default function Layout({ children }) {
-  const { signIn, signUp, signOut, session } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const { signOut, session, errorMessageAuth, setErrorMessageAuth } = useAuth();
 
   return (
     <div>
@@ -24,6 +22,8 @@ export default function Layout({ children }) {
       <Header session={session} signOut={signOut} />
       <main className="main">{children}</main>
       <Footer />
+
+      <ErrorModal errorMessageAuth={errorMessageAuth} setErrorMessageAuth={setErrorMessageAuth} />
     </div>
   );
 }
