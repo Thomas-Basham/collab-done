@@ -30,7 +30,6 @@ export default function PasswordReset() {
     e.preventDefault();
 
     try {
-      //   now we will change the password
       const { error } = await supabase.auth.updateUser({
         password: password,
       });

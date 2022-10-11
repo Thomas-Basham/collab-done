@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 
@@ -10,12 +9,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
     try {
-      //   now we will change the password
-      // const { error } = await supabase.auth.updateUser({
-      //   password: password,
-      // });
       const { error } = await supabase.auth.resetPasswordForEmail(email);
 
       if (error) {

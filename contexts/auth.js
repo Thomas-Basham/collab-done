@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import useResource from "../hooks/useResource";
 
 const AuthContext = React.createContext();
 

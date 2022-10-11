@@ -3,10 +3,12 @@ import Footer from "./footer";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/auth";
-import ErrorModal from './ErrorModal'
+import useResource from "../hooks/useResource";
+import ErrorModal from "./ErrorModal";
 
 export default function Layout({ children }) {
   const { signOut, session, errorMessageAuth, setErrorMessageAuth } = useAuth();
+  const { errorMessage, setErrorMessage } = useResource();
 
   return (
     <div>
@@ -23,7 +25,12 @@ export default function Layout({ children }) {
       <main className="main">{children}</main>
       <Footer />
 
-      <ErrorModal errorMessageAuth={errorMessageAuth} setErrorMessageAuth={setErrorMessageAuth} />
+      <ErrorModal
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+        Auth={errorMessageAuth}
+        setErrorMessageAuth={setErrorMessageAuth}
+      />
     </div>
   );
 }

@@ -5,19 +5,22 @@ export default function ErrorModal(props) {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    if (props.errorMessage) {
+      setShowModal(true);
+    }
     if (props.errorMessageAuth) {
       setShowModal(true);
     }
     return () => {
       setShowModal(false);
     };
-  }, []);
-
+  });
 
   const handleClose = () => {
-    props.setErrorMessageAuth(null)
-    setShowModal(false)
-  }
+    props.setErrorMessageAuth(null);
+    props.setErrorMessage(null);
+    setShowModal(false);
+  };
   return (
     <>
       <Modal
@@ -32,7 +35,7 @@ export default function ErrorModal(props) {
         </Modal.Header>
 
         <Modal.Body>
-          <div>{props.errorMessageAuth}</div>
+          <div>{props.errorMessageAut || props.errorMessage}</div>
         </Modal.Body>
       </Modal>
     </>

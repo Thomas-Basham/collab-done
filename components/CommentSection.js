@@ -27,7 +27,6 @@ export default function CommentSection(props) {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(comment);
     if (props.songDetails != null && comment != "") {
       const songDuration = props.songDetails.getDuration();
       const currentTime = props.songDetails.getCurrentTime();
@@ -55,7 +54,6 @@ export default function CommentSection(props) {
     let profile = await getProfileByID(data.user);
 
     setViewCommentProfile(profile);
-    console.log(viewCommentProfile);
   };
   const handleDeleteComment = async (id) => {
     await deleteComment(id);

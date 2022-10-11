@@ -8,7 +8,7 @@ export default function useResource() {
   const router = useRouter();
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
 
-  const [errorMessage, setErrorMessage] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -28,14 +28,16 @@ export default function useResource() {
   const [fileName, setFileName] = useState(null);
 
   useEffect(() => {
-    getmusicPosts();
+    getMusicPosts();
   }, []);
 
   useEffect(() => {
     getComments();
   }, []);
 
-  async function getmusicPosts() {
+  const generalErrorMessage = "There seems to be an error with our servers";
+
+  async function getMusicPosts() {
     try {
       setLoading(true);
 
@@ -49,9 +51,8 @@ export default function useResource() {
         setmusicPosts(data.reverse());
       }
     } catch (error) {
-      setErrorMessage("There seems to be an error with our servers");
+      setErrorMessage(generalErrorMessage);
       console.log(error.message);
-      // alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -83,7 +84,8 @@ export default function useResource() {
       setSongUrl(fileName);
       setFileName(file.name);
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setUploading(false);
     }
@@ -99,7 +101,8 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
       router.push("/profile");
@@ -121,7 +124,8 @@ export default function useResource() {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -136,7 +140,8 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -154,7 +159,8 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       getComments();
       setLoading(false);
@@ -172,9 +178,10 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
-      getmusicPosts();
+      getMusicPosts();
       router.push("/profile");
       setLoading(false);
     }
@@ -193,9 +200,10 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
-      getmusicPosts();
+      getMusicPosts();
       setLoading(false);
     }
   }
@@ -220,7 +228,8 @@ export default function useResource() {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -245,7 +254,8 @@ export default function useResource() {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -327,7 +337,8 @@ export default function useResource() {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -351,7 +362,8 @@ export default function useResource() {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(error.message);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -368,7 +380,8 @@ export default function useResource() {
       const url = URL.createObjectURL(data);
       setAvatarUrl(url);
     } catch (error) {
-      console.log("Error downloading image: ", error.message);
+      setErrorMessage(`Error downloading Audio File: , ${error.message}`);
+      console.log("Error downloading Audio File: ", error.message);
     }
   }
 
@@ -387,12 +400,15 @@ export default function useResource() {
         return data.publicUrl;
       }
     } catch (error) {
+      setErrorMessage(`Error downloading Audio File: , ${error.message}`);
       console.log("Error downloading Audio File: ", error.message);
     }
   }
   return {
+    errorMessage,
+    setErrorMessage,
     createSongPost,
-    getmusicPosts,
+    getMusicPosts,
     loading,
     musicPosts,
     deleteSongPost,
