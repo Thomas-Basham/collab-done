@@ -58,7 +58,6 @@ export function AuthProvider({ children }) {
     getProfile();
   }, [session]);
 
-
   const registerUser = async (email, password) => {
     try {
       setIsLoading(true);
@@ -67,13 +66,14 @@ export function AuthProvider({ children }) {
         password: password,
       });
       if (error) throw error;
-      if (data.user){
-        setErrorMessageAuth('There is already an account associated with this email address. Forgot your password? Click here')
+      if (data.user) {
+        setErrorMessageAuth(
+          "There is already an account associated with this email address. Forgot your password? Click here"
+        );
       }
     } catch (error) {
-      setErrorMessageAuth( error.message || error.error_description );
+      setErrorMessageAuth(error.message || error.error_description);
       // alert( error.message || error.error_description );
-
     } finally {
       setIsLoading(false);
     }
@@ -82,12 +82,15 @@ export function AuthProvider({ children }) {
   const handleLogin = async (email, password) => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase.auth.signInWithPassword({email, password});
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) throw error;
-      if (data)router.push("/");
+      if (data) router.push("/login");
     } catch (error) {
-      setErrorMessageAuth(error.message || error.error_description)
+      setErrorMessageAuth(error.message || error.error_description);
       // alert(error.message || error.error_description);
     } finally {
       setIsLoading(false);
@@ -124,7 +127,8 @@ export function AuthProvider({ children }) {
           // return(data)
         }
       } catch (error) {
-        alert(error.message);
+        router.push("/");
+        // alert(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -132,41 +136,23 @@ export function AuthProvider({ children }) {
   }
 
   async function getCurrentUser() {
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      throw error;
-    }
-
-    if (!session?.user) {
-      router.push("/");
-
-      // throw new Error("User not logged in");
-    }
-
-    return session.user;
-  }
-  async function getMusicPosts() {
     try {
-      setIsLoading(true);
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-      let { data, error, status } = await supabase.from("songs").select("*");
-
-      if (error && status !== 406) {
+      if (error) {
         throw error;
       }
 
-      if (data) {
-        return data.reverse();
+      if (!session?.user) {
+        router.push("/");
+
+        // throw new Error("User not logged in");
       }
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+      return session.user;
+    } catch (error) {}
   }
 
   async function updateSongPost(values, id) {
@@ -182,7 +168,8 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      router.push("/");
+      // alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -201,7 +188,9 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      router.push("/");
+      console.log(error.message);
+      // alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -223,7 +212,9 @@ export function AuthProvider({ children }) {
         return data;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessageAuth("Database Servers Down");
+      console.log(error.message);
+      // alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -304,7 +295,9 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      setErrorMessageAuth(error.message);
+      router.push("/");
+      // alert(error.message);
     } finally {
       setIsLoading(false);
     }

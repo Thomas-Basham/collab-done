@@ -8,7 +8,6 @@ export default function useResource() {
   const router = useRouter();
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
 
-  
   const [errorMessage, setErrorMessage] = useState(true);
   const [loading, setLoading] = useState(true);
   const [musicPosts, setmusicPosts] = useState([]);
@@ -49,8 +48,6 @@ export default function useResource() {
       }
     } catch (error) {
       alert(error.message);
-
-
     } finally {
       setLoading(false);
     }
