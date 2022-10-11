@@ -168,7 +168,28 @@ export function AuthProvider({ children }) {
         throw error;
       }
     } catch (error) {
-      router.push("/");
+      console.log(error);
+      // router.push("/");
+      // alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  async function updateComment(values, id) {
+    try {
+      setIsLoading(true);
+
+      let { error } = await supabase
+        .from("comments")
+        .update(values)
+        .match({ id: id });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.log(error);
+      // router.push("/");
       // alert(error.message);
     } finally {
       setIsLoading(false);
@@ -219,6 +240,48 @@ export function AuthProvider({ children }) {
       setIsLoading(false);
     }
   }
+  async function getMusicPosts() {
+    try {
+      setIsLoading(true);
+
+      let { data, error, status } = await supabase.from("songs").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    } catch (error) {
+      setErrorMessageAuth("There seems to be an error with our servers");
+      console.log(error.message);
+      // alert(error.message);
+    } finally {
+      setIsLoading(true);
+      false;
+    }
+  }
+
+  async function getComments() {
+    try {
+      setIsLoading(true);
+
+      let { data, error, status } = await supabase.from("comments").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function updateProfile({
     username,
@@ -264,7 +327,7 @@ export function AuthProvider({ children }) {
 
       const collabvalues = {
         username,
-        absolute_avatar_url: absoluteAvatar_urlAuth,
+        absolute_avatar_url,
       };
 
       await Promise.all(
@@ -291,12 +354,32 @@ export function AuthProvider({ children }) {
         })
       );
 
+      // UPDATE ALL COMMENTS WITH USERNAME AND AVATAR URL
+      let comments = await getComments();
+
+      let fillteredComments = comments.filter(
+        (comment) => comment.user === user.id
+      );
+
+      const commentValues = {
+        avatarURl: absolute_avatar_url,
+      };
+
+      await Promise.all(
+        fillteredComments.map(async (post) => {
+          return updateComment(commentValues, post.id);
+        })
+      );
+
+      // ERROR HANDLING
       if (error) {
         throw error;
       }
     } catch (error) {
       setErrorMessageAuth(error.message);
-      router.push("/");
+      alert(error.message);
+
+      // router.push("/");
       // alert(error.message);
     } finally {
       setIsLoading(false);
