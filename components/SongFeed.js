@@ -38,6 +38,7 @@ export default function SongFeed({ profilePage }) {
     absoluteSongUrl,
     setAbsoluteSongUrl,
     updateSongPost,
+    deleteSongPost,
   } = useResource();
   const { session, username } = useAuth();
   const [postData, setPostData] = useState(null);
@@ -50,6 +51,7 @@ export default function SongFeed({ profilePage }) {
   const [description, setDescription] = useState(null);
   const [needs, setNeeds] = useState(null);
   const [show, setShow] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   if (playSong == true) {
     audio.play();
@@ -115,8 +117,15 @@ export default function SongFeed({ profilePage }) {
     SetSongPostData(data);
     setFileName(data.song_url);
     setAbsoluteSongUrl(data.absolute_song_url);
-    console.log(absoluteSongUrl);
-    return;
+  }
+
+  function handleOpenDeleteModal(data) {
+    setShowDeleteModal(true);
+    SetSongPostData(data);
+  }
+  function handleDelete() {
+    setShowDeleteModal(false);
+    deleteSongPost(songPostData.id);
   }
 
   function handleSubmit() {
@@ -244,10 +253,10 @@ export default function SongFeed({ profilePage }) {
           className="music-post "
           key={i}
         >
-                    <div className="edit-delete-buttons">
+          <div className="edit-delete-buttons">
             <svg
               cursor={"pointer"}
-              onClick={() => deleteSongPost(data.id)}
+              onClick={() => handleOpenDeleteModal(data)}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -281,7 +290,6 @@ export default function SongFeed({ profilePage }) {
               />
             </svg>
           </div>
-
 
           <Link href={`/pr/${data.artist_id}`}>
             <div style={{ cursor: "pointer" }}>
@@ -367,37 +375,6 @@ export default function SongFeed({ profilePage }) {
               <Modal.Title>Let user know you want to connect</Modal.Title>
             </Modal.Header>
             {collabButton(postData)}
-          </Modal>
-
-          <Modal
-            show={showPotentialCollabsModal}
-            onHide={() => setShowPotentialCollabsModal(false)}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Potential Collaborators</Modal.Title>
-            </Modal.Header>
-            <br></br>
-
-            {potentialCollaborators &&
-              potentialCollaborators.map((collaborator, i) => {
-                return (
-                  <Link key={i} href={`/pr/${collaborator.user}`}>
-                    <div style={{ cursor: "pointer" }}>
-                      <img
-                        alt={collaborator.username}
-                        src={collaborator.absolute_avatar_url}
-                        className="avatar image d-inline"
-                        style={{ height: "4vh", width: "4vh" }}
-                      />
-                      &nbsp; &nbsp;
-                      {collaborator.username}
-                    </div>
-                  </Link>
-                );
-              })}
           </Modal>
         </>
       )}
@@ -491,8 +468,62 @@ export default function SongFeed({ profilePage }) {
               </div>
             </div>
           </Modal>
+
+          <Modal
+            show={showDeleteModal}
+            onHide={() => setShowDeleteModal(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                Are you sure you want to delete this post?
+              </Modal.Title>
+            </Modal.Header>
+
+            <button
+              className="bg-danger delete-button"
+              onClick={() => handleDelete()}
+            >
+              Delete Post
+            </button>
+
+            <button onClick={() => setShowDeleteModal(false)}>Cancel</button>
+          </Modal>
         </>
       )}
+
+      <Modal
+        show={showPotentialCollabsModal}
+        onHide={() => setShowPotentialCollabsModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Potential Collaborators</Modal.Title>
+        </Modal.Header>
+        <br></br>
+
+        {potentialCollaborators &&
+          potentialCollaborators.map((collaborator, i) => {
+            return (
+              <Link key={i} href={`/pr/${collaborator.user}`}>
+                <div style={{ cursor: "pointer" }}>
+                  <img
+                    alt={collaborator.username}
+                    src={collaborator.absolute_avatar_url}
+                    className="avatar image d-inline"
+                    style={{ height: "4vh", width: "4vh" }}
+                  />
+                  &nbsp; &nbsp;
+                  {collaborator.username}
+                </div>
+              </Link>
+            );
+          })}
+      </Modal>
     </>
   );
 }

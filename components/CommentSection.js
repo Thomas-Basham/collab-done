@@ -55,6 +55,7 @@ export default function CommentSection(props) {
 
     setViewCommentProfile(profile);
   };
+  
   const handleDeleteComment = async (id) => {
     await deleteComment(id);
     setViewCommentData(null);
