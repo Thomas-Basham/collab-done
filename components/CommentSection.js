@@ -18,7 +18,7 @@ export default function CommentSection(props) {
     deleteComment,
   } = useResource();
 
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState('');
   const [commenter, setCommenter] = useState(null);
   const [viewCommentData, setViewCommentData] = useState(null);
   const [viewCommentPosition, setViewCommentPosition] = useState(null);
@@ -132,7 +132,7 @@ export default function CommentSection(props) {
             <form onSubmit={onFormSubmit}>
               <input
                 type="text"
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="Write a comment"
                 aria-invalid="false"
                 aria-describedby=""

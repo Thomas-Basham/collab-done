@@ -17,25 +17,33 @@ export default function UploadSong() {
     loading,
   } = useResource();
 
-  const [genre, setGenre] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [needs, setNeeds] = useState(null);
+  const [genre, setGenre] = useState('');
+  const [description, setDescription] = useState('');
+  const [needs, setNeeds] = useState('');
 
   function handleSubmit() {
-    const values = {
-      artist: username,
-      artist_id: session.user.id,
-      genre,
-      description,
-      needs,
-      song_url: songUrl,
-      absolute_song_url: absoluteSongUrl,
-      absolute_avatar_url: absoluteAvatar_urlAuth,
-    };
-    createSongPost(values);
+    if (genre, description, needs){
+
+      const values = {
+        artist: username,
+        artist_id: session.user.id,
+        genre,
+        description,
+        needs,
+        song_url: songUrl,
+        absolute_song_url: absoluteSongUrl,
+        absolute_avatar_url: absoluteAvatar_urlAuth,
+      };
+      createSongPost(values);
+    }
   }
   let size = 150;
 
+  let ButtonText = () => {
+    if (!fileName) {
+      return <div> UPLOAD A SONG TO START COLLABING </div>;
+    } else return loading ? "Loading ..." : "Start Collabing";
+  };
   return (
     <Container fluid="md">
       <div className="row flex-center flex">
@@ -100,13 +108,12 @@ export default function UploadSong() {
           </div>
 
           <div>
-            {!fileName && <div> UPLOAD A SONG TO START COLLABING </div>}
             <button
               className="button primary block"
               onClick={() => handleSubmit()}
               disabled={loading || !fileName}
             >
-              {loading ? "Loading ..." : "Start Collabing"}
+              <ButtonText/>
             </button>
           </div>
         </div>

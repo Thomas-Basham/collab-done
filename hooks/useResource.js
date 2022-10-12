@@ -25,7 +25,7 @@ export default function useResource() {
   const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
   const [potentialCollaborators, setPotentialCollaborators] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   useEffect(() => {
     getMusicPosts();

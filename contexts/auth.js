@@ -10,15 +10,15 @@ export function AuthProvider({ children }) {
   const [errorMessageAuth, setErrorMessageAuth] = useState(null);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [username, setUsername] = useState(null);
-  const [bio, setBio] = useState(null);
-  const [website, setWebsite] = useState(null);
-  const [avatar_url, setAvatarUrl] = useState(null);
-  const [instagram_url, setInstagram_url] = useState(null);
-  const [twitter_url, setTwitter_url] = useState(null);
-  const [spotify_url, setSpotify_url] = useState(null);
-  const [soundcloud_url, setSoundcloud_url] = useState(null);
-  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState(null);
+  const [username, setUsername] = useState('');
+  const [bio, setBio] = useState('');
+  const [website, setWebsite] = useState('');
+  const [avatar_url, setAvatarUrl] = useState('');
+  const [instagram_url, setInstagram_url] = useState('');
+  const [twitter_url, setTwitter_url] = useState('');
+  const [spotify_url, setSpotify_url] = useState('');
+  const [soundcloud_url, setSoundcloud_url] = useState('');
+  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState('');
 
   useEffect(() => {
     let mounted = true;

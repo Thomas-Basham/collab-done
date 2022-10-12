@@ -71,17 +71,6 @@ export default function Profile() {
   const [needs, setNeeds] = useState(null);
   const [show, setShow] = useState(false);
 
-  function handleOpenModal(data) {
-    setShow(true);
-    setGenre(data.genre);
-    setDescription(data.description);
-    setNeeds(data.needs);
-    SetSongPostData(data);
-    setFileName(data.song_url);
-    setAbsoluteSongUrl(data.absolute_song_url);
-    console.log(absoluteSongUrl);
-    return;
-  }
 
   function handleSubmit() {
     const values = {

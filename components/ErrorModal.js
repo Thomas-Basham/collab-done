@@ -35,7 +35,7 @@ export default function ErrorModal(props) {
         </Modal.Header>
 
         <Modal.Body>
-          <div>{props.errorMessageAut || props.errorMessage}</div>
+          <div>{props.errorMessageAuth || props.errorMessage}</div>
         </Modal.Body>
       </Modal>
     </>
