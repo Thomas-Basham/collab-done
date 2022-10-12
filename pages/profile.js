@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
 import Avatar from "../components/Avatar";
 import { useAuth } from "../contexts/auth";
-import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Router from "next/router";
-import SongFeed from "../components/songFeed";
-
-// import Waveform from "../components/WaveForm";
+import SongFeed from "../components/SongFeed";
 import { Container } from "react-bootstrap";
+
 export default function Profile() {
   useEffect(() => {
     if (!session) {
