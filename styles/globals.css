@@ -614,6 +614,13 @@ small {
 
 }
 
+.edit-delete-buttons{
+  float: right;
+  text-align: right;
+  /* justify-content: end; */
+  display: flex;
+}
+
 .collab-button {
   display: flex;
 

@@ -429,6 +429,7 @@ export default function useResource() {
     getAbsoluteSongUrl,
     absoluteSongUrl,
     getAbsoluteAvatarUrl,
+    setAbsoluteSongUrl,
     absoluteAvatar_url,
     setAbsoluteAvatar_Url,
     getComments,
