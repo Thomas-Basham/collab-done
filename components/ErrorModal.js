@@ -5,15 +5,15 @@ export default function ErrorModal(props) {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if (props.errorMessage) {
+    if (props.errorMessage || props.errorMessageAuth) {
       setShowModal(true);
     }
     if (props.errorMessageAuth) {
       setShowModal(true);
     }
-    return () => {
-      setShowModal(false);
-    };
+    // return () => {
+    //   setShowModal(false);
+    // };
   });
 
   const handleClose = () => {

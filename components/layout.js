@@ -28,7 +28,7 @@ export default function Layout({ children }) {
       <ErrorModal
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
-        Auth={errorMessageAuth}
+        errorMessageAuth={errorMessageAuth}
         setErrorMessageAuth={setErrorMessageAuth}
       />
     </div>

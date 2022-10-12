@@ -35,7 +35,7 @@ export default function useResource() {
     getComments();
   }, []);
 
-  const generalErrorMessage = "There seems to be an error with our servers";
+  const generalErrorMessage = "Our servers are currently down. Please try again soon.";
 
   async function getMusicPosts() {
     try {
