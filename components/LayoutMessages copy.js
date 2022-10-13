@@ -7,6 +7,8 @@ import { useAuth } from "../contexts/auth";
 import { Col, Row, Container, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
+import SideBar from "./SideBar";
+
 export default function LayoutMessages(props) {
   // const {  userRoles } = useContext(UserContext)
   const router = useRouter();
@@ -76,53 +78,20 @@ export default function LayoutMessages(props) {
     setShowNewChannelModal(true);
   }
   const size = 100;
-  const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
-    <>
-      <div style={{cursor: "pointer"}}>
-        <li>
-          <div onClick={() => props.setActiveChannel(channel.id)}>
-            <a className={isActiveChannel ? "font-weight-bold " : ""}>
-              {channel.slug}
-            </a>
-          </div>
-          {channel.id !== 1 &&
-            (channel.created_by === user?.id ||
-              userRoles.includes("admin")) && (
-              <button onClick={() => deleteChannel(channel.id)}>
-                <TrashIcon />
-              </button>
-            )}
-        </li>
-      </div>
-    </>
-  );
 
   return (
     <main>
       {/* Sidebar */}
       <Container>
         <div className="row">
-          <div className="side-bar col">
-            <div>
-              {/* <button onClick={() => newChannel()}>New Channel</button> */}
-              <button onClick={() => openNewChannelModal()}>New Message</button>
-            </div>
+          <SideBar
+            channels={props.channels}
+            openNewChannelModal={() => openNewChannelModal()}
+            user={user}
+            userRoles={userRoles}
+            setActiveChannel={props.setActiveChannel}
+          />
 
-            <hr />
-            <h4>Channels</h4>
-            <ul className="channel-list">
-              {props.channels.map((x) => (
-                <SidebarItem
-                  channel={x}
-                  key={x.id}
-                  isActiveChannel={x.id === props.activeChannelId}
-                  setActiveChannel={props.setActiveChannel}
-                  user={user}
-                  userRoles={userRoles}
-                />
-              ))}
-            </ul>
-          </div>
           <div className="col">
             {/* Messages */}
             <div>{props.children}</div>
@@ -190,3 +159,22 @@ export default function LayoutMessages(props) {
     </main>
   );
 }
+export const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
+  <>
+    <div style={{ cursor: "pointer" }}>
+      <li>
+        <div onClick={() => props.setActiveChannel(channel.id)}>
+          <a className={isActiveChannel ? "font-weight-bold " : ""}>
+            {channel.slug}
+          </a>
+        </div>
+        {channel.id !== 1 &&
+          (channel.created_by === user?.id || userRoles.includes("admin")) && (
+            <button onClick={() => deleteChannel(channel.id)}>
+              <TrashIcon />
+            </button>
+          )}
+      </li>
+    </div>
+  </>
+);
