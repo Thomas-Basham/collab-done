@@ -14,7 +14,7 @@ const ChannelsPage = (props) => {
     }
   });
 
-  const { signOut, session } = useAuth();
+  const { signOut, session, username, absoluteAvatar_urlAuth } = useAuth();
 
   const user = session?.user;
   // const { user, authLoaded, signOut } = useContext(UserContext)
@@ -53,7 +53,7 @@ const ChannelsPage = (props) => {
       </div>
       <div className="">
         <MessageInput
-          onSubmit={async (text) => addMessage(text, channelId, user.id)}
+          onSubmit={async (text) => addMessage(text, channelId, user.id, username, absoluteAvatar_urlAuth)}
         />
       </div>
     </LayoutMessages>

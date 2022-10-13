@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import UserContext from "./lib/UserContext";
 import { deleteMessage } from "./lib/Store";
 import TrashIcon from "./TrashIcon";
 import { useAuth } from "../contexts/auth";
@@ -10,7 +8,7 @@ const Message = ({ message }) => {
   const { signOut, session, userRoles } = useAuth();
   const user = session.user;
 
-  console.log(userRoles);
+  const size = 60;
   return (
     <div className="w-100 row">
       <div className="col-1">
@@ -23,7 +21,23 @@ const Message = ({ message }) => {
       </div>
       <div className="col ">
         <header>
-          <h6 className="">{message.user_id}</h6>
+          {message.absolute_avatar_url ? (
+            <img
+              src={message.absolute_avatar_url}
+              alt={message.username}
+              className="avatar image"
+              style={{ height: size, width: size }}
+            />
+          ) : (
+            <>
+              <br></br>
+              <div
+                className="avatar no-image"
+                style={{ height: size, width: size }}
+              />
+            </>
+          )}
+          <h6 className="">{message.username}</h6>
         </header>
         <p className="">{message.message}</p>
       </div>

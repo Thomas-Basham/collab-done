@@ -66,10 +66,10 @@ export default function LayoutMessages(props) {
       .replace(/-+$/, ""); // Trim - from end of text
   };
 
-  const newChannel = async () => {
-    const slug = prompt("Please enter your name");
-    if (slug) {
-      addChannel(slugify(slug), user.id);
+  const newChannel = async (channelName, user_id) => {
+    if (channelName) {
+      addChannel(channelName, user.id, user_id);
+      setShowNewChannelModal(false)
     }
   };
 
@@ -134,7 +134,7 @@ export default function LayoutMessages(props) {
         <div className="user-list">
           {foundUsers && foundUsers.length > 0 ? (
             foundUsers.map((user) => (
-              <div key={user.id} className="user">
+              <div key={user.id} className="user" onClick={ () => newChannel(user.username, user.id)} style={{cursor: "pointer"}}>
                 {user.absolute_avatar_url ? (
                   <img
                     src={user.absolute_avatar_url}
@@ -157,7 +157,7 @@ export default function LayoutMessages(props) {
               </div>
             ))
           ) : (
-            <h1>No results found!</h1>
+            <h5>No results found!</h5>
           )}
         </div>
       </Modal>
