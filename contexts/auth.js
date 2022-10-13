@@ -405,9 +405,9 @@ export function AuthProvider({ children }) {
   async function signOut() {
     // Ends user session
     router.push("/");
+    await supabase.auth.signOut();
     setSession(null);
     setUsername(null);
-    await supabase.auth.signOut();
   }
   const value = {
     signUp: (data) => supabase.auth.signUp(data),
@@ -442,7 +442,6 @@ export function AuthProvider({ children }) {
     soundcloud_url,
     setSoundcloud_url,
     absoluteAvatar_urlAuth,
-
     userRoles,
   };
 

@@ -6,7 +6,7 @@ const Message = ({ message }) => {
   // const { userRoles } = useContext(UserContext)
 
   const { signOut, session, userRoles } = useAuth();
-  const user = session.user;
+  const user = session?.user;
 
   const size = 60;
   return (
