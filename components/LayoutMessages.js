@@ -30,6 +30,29 @@ export default function LayoutMessages(props) {
   }),
     [];
 
+  // the value of the search field
+  const [name, setName] = useState("");
+
+  // the search result
+  const [foundUsers, setFoundUsers] = useState(allProfiles);
+
+  const filter = (e) => {
+    const keyword = e.target.value;
+
+    if (keyword !== "") {
+      const results = allProfiles.filter((user) => {
+        return user.username?.toLowerCase().startsWith(keyword.toLowerCase());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setFoundUsers(results);
+    } else {
+      setFoundUsers(allProfiles);
+      // If the text field is empty, show all users
+    }
+
+    setName(keyword);
+  };
+
   const user = session?.user;
 
   const slugify = (text) => {
@@ -53,7 +76,7 @@ export default function LayoutMessages(props) {
   function openNewChannelModal() {
     setShowNewChannelModal(true);
   }
-
+  const size = 100;
   return (
     <main>
       {/* Sidebar */}
@@ -98,14 +121,45 @@ export default function LayoutMessages(props) {
         </Modal.Header>
         <br></br>
         <br></br>
-        <br></br>
+
         <input
-          type={"text"}
-          id={"user-search"}
-          value={userSearch || ""}
-          onChange={(e) => setUserSearch(e.target.value)}
-          placeholder="Search by username"
+          type="search"
+          value={name}
+          onChange={filter}
+          className="input"
+          placeholder="Filter"
         />
+        <br></br>
+
+        <div className="user-list">
+          {foundUsers && foundUsers.length > 0 ? (
+            foundUsers.map((user) => (
+              <div key={user.id} className="user">
+                {user.absolute_avatar_url ? (
+                  <img
+                    src={user.absolute_avatar_url}
+                    alt={user.username}
+                    className="avatar image"
+                    style={{ height: size, width: size }}
+                  />
+                ) : (
+                  <>
+                    <br></br>
+                    <div
+                      className="avatar no-image"
+                      style={{ height: size, width: size }}
+                    />
+                  </>
+                )}
+                <span className="user-name">{user.username}</span>
+                <span className="user-age">{user.age} </span>
+                <br></br>
+              </div>
+            ))
+          ) : (
+            <h1>No results found!</h1>
+          )}
+        </div>
       </Modal>
     </main>
   );
