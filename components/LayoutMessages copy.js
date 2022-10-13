@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import UserContext from "./lib/UserContext";
 import { addChannel, deleteChannel } from "./lib/Store";
 import TrashIcon from "/components/TrashIcon";
 import { useAuth } from "../contexts/auth";
@@ -69,8 +68,10 @@ export default function LayoutMessages(props) {
 
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
-      addChannel(channelName, user.id, user_id);
+      let channel = await addChannel(channelName, user.id, user_id);
+
       setShowNewChannelModal(false);
+      props.setActiveChannel(channel[0].id);
     }
   };
 
@@ -86,10 +87,11 @@ export default function LayoutMessages(props) {
         <div className="row">
           <SideBar
             channels={props.channels}
-            openNewChannelModal={() => openNewChannelModal()}
+            openNewChannelModal={openNewChannelModal}
             user={user}
             userRoles={userRoles}
             setActiveChannel={props.setActiveChannel}
+            deleteChannel={deleteChannel}
           />
 
           <div className="col">
@@ -159,22 +161,3 @@ export default function LayoutMessages(props) {
     </main>
   );
 }
-export const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
-  <>
-    <div style={{ cursor: "pointer" }}>
-      <li>
-        <div onClick={() => props.setActiveChannel(channel.id)}>
-          <a className={isActiveChannel ? "font-weight-bold " : ""}>
-            {channel.slug}
-          </a>
-        </div>
-        {channel.id !== 1 &&
-          (channel.created_by === user?.id || userRoles.includes("admin")) && (
-            <button onClick={() => deleteChannel(channel.id)}>
-              <TrashIcon />
-            </button>
-          )}
-      </li>
-    </div>
-  </>
-);

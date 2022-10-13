@@ -696,26 +696,16 @@ svg:hover {
   min-width: 77% !important;
   max-width: 77% !important;
 }
-
-/* SCREEN WIDTH */
-
-@media only screen and (min-width: 60em) {
-
-  /* 960px */
-  .footer>div:first-child {
-    display: flex;
-  }
-
-  .footer>div:nth-child(2) {
-    justify-content: center;
-  }
-
-
+ul {
+  list-style-type: none;
 }
 
+
+
+
 .channel-list li a:before {
-  content: '# ';
   opacity: 0.5;
+  list-style-type: none;
 }
 
 .channel-list li a:hover {
@@ -741,6 +731,25 @@ svg:hover {
   width: 20vw !important;
 }
 
+.dropdown-menu, .dropdown-menu:hover, .dropdown-item{
+  background-color: var(--custom-panel-color) !important;
+}
+
+/* SCREEN WIDTH */
+
+@media only screen and (min-width: 60em) {
+
+  /* 960px */
+  .footer>div:first-child {
+    display: flex;
+  }
+
+  .footer>div:nth-child(2) {
+    justify-content: center;
+  }
+
+
+}
 
 
 
