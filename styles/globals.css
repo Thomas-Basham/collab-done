@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
 
+
 html,
 body {
   --custom-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
@@ -456,6 +457,11 @@ header h5 {
   color: var(--custom-color-brand)
 }
 
+header h6 {
+  letter-spacing: .1px;
+  color: var(--custom-color-brand)
+}
+
 nav {
   box-sizing: border-box;
   margin: 0;
@@ -614,7 +620,7 @@ small {
 
 }
 
-.edit-delete-buttons{
+.edit-delete-buttons {
   float: right;
   text-align: right;
   /* justify-content: end; */
@@ -707,20 +713,34 @@ svg:hover {
 
 }
 
-/* .channel-list {
-  li a:before {
-    content: '# ';
-    opacity: 0.5;
-  }
-  li a:hover {
-    opacity: 0.9;
-  }
+.channel-list li a:before {
+  content: '# ';
+  opacity: 0.5;
 }
+
+.channel-list li a:hover {
+  opacity: 0.9;
+}
+
 .Messages {
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
-} */
+}
+
+.channel-container {
+  width: 60vw !important;
+  border: var(--custom-border);
+  padding: 40px;
+  max-height: 40vh;
+  min-height: 40vh;
+  overflow: scroll;
+}
+
+.side-bar {
+  width: 20vw !important;
+}
+
 
 
 

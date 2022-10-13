@@ -25,7 +25,7 @@ export default function useResource() {
   const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
   const [potentialCollaborators, setPotentialCollaborators] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
 
   useEffect(() => {
     getMusicPosts();
@@ -35,7 +35,8 @@ export default function useResource() {
     getComments();
   }, []);
 
-  const generalErrorMessage = "Our servers are currently down. Please try again soon.";
+  const generalErrorMessage =
+    "Our servers are currently down. Please try again soon.";
 
   async function getMusicPosts() {
     try {

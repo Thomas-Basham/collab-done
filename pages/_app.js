@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import Layout from "../components/layout";
 import { AuthProvider } from "../contexts/auth";
-import GithubCorner from 'react-github-corner';
-
+import GithubCorner from "react-github-corner";
+<link href="/dist/output.css" rel="stylesheet" />;
 
 import ThemeProvider from "react-bootstrap/ThemeProvider";
 function MyApp({ Component, pageProps }) {
@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps }) {
       >
         <Layout>
           <Component {...pageProps} />
+
           <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }) {
             crossOrigin="anonymous"
           />
         </Layout>
-      <GithubCorner href="https://github.com/Thomas-Basham/collab-done" />
+        <GithubCorner href="https://github.com/Thomas-Basham/collab-done" />
       </ThemeProvider>
     </AuthProvider>
   );

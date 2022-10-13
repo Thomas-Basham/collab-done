@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
 import ErrorModal from "./ErrorModal";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 export default function Layout({ children }) {
   const { signOut, session, errorMessageAuth, setErrorMessageAuth } = useAuth();
@@ -31,6 +33,18 @@ export default function Layout({ children }) {
         errorMessageAuth={errorMessageAuth}
         setErrorMessageAuth={setErrorMessageAuth}
       />
+
+      <div className="mb-2 d-flex justify-content-end`">
+        <DropdownButton
+          key={"up"}
+          id={`dropdown-button-drop-up`}
+          drop={"up"}
+          variant="none"
+          title={` Messages `}
+        >
+          <Dropdown.Item eventKey="up">Action</Dropdown.Item>
+        </DropdownButton>
+      </div>
     </div>
   );
 }

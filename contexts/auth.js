@@ -10,21 +10,19 @@ export function AuthProvider({ children }) {
   const [errorMessageAuth, setErrorMessageAuth] = useState(null);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [username, setUsername] = useState('');
-  const [bio, setBio] = useState('');
-  const [website, setWebsite] = useState('');
-  const [avatar_url, setAvatarUrl] = useState('');
-  const [instagram_url, setInstagram_url] = useState('');
-  const [twitter_url, setTwitter_url] = useState('');
-  const [spotify_url, setSpotify_url] = useState('');
-  const [soundcloud_url, setSoundcloud_url] = useState('');
-  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState('');
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [website, setWebsite] = useState("");
+  const [avatar_url, setAvatarUrl] = useState("");
+  const [instagram_url, setInstagram_url] = useState("");
+  const [twitter_url, setTwitter_url] = useState("");
+  const [spotify_url, setSpotify_url] = useState("");
+  const [soundcloud_url, setSoundcloud_url] = useState("");
+  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState("");
 
-
-  const [userLoaded, setUserLoaded] = useState(false)
-  const [user, setUser] = useState(null)
-  const [userRoles, setUserRoles] = useState(null)
-
+  const [userLoaded, setUserLoaded] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userRoles, setUserRoles] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -38,8 +36,7 @@ export function AuthProvider({ children }) {
       if (mounted) {
         if (session) {
           setSession(session);
-          signIn()
-
+          signIn();
         }
 
         setIsLoading(false);
@@ -54,24 +51,24 @@ export function AuthProvider({ children }) {
     //   }
     // );
 
-
-    const { subscription: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session)
-      const currentUser = session?.user
-      setUser(currentUser ?? null)
-      setUserLoaded(!!currentUser)
-      if (currentUser) {
-        signIn(currentUser.id, currentUser.email)
-        router.push('/channels/[id]', '/channels/1')
+    const { subscription: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        const currentUser = session?.user;
+        setUser(currentUser ?? null);
+        setUserLoaded(!!currentUser);
+        if (currentUser) {
+          signIn(currentUser.id, currentUser.email);
+          router.push("/channels/[id]", "/channels/1");
+        }
       }
-    })
+    );
 
     return () => {
       mounted = false;
 
       // subscription?.unsubscribe();
-      authListener.unsubscribe()
-
+      authListener.unsubscribe();
     };
   }, []);
 
@@ -79,11 +76,11 @@ export function AuthProvider({ children }) {
     getProfile();
   }, [session]);
 
-
   const signIn = async () => {
-    await fetchUserRoles((userRoles) => setUserRoles(userRoles.map((userRole) => userRole.role)))
-  }
-
+    await fetchUserRoles((userRoles) =>
+      setUserRoles(userRoles.map((userRole) => userRole.role))
+    );
+  };
 
   const generalErrorMessage = "There seems to be an error with our servers";
 
@@ -407,7 +404,7 @@ export function AuthProvider({ children }) {
 
   async function signOut() {
     // Ends user session
-    // router.push("/");
+    router.push("/");
     setSession(null);
     setUsername(null);
     await supabase.auth.signOut();
@@ -446,8 +443,7 @@ export function AuthProvider({ children }) {
     setSoundcloud_url,
     absoluteAvatar_urlAuth,
 
-    userRoles, 
-
+    userRoles,
   };
 
   return (
