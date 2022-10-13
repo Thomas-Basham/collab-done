@@ -20,6 +20,12 @@ export function AuthProvider({ children }) {
   const [soundcloud_url, setSoundcloud_url] = useState('');
   const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState('');
 
+
+  const [userLoaded, setUserLoaded] = useState(false)
+  const [user, setUser] = useState(null)
+  const [userRoles, setUserRoles] = useState(null)
+
+
   useEffect(() => {
     let mounted = true;
 
@@ -40,22 +46,44 @@ export function AuthProvider({ children }) {
 
     getInitialSession();
 
-    const { subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
+    // const { subscription } = supabase.auth.onAuthStateChange(
+    //   (_event, session) => {
+    //     setSession(session);
+    //   }
+    // );
+
+
+    const { subscription: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setSession(session)
+      const currentUser = session?.user
+      setUser(currentUser ?? null)
+      setUserLoaded(!!currentUser)
+      if (currentUser) {
+        signIn(currentUser.id, currentUser.email)
+        router.push('/channels/[id]', '/channels/1')
       }
-    );
+    })
 
     return () => {
       mounted = false;
 
-      subscription?.unsubscribe();
+      // subscription?.unsubscribe();
+      authListener.unsubscribe()
+
     };
   }, []);
 
   useEffect(() => {
     getProfile();
   }, [session]);
+
+
+  const signIn = async () => {
+    await fetchUserRoles((userRoles) => setUserRoles(userRoles.map((userRole) => userRole.role)))
+  }
+
+
+
 
   const generalErrorMessage = "There seems to be an error with our servers";
 
@@ -417,6 +445,9 @@ export function AuthProvider({ children }) {
     soundcloud_url,
     setSoundcloud_url,
     absoluteAvatar_urlAuth,
+
+    userRoles, 
+    
   };
 
   return (
