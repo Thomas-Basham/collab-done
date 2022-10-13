@@ -1,23 +1,35 @@
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "./lib/UserContext";
 import { addChannel, deleteChannel } from "./lib/Store";
 import TrashIcon from "/components/TrashIcon";
 import { useAuth } from "../contexts/auth";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row, Container, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
+import useResource from "../hooks/useResource";
 export default function LayoutMessages(props) {
   // const {  userRoles } = useContext(UserContext)
+  const router = useRouter();
 
-  const { signOut, session, userRoles, errorMessageAuth, setErrorMessageAuth } =
-    useAuth();
+  const { signOut, session, userRoles } = useAuth();
+  const { getAllProfiles, allProfiles } = useResource();
 
-    const router = useRouter();
-    useEffect(() => {
-      if (!session?.user) {
-        router.push("/");
-      }
-    });
+  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
+  const [userSearch, setUserSearch] = useState("");
+
+  useEffect(() => {
+    if (!session?.user) {
+      router.push("/");
+    }
+  });
+  useEffect(() => {
+    if (!allProfiles) {
+      getAllProfiles();
+    }
+    console.log(allProfiles);
+  }),
+    [];
+
   const user = session?.user;
 
   const slugify = (text) => {
@@ -38,36 +50,63 @@ export default function LayoutMessages(props) {
     }
   };
 
+  function openNewChannelModal() {
+    setShowNewChannelModal(true);
+  }
+
   return (
     <main>
       {/* Sidebar */}
-      <Container >
-          <div className="row" >
-              <div className="side-bar col">
-                <div>
-                  <button onClick={() => newChannel()}>New Channel</button>
-                </div>
+      <Container>
+        <div className="row">
+          <div className="side-bar col">
+            <div>
+              {/* <button onClick={() => newChannel()}>New Channel</button> */}
+              <button onClick={() => openNewChannelModal()}>New Message</button>
+            </div>
 
-                <hr />
-                <h4>Channels</h4>
-                <ul className="channel-list">
-                  {props.channels.map((x) => (
-                    <SidebarItem
-                      channel={x}
-                      key={x.id}
-                      isActiveChannel={x.id === props.activeChannelId}
-                      user={user}
-                      userRoles={userRoles}
-                    />
-                  ))}
-                </ul>
-              </div>
-          <div className="col" >
+            <hr />
+            <h4>Channels</h4>
+            <ul className="channel-list">
+              {props.channels.map((x) => (
+                <SidebarItem
+                  channel={x}
+                  key={x.id}
+                  isActiveChannel={x.id === props.activeChannelId}
+                  user={user}
+                  userRoles={userRoles}
+                />
+              ))}
+            </ul>
+          </div>
+          <div className="col">
             {/* Messages */}
             <div>{props.children}</div>
           </div>
-          </div>
+        </div>
       </Container>
+
+      <Modal
+        show={showNewChannelModal}
+        onHide={() => setShowNewChannelModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Search for a new user here</Modal.Title>
+        </Modal.Header>
+        <br></br>
+        <br></br>
+        <br></br>
+        <input
+          type={"text"}
+          id={"user-search"}
+          value={userSearch || ""}
+          onChange={(e) => setUserSearch(e.target.value)}
+          placeholder="Search by username"
+        />
+      </Modal>
     </main>
   );
 }

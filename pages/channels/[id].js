@@ -3,8 +3,7 @@ import Message from "../../components/Message";
 import MessageInput from "../../components/MessageInput";
 import { useRouter } from "next/router";
 import { useStore, addMessage } from "../../components/lib/Store";
-import { useContext, useEffect, useRef } from "react";
-import UserContext from "../../components/lib/UserContext";
+import {  useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/auth";
 
 const ChannelsPage = (props) => {
