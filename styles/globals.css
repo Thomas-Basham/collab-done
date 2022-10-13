@@ -707,6 +707,21 @@ svg:hover {
 
 }
 
+/* .channel-list {
+  li a:before {
+    content: '# ';
+    opacity: 0.5;
+  }
+  li a:hover {
+    opacity: 0.9;
+  }
+}
+.Messages {
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+} */
+
 
 
 @media (max-width: 600px) {

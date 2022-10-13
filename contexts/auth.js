@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-
+import { fetchUserRoles } from "../components/lib/Store";
 const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
@@ -38,6 +38,8 @@ export function AuthProvider({ children }) {
       if (mounted) {
         if (session) {
           setSession(session);
+          signIn()
+
         }
 
         setIsLoading(false);
@@ -81,8 +83,6 @@ export function AuthProvider({ children }) {
   const signIn = async () => {
     await fetchUserRoles((userRoles) => setUserRoles(userRoles.map((userRole) => userRole.role)))
   }
-
-
 
 
   const generalErrorMessage = "There seems to be an error with our servers";
@@ -447,7 +447,7 @@ export function AuthProvider({ children }) {
     absoluteAvatar_urlAuth,
 
     userRoles, 
-    
+
   };
 
   return (
