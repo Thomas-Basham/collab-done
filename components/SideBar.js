@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { SidebarItem } from "./LayoutMessages copy";
 import TrashIcon from "/components/TrashIcon";
 
 export default function SideBar(props) {

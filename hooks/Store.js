@@ -22,6 +22,8 @@ export default function useStore() {
 
   // Load initial data and set up listeners
   useEffect(() => {
+    const handleAsync = async () => {
+
     // Get Channels
     fetchChannels(setChannels);
     // Listen for new and deleted messages
@@ -30,8 +32,13 @@ export default function useStore() {
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
-        (payload) => {
-          console.log(payload);
+       async (payload) => {
+          // console.log(payload);
+          console.log(payload.new.channel_id);
+         await setChannelId(payload.new.channel_id)
+        fetchMessages();
+
+         // console.log(channelId)
           handleNewMessage(payload.new);
         }
       )
@@ -78,26 +85,29 @@ export default function useStore() {
         }
       )
       .subscribe();
+  } 
+   handleAsync();
+
     // Cleanup on unmount
     // return () => {
     //   supabase.removeChannel('public:messages')
     //   supabase.removeChannel('public:profiles')
     //   supabase.removeChannel('public:channels')
     // }
-    console.log(newMessage);
+    // console.log(newMessage);
   }, []);
 
-  console.log(channelId);
+  // console.log(channelId);
   // Update when the route changes
   useEffect(() => {
     if (channelId > 0) {
-      fetchMessages(channelId);
+      fetchMessages();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
   useEffect(() => {
     if (newMessage) {
-      fetchMessages(channelId);
+      fetchMessages();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage]);
@@ -114,7 +124,7 @@ export default function useStore() {
       handleAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }); //, [newMessage]
+  } , [newMessage]); //
 
   // Deleted message received from postgres
   useEffect(() => {
@@ -195,7 +205,7 @@ export default function useStore() {
  * @param {number} channelId
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
- const fetchMessages = async (channelId) => {
+ const fetchMessages = async () => {
   try {
     let { data } = await supabase
       .from("messages")
