@@ -1,23 +1,21 @@
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-// import { addChannel, deleteChannel } from "../hooks/Store";
-import TrashIcon from "/components/TrashIcon";
+import {  useEffect, useState } from "react";
+
 import { useAuth } from "../contexts/auth";
-import { Col, Row, Container, Modal } from "react-bootstrap";
+import {  Container, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 import SideBar from "./SideBar";
+import NewChannelModal from "./NewChannelModal";
 import useStore from "../hooks/Store";
-
 export default function LayoutMessages(props) {
   // const {  userRoles } = useContext(UserContext)
   const router = useRouter();
-  const { addChannel, deleteChannel } = useStore()
   const { signOut, session, userRoles } = useAuth();
   const { getAllProfiles, allProfiles } = useResource();
 
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
   const [userSearch, setUserSearch] = useState("");
+  const {addChannel,deleteChannel, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
 
   useEffect(() => {
     if (!session?.user) {
@@ -30,50 +28,10 @@ export default function LayoutMessages(props) {
     }
   }, []);
 
-  // the value of the search field
-  const [name, setName] = useState("");
+    const user = session?.user;
 
-  // the search result
-  const [foundUsers, setFoundUsers] = useState(allProfiles);
 
-  const filter = (e) => {
-    const keyword = e.target.value;
 
-    if (keyword !== "") {
-      const results = allProfiles.filter((user) => {
-        return user.username?.toLowerCase().startsWith(keyword.toLowerCase());
-        // Use the toLowerCase() method to make it case-insensitive
-      });
-      setFoundUsers(results);
-    } else {
-      setFoundUsers(allProfiles);
-      // If the text field is empty, show all users
-    }
-
-    setName(keyword);
-  };
-
-  const user = session?.user;
-
-  const slugify = (text) => {
-    return text
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, "-") // Replace spaces with -
-      .replace(/[^\w-]+/g, "") // Remove all non-word chars
-      .replace(/--+/g, "-") // Replace multiple - with single -
-      .replace(/^-+/, "") // Trim - from start of text
-      .replace(/-+$/, ""); // Trim - from end of text
-  };
-
-  const newChannel = async (channelName, user_id) => {
-    if (channelName) {
-      let channel = await addChannel(channelName, user.id, user_id);
-
-      setShowNewChannelModal(false);
-      props.setActiveChannel(channel[0].id);
-    }
-  };
 
   function openNewChannelModal() {
     setShowNewChannelModal(true);
@@ -86,12 +44,10 @@ export default function LayoutMessages(props) {
       <Container>
         <div className="row">
           <SideBar
-            channels={props.channels}
             openNewChannelModal={openNewChannelModal}
             user={user}
             userRoles={userRoles}
-            setActiveChannel={props.setActiveChannel}
-            deleteChannel={deleteChannel}
+
           />
 
           <div className="col">
@@ -101,7 +57,17 @@ export default function LayoutMessages(props) {
         </div>
       </Container>
 
-      <Modal
+
+      <NewChannelModal
+      setShowNewChannelModal={setShowNewChannelModal}
+      showNewChannelModal={showNewChannelModal}
+      addChannel={addChannel}
+      allProfiles={allProfiles}
+      user={user}
+      />
+
+
+      {/* <Modal
         show={showNewChannelModal}
         onHide={() => setShowNewChannelModal(false)}
         size="lg"
@@ -157,7 +123,7 @@ export default function LayoutMessages(props) {
             <h5>No results found!</h5>
           )}
         </div>
-      </Modal>
+      </Modal> */}
     </main>
   );
 }

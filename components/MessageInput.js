@@ -1,8 +1,19 @@
 import { useState } from "react";
+import useStore from "../hooks/Store";
 
-const MessageInput = ({ onSubmit, channelId }) => {
+const MessageInput = ({ onSubmit }) => {
   const [messageText, setMessageText] = useState("");
 
+  const {
+    addChannel,
+    deleteChannel,
+    messages,
+    newMessage,
+    channels,
+    channelId,
+    setChannelId,
+    addMessage,
+  } = useStore();
   const submitOnEnter = (event) => {
     // Watch for enter key
     if (event.keyCode === 13) {
@@ -11,6 +22,7 @@ const MessageInput = ({ onSubmit, channelId }) => {
     }
   };
 
+  console.log(channelId)
   return (
     <>
       <input

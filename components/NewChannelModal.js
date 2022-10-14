@@ -1,19 +1,26 @@
 import Link from "next/link";
 import { Container, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import useStore from "../hooks/Store";
+
 export default function NewChannelModal(props) {
   // the value of the search field
   const [name, setName] = useState("");
 
   // the search result
   const [foundUsers, setFoundUsers] = useState(props.allProfiles);
+  const {addChannel,deleteChannel, messages, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
 
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
-      let channel = await props.addChannel(channelName, props.user.id, user_id);
+      let channel = await addChannel(channelName, props.user.id, user_id);
 
       props.setShowNewChannelModal(false);
-      props.setActiveChannel(channel[0].id);
+      if (channel[0]?.id){
+        setChannelId(channel[0].id);
+
+      }
+
     }
   };
 

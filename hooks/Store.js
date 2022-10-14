@@ -18,12 +18,12 @@ export default function useStore() {
   const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null);
   const [deletedChannel, handleDeletedChannel] = useState(null);
   const [deletedMessage, handleDeletedMessage] = useState(null);
-  const [channelId, setChannelId] = useState(channelId);
+  const [channelId, setChannelId] = useState(null);
   const [incomingChannelId, setIncomingChannelId] = useState(null);
   // Load initial data and set up listeners
   // console.log(channelId)
   useEffect(() => {
-    const handleAsync =  () => {
+    const handleAsync = () => {
       // Get Channels
       fetchChannels(setChannels);
       // Listen for new and deleted messages
@@ -32,14 +32,13 @@ export default function useStore() {
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "messages" },
-           (payload) => {
-            console.log({payload});
+          (payload) => {
+            console.log({ payload });
             console.log([payload.new.channel_id]);
 
-            setIncomingChannelId(payload.new.channel_id)
+            setIncomingChannelId(payload.new.channel_id);
             handleNewMessage(payload.new);
             // fetchMessages(payload.new.channel_id);
-
           }
         )
         .on(
@@ -88,7 +87,6 @@ export default function useStore() {
         .subscribe();
     };
     handleAsync();
-
     // Cleanup on unmount
     // return () => {
     //   supabase.removeChannel('public:messages')
@@ -103,35 +101,24 @@ export default function useStore() {
   useEffect(() => {
     if (channelId) {
       fetchMessages(channelId);
+      console.log(channelId, "CHANNEL ID CHANGED");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
   useEffect(() => {
     if (newMessage) {
       fetchMessages(incomingChannelId);
+      console.log({ newMessage });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage]);
 
-  // // New message received from Postgres
-  // useEffect(() => {
-  //   if (newMessage && newMessage.channel_id == Number(channelId)) {
-  //     const handleAsync = async () => {
-  //       let authorId = newMessage.user_id;
-  //       if (!users.get(authorId))
-  //         await fetchUser(authorId, (user) => handleNewOrUpdatedUser(user));
-  //       setMessages(messages.concat(newMessage));
-  //     };
-  //     handleAsync();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // } , [newMessage]); //
   // New message received from Postgres
   useEffect(() => {
     if (newMessage && newMessage.channel_id == channelId) {
       const handleAsync = async () => {
         setMessages(messages.concat(newMessage));
-      console.log({newMessage})
+        console.log({ newMessage });
       };
       handleAsync();
     }
@@ -228,10 +215,11 @@ export default function useStore() {
         .eq("channel_id", id)
         .order("inserted_at", true);
       if (data) {
-        console.log(data);
-        setMessages(data);
+        console.log({ data });
+        await setMessages(data);
+        console.log(messages);
+        return data;
       }
-      return data;
     } catch (error) {
       console.log("error", error);
     }
@@ -313,7 +301,7 @@ export default function useStore() {
   };
   return {
     // We can export computed values here to map the authors to each message
-    messages: messages.map((x) => ({ ...x })),
+    messages,
     channels:
       channels !== null
         ? channels.sort((a, b) => a.slug.localeCompare(b.slug))

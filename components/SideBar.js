@@ -1,8 +1,24 @@
 import Link from "next/link";
-import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import TrashIcon from "/components/TrashIcon";
-
+import useStore from "../hooks/Store";
+import { useAuth } from "../contexts/auth";
 export default function SideBar(props) {
+  const {
+    addChannel,
+    deleteChannel,
+    messages,
+    newMessage,
+    channels,
+    channelId,
+    setChannelId,
+    addMessage,
+  } = useStore();
+  const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
+
+  let filteredChannels = channels.filter(
+    (chanel) => chanel.message_to || chanel.created_by == session.user.id
+  );
+
   if (props.global == true) {
     const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
       <>
@@ -16,7 +32,7 @@ export default function SideBar(props) {
             {/* {channel.id !== 1 &&
               (channel.created_by === user?.id ||
                 userRoles.includes("admin")) && (
-                <button onClick={() => props.deleteChannel(channel.id)}>
+                <button onClick={() => deleteChannel(channel.id)}>
                   <TrashIcon />
                 </button>
               )} */}
@@ -28,20 +44,16 @@ export default function SideBar(props) {
       <>
         <div className="side-bar col">
           <div>
-              <button>New Message</button>{" "}
-
+            <button>New Message</button>{" "}
           </div>
           <hr />
           <h4>Channels</h4>
           <ul className="channel-list">
-            {props.channels.map((x) => (
+            {filteredChannels.map((x) => (
               <SidebarItem
                 channel={x}
                 key={x.id}
-                isActiveChannel={x.id === props.activeChannelId}
-                setActiveChannel={props.setActiveChannel}
-                user={props.user}
-                userRoles={props.userRoles}
+                isActiveChannel={x.id === channelId}
               />
             ))}
           </ul>
@@ -49,14 +61,16 @@ export default function SideBar(props) {
       </>
     );
   } else {
-    const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
+    const SidebarItem = ({ user, userRoles, isActiveChannel, channel }) => (
       <>
         <div style={{ cursor: "pointer" }}>
           <li>
-            <div onClick={() => props.setActiveChannel(channel.id)}>
+            <div onClick={() => setChannelId(channel.id)}>
               <p
                 className={
-                  isActiveChannel ? "font-weight-bold text-capitalize" : ""
+                  isActiveChannel
+                    ? "font-weight-bold text-decoration-underline"
+                    : ""
                 }
               >
                 {channel.slug}
@@ -64,9 +78,9 @@ export default function SideBar(props) {
             </div>
 
             {channel.id !== 1 &&
-              (channel.created_by === user?.id ||
-                userRoles.includes("admin")) && (
-                <span onClick={() => props.deleteChannel(channel.id)}>
+              (channel.created_by === user?.id || userRoles.includes("admin")) |
+                (channel.message_to === user?.id) && (
+                <span onClick={() => deleteChannel(channel.id)}>
                   <TrashIcon />
                 </span>
               )}
@@ -86,15 +100,13 @@ export default function SideBar(props) {
           <hr />
           <h4>Channels</h4>
           <ul className="channel-list">
-            {props.channels.map((x) => (
+            {filteredChannels.map((x) => (
               <SidebarItem
                 channel={x}
                 key={x.id}
-                isActiveChannel={x.id == props.activeChannelId}
-                setActiveChannel={props.setActiveChannel}
+                isActiveChannel={x.id == channelId}
                 user={props.user}
-                deleteChannel={props.deleteChannel}
-                userRoles={props.userRoles}
+                userRoles={userRoles}
               />
             ))}
           </ul>
