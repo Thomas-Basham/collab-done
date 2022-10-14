@@ -5,15 +5,15 @@ import { useAuth } from "../contexts/auth";
 const Message = ({ message }) => {
   // const { userRoles } = useContext(UserContext)
 
-  const { signOut, session, userRoles } = useAuth();
+  const {  session, userRoles } = useAuth();
   const user = session?.user;
-  const { deleteMessage, messages, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
+  const { deleteMessage} = useStore();
 
   const size = 60;
   return (
     <div className="w-100 row">
       <div className="col-1">
-        {(user?.id === message.user_id ||
+        {(user?.id == message.user_id ||
           userRoles.some((role) => ["admin", "moderator"].includes(role))) && (
           <span onClick={() => deleteMessage(message.id)}>
             <TrashIcon />

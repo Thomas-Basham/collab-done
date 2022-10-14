@@ -93,6 +93,7 @@ export default function SideBar(props) {
                 isActiveChannel={x.id == props.activeChannelId}
                 setActiveChannel={props.setActiveChannel}
                 user={props.user}
+                deleteChannel={props.deleteChannel}
                 userRoles={props.userRoles}
               />
             ))}

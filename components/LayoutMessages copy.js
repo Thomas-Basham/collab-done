@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { addChannel, deleteChannel } from "../hooks/Store";
+// import { addChannel, deleteChannel } from "../hooks/Store";
 import TrashIcon from "/components/TrashIcon";
 import { useAuth } from "../contexts/auth";
 import { Col, Row, Container, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 import SideBar from "./SideBar";
+import useStore from "../hooks/Store";
 
 export default function LayoutMessages(props) {
   // const {  userRoles } = useContext(UserContext)
   const router = useRouter();
-
+  const { addChannel, deleteChannel } = useStore()
   const { signOut, session, userRoles } = useAuth();
   const { getAllProfiles, allProfiles } = useResource();
 
@@ -27,7 +28,7 @@ export default function LayoutMessages(props) {
     if (!allProfiles) {
       getAllProfiles();
     }
-  },[]);
+  }, []);
 
   // the value of the search field
   const [name, setName] = useState("");

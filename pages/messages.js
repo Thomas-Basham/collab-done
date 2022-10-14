@@ -12,7 +12,14 @@ export default function MessagesPage() {
     if (!session) {
       router.push("/");
     }
+    
   });
+  useEffect(() => {
+    if (newMessage) {
+      return newMessage
+    }
+    
+  }, [newMessage]);
 
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
   // const [channelId, setChannelId] = useState(null);
