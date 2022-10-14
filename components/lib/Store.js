@@ -24,12 +24,15 @@ export const useStore = (props) => {
     // Get Channels
     fetchChannels(setChannels);
     // Listen for new and deleted messages
-   supabase // const messageListener = 
+    supabase // const messageListener =
       .channel("public:messages")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
-        (payload) => handleNewMessage(payload.new)
+        (payload) => {
+          console.log(payload);
+          handleNewMessage(payload.new);
+        }
       )
       .on(
         "postgres_changes",
@@ -38,26 +41,38 @@ export const useStore = (props) => {
       )
       .subscribe();
     // Listen for changes to our users
-    supabase //const userListener = 
+    supabase //const userListener =
       .channel("public:profiles")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "profiles" },
-        (payload) => handleNewOrUpdatedUser(payload.new)
+        (payload) => {
+          console.log(payload);
+
+          handleNewOrUpdatedUser(payload.new);
+        }
       )
       .subscribe();
     // Listen for new and deleted channels
-     supabase //const channelListener =
+    supabase //const channelListener =
       .channel("public:channels")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "channels" },
-        (payload) => handleNewChannel(payload.new)
+        (payload) => {
+          console.log(payload);
+
+          handleNewChannel(payload.new);
+        }
       )
       .on(
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "channels" },
-        (payload) => handleDeletedChannel(payload.old)
+        (payload) => {
+          console.log(payload);
+
+          handleDeletedChannel(payload.old);
+        }
       )
       .subscribe();
     // Cleanup on unmount
@@ -66,8 +81,10 @@ export const useStore = (props) => {
     //   supabase.removeChannel('public:profiles')
     //   supabase.removeChannel('public:channels')
     // }
-  });
+    console.log(newMessage);
+  }, []);
 
+  console.log(props.channelId);
   // Update when the route changes
   useEffect(() => {
     if (props?.channelId > 0) {
@@ -78,6 +95,15 @@ export const useStore = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.channelId]);
+  useEffect(() => {
+    if (newMessage) {
+      fetchMessages(props.channelId, (messages) => {
+        messages.forEach((x) => users.set(x.user_id, x.author));
+        setMessages(messages);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newMessage]);
 
   // New message received from Postgres
   useEffect(() => {
@@ -91,7 +117,7 @@ export const useStore = (props) => {
       handleAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newMessage]);
+  }); //, [newMessage]
 
   // Deleted message received from postgres
   useEffect(() => {

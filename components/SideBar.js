@@ -55,13 +55,13 @@ export default function SideBar(props) {
         <div style={{ cursor: "pointer" }}>
           <li>
             <div onClick={() => props.setActiveChannel(channel.id)}>
-              <a
+              <p
                 className={
                   isActiveChannel ? "font-weight-bold text-capitalize" : ""
                 }
               >
                 {channel.slug}
-              </a>
+              </p>
             </div>
 
             {channel.id !== 1 &&
@@ -91,7 +91,7 @@ export default function SideBar(props) {
               <SidebarItem
                 channel={x}
                 key={x.id}
-                isActiveChannel={x.id === props.activeChannelId}
+                isActiveChannel={x.id == props.activeChannelId}
                 setActiveChannel={props.setActiveChannel}
                 user={props.user}
                 userRoles={props.userRoles}
