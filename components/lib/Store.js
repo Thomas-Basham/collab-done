@@ -24,7 +24,7 @@ export const useStore = (props) => {
     // Get Channels
     fetchChannels(setChannels);
     // Listen for new and deleted messages
-    const messageListener = supabase
+   supabase // const messageListener = 
       .channel("public:messages")
       .on(
         "postgres_changes",
@@ -38,7 +38,7 @@ export const useStore = (props) => {
       )
       .subscribe();
     // Listen for changes to our users
-    const userListener = supabase
+    supabase //const userListener = 
       .channel("public:profiles")
       .on(
         "postgres_changes",
@@ -47,7 +47,7 @@ export const useStore = (props) => {
       )
       .subscribe();
     // Listen for new and deleted channels
-    const channelListener = supabase
+     supabase //const channelListener =
       .channel("public:channels")
       .on(
         "postgres_changes",

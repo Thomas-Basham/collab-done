@@ -9,7 +9,7 @@ export default function SideBar(props) {
       <>
         <div style={{ cursor: "pointer" }}>
           <li>
-            <Link href={`/messages#${channel.slug}`}>
+            <Link href={`/messages`}>
               <a className={isActiveChannel ? "font-weight-bold " : ""}>
                 {channel.slug}
               </a>
@@ -29,9 +29,11 @@ export default function SideBar(props) {
       <>
         <div className="side-bar col">
           <div>
-            <button onClick={props.openNewChannelModal}>New Message</button>
+            <Link href={`/login`}>
+              <button>New Message</button>{" "}
+              {/* onClick={props.openNewChannelModal} */}
+            </Link>
           </div>
-
           <hr />
           <h4>Channels</h4>
           <ul className="channel-list">

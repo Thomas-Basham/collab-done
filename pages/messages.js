@@ -39,7 +39,7 @@ export default function MessagesPage() {
       <LayoutMessages
         channels={filteredChannels}
         activeChannelId={channelId}
-        setActiveChannel={(id) => setChannelId(id)}
+        setActiveChannel={setChannelId}
       >
         <div className=" channel-container">
           <div className="Messages">

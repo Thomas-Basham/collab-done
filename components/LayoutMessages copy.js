@@ -27,8 +27,7 @@ export default function LayoutMessages(props) {
     if (!allProfiles) {
       getAllProfiles();
     }
-  }),
-    [];
+  },[]);
 
   // the value of the search field
   const [name, setName] = useState("");
