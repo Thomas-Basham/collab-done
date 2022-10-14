@@ -29,10 +29,8 @@ export default function SideBar(props) {
       <>
         <div className="side-bar col">
           <div>
-            <Link href={`/login`}>
               <button>New Message</button>{" "}
-              {/* onClick={props.openNewChannelModal} */}
-            </Link>
+
           </div>
           <hr />
           <h4>Channels</h4>
