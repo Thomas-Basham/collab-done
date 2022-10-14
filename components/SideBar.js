@@ -49,25 +49,27 @@ export default function SideBar(props) {
         </div>
       </>
     );
-  } 
-  
-  
-  else {
+  } else {
     const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
       <>
         <div style={{ cursor: "pointer" }}>
           <li>
             <div onClick={() => props.setActiveChannel(channel.id)}>
-              <a className={isActiveChannel ? "font-weight-bold " : ""}>
+              <a
+                className={
+                  isActiveChannel ? "font-weight-bold text-capitalize" : ""
+                }
+              >
                 {channel.slug}
               </a>
             </div>
+
             {channel.id !== 1 &&
               (channel.created_by === user?.id ||
                 userRoles.includes("admin")) && (
-                <button onClick={() => props.deleteChannel(channel.id)}>
+                <span onClick={() => props.deleteChannel(channel.id)}>
                   <TrashIcon />
-                </button>
+                </span>
               )}
           </li>
         </div>

@@ -8,10 +8,11 @@ import ErrorModal from "./ErrorModal";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import SideBar from "./SideBar";
-import { addChannel, deleteChannel,  useStore, addMessage  } from "./lib/Store";
+import { addChannel, deleteChannel, useStore, addMessage } from "./lib/Store";
 
 export default function Layout({ children }) {
-  const { signOut, session, errorMessageAuth, setErrorMessageAuth,userRoles } = useAuth();
+  const { signOut, session, errorMessageAuth, setErrorMessageAuth, userRoles } =
+    useAuth();
   const { errorMessage, setErrorMessage } = useResource();
   const [channelId, setChannelId] = useState(null);
   const { messages, channels } = useStore({ channelId });
@@ -47,7 +48,7 @@ export default function Layout({ children }) {
         setErrorMessageAuth={setErrorMessageAuth}
       />
 
-      <div className="mb-2 d-flex justify-content-end`">
+      <div className="mb-2 d-flex justify-content-end fixed-bottom">
         <DropdownButton
           key={"up"}
           id={`dropdown-button-drop-up`}
@@ -56,18 +57,15 @@ export default function Layout({ children }) {
           title={` Messages `}
         >
           <Dropdown.Item eventKey="up">
-          
-          <SideBar
-            channels={filteredChannels}
-            openNewChannelModal={openNewChannelModal}
-            user={user}
-            userRoles={userRoles}
-            setActiveChannel={setChannelId}
-            deleteChannel={deleteChannel}
-            global={true}
-          />
-          
-          
+            <SideBar
+              channels={filteredChannels}
+              openNewChannelModal={openNewChannelModal}
+              user={user}
+              userRoles={userRoles}
+              setActiveChannel={setChannelId}
+              deleteChannel={deleteChannel}
+              global={true}
+            />
           </Dropdown.Item>
         </DropdownButton>
       </div>

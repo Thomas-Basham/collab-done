@@ -14,9 +14,9 @@ const Message = ({ message }) => {
       <div className="col-1">
         {(user?.id === message.user_id ||
           userRoles.some((role) => ["admin", "moderator"].includes(role))) && (
-          <button onClick={() => deleteMessage(message.id)}>
+          <span onClick={() => deleteMessage(message.id)}>
             <TrashIcon />
-          </button>
+          </span>
         )}
       </div>
       <div className="col ">

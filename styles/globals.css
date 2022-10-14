@@ -696,6 +696,7 @@ svg:hover {
   min-width: 77% !important;
   max-width: 77% !important;
 }
+
 ul {
   list-style-type: none;
 }
@@ -728,10 +729,16 @@ ul {
 }
 
 .side-bar {
-  width: 20vw !important;
+  width: 30vw !important;
 }
 
-.dropdown-menu, .dropdown-menu:hover, .dropdown-item{
+#dropdown-button-drop-up {
+  width: 30vw !important;
+}
+
+.dropdown-menu,
+.dropdown-menu:hover,
+.dropdown-item {
   background-color: var(--custom-panel-color) !important;
 }
 

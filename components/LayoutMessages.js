@@ -69,7 +69,7 @@ export default function LayoutMessages(props) {
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
       addChannel(channelName, user.id, user_id);
-      setShowNewChannelModal(false)
+      setShowNewChannelModal(false);
     }
   };
 
@@ -134,7 +134,12 @@ export default function LayoutMessages(props) {
         <div className="user-list">
           {foundUsers && foundUsers.length > 0 ? (
             foundUsers.map((user) => (
-              <div key={user.id} className="user" onClick={ () => newChannel(user.username, user.id)} style={{cursor: "pointer"}}>
+              <div
+                key={user.id}
+                className="user"
+                onClick={() => newChannel(user.username, user.id)}
+                style={{ cursor: "pointer" }}
+              >
                 {user.absolute_avatar_url ? (
                   <img
                     src={user.absolute_avatar_url}
