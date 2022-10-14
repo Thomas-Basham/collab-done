@@ -66,7 +66,7 @@ export const useStore = (props) => {
     //   supabase.removeChannel('public:profiles')
     //   supabase.removeChannel('public:channels')
     // }
-  }, []);
+  });
 
   // Update when the route changes
   useEffect(() => {
