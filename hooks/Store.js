@@ -19,6 +19,7 @@ export default function useStore() {
   const [deletedChannel, handleDeletedChannel] = useState(null);
   const [deletedMessage, handleDeletedMessage] = useState(null);
   const [channelId, setChannelId] = useState(channelId);
+  const [incomingChannelId, setIncomingChannelId] = useState(null);
   // Load initial data and set up listeners
   // console.log(channelId)
   useEffect(() => {
@@ -34,10 +35,11 @@ export default function useStore() {
            (payload) => {
             console.log({payload});
             console.log([payload.new.channel_id]);
+
+            setIncomingChannelId(payload.new.channel_id)
             handleNewMessage(payload.new);
             // fetchMessages(payload.new.channel_id);
 
-            console.log({newMessage});
           }
         )
         .on(
@@ -99,14 +101,14 @@ export default function useStore() {
   // console.log(channelId);
   // Update when the route changes
   useEffect(() => {
-    if (channelId > 0) {
+    if (channelId) {
       fetchMessages(channelId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
   useEffect(() => {
     if (newMessage) {
-      fetchMessages(channelId);
+      fetchMessages(incomingChannelId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage]);
@@ -129,6 +131,7 @@ export default function useStore() {
     if (newMessage && newMessage.channel_id == channelId) {
       const handleAsync = async () => {
         setMessages(messages.concat(newMessage));
+      console.log({newMessage})
       };
       handleAsync();
     }
