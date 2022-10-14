@@ -8,14 +8,14 @@ import ErrorModal from "./ErrorModal";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import SideBar from "./SideBar";
-import { addChannel, deleteChannel, useStore, addMessage } from "./lib/Store";
+import useStore from "../hooks/Store";
 
 export default function Layout({ children }) {
   const { signOut, session, errorMessageAuth, setErrorMessageAuth, userRoles } =
     useAuth();
   const { errorMessage, setErrorMessage } = useResource();
-  const [channelId, setChannelId] = useState(null);
-  const { messages, channels } = useStore({ channelId });
+  // const [channelId, setChannelId] = useState(null);
+  const { messages, channels,channelId, setChannelId, deleteChannel } = useStore();
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
   const user = session?.user;
 

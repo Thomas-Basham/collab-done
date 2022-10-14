@@ -1,4 +1,4 @@
-import { deleteMessage } from "./lib/Store";
+import useStore from "../hooks/Store";
 import TrashIcon from "./TrashIcon";
 import { useAuth } from "../contexts/auth";
 
@@ -7,6 +7,7 @@ const Message = ({ message }) => {
 
   const { signOut, session, userRoles } = useAuth();
   const user = session?.user;
+  const { deleteMessage, messages, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
 
   const size = 60;
   return (

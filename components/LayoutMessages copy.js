@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { addChannel, deleteChannel } from "./lib/Store";
+import { addChannel, deleteChannel } from "../hooks/Store";
 import TrashIcon from "/components/TrashIcon";
 import { useAuth } from "../contexts/auth";
 import { Col, Row, Container, Modal } from "react-bootstrap";

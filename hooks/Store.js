@@ -9,7 +9,7 @@ export const supabase = createClient(
 /**
  * @param {number} channelId the currently selected Channel
  */
-export const useStore = (props) => {
+export default function useStore() {
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [users] = useState(new Map());
@@ -18,6 +18,7 @@ export const useStore = (props) => {
   const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null);
   const [deletedChannel, handleDeletedChannel] = useState(null);
   const [deletedMessage, handleDeletedMessage] = useState(null);
+  const [channelId, setChannelId] = useState(null);
 
   // Load initial data and set up listeners
   useEffect(() => {
@@ -37,7 +38,9 @@ export const useStore = (props) => {
       .on(
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "messages" },
-        (payload) => handleDeletedMessage(payload.old)
+        (payload) => {
+          console.log(payload)
+          handleDeletedMessage(payload.old)}
       )
       .subscribe();
     // Listen for changes to our users
@@ -84,30 +87,24 @@ export const useStore = (props) => {
     console.log(newMessage);
   }, []);
 
-  console.log(props.channelId);
+  console.log(channelId);
   // Update when the route changes
   useEffect(() => {
-    if (props?.channelId > 0) {
-      fetchMessages(props.channelId, (messages) => {
-        messages.forEach((x) => users.set(x.user_id, x.author));
-        setMessages(messages);
-      });
+    if (channelId > 0) {
+      fetchMessages(channelId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.channelId]);
+  }, [channelId]);
   useEffect(() => {
     if (newMessage) {
-      fetchMessages(props.channelId, (messages) => {
-        messages.forEach((x) => users.set(x.user_id, x.author));
-        setMessages(messages);
-      });
+      fetchMessages(channelId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage]);
 
   // New message received from Postgres
   useEffect(() => {
-    if (newMessage && newMessage.channel_id === Number(props.channelId)) {
+    if (newMessage && newMessage.channel_id === Number(channelId)) {
       const handleAsync = async () => {
         let authorId = newMessage.user_id;
         if (!users.get(authorId))
@@ -149,22 +146,11 @@ export const useStore = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newOrUpdatedUser]);
 
-  return {
-    // We can export computed values here to map the authors to each message
-    messages: messages.map((x) => ({ ...x, author: users.get(x.user_id) })),
-    channels:
-      channels !== null
-        ? channels.sort((a, b) => a.slug.localeCompare(b.slug))
-        : [],
-    users,
-  };
-};
-
-/**
+  /**
  * Fetch all channels
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchChannels = async (setState) => {
+ const fetchChannels = async (setState) => {
   try {
     let { data } = await supabase.from("channels").select("*");
     if (setState) setState(data);
@@ -179,7 +165,7 @@ export const fetchChannels = async (setState) => {
  * @param {number} userId
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchUser = async (userId, setState) => {
+ const fetchUser = async (userId, setState) => {
   try {
     let { data } = await supabase.from("profiles").select(`*`).eq("id", userId);
     let user = data[0];
@@ -194,7 +180,7 @@ export const fetchUser = async (userId, setState) => {
  * Fetch all roles for the current user
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchUserRoles = async (setState) => {
+ const fetchUserRoles = async (setState) => {
   try {
     let { data } = await supabase.from("user_roles").select(`*`);
     if (setState) setState(data);
@@ -209,14 +195,14 @@ export const fetchUserRoles = async (setState) => {
  * @param {number} channelId
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchMessages = async (channelId, setState) => {
+ const fetchMessages = async (channelId) => {
   try {
     let { data } = await supabase
       .from("messages")
       .select(`*`)
       .eq("channel_id", channelId)
       .order("inserted_at", true);
-    if (setState) setState(data);
+    if (data) setMessages(data);
     return data;
   } catch (error) {
     console.log("error", error);
@@ -228,7 +214,7 @@ export const fetchMessages = async (channelId, setState) => {
  * @param {string} slug The channel name
  * @param {number} user_id The channel creator
  */
-export const addChannel = async (slug, user_id, message_to) => {
+ const addChannel = async (slug, user_id, message_to) => {
   try {
     let { data } = await supabase
       .from("channels")
@@ -246,7 +232,7 @@ export const addChannel = async (slug, user_id, message_to) => {
  * @param {number} channel_id
  * @param {number} user_id The author
  */
-export const addMessage = async (
+ const addMessage = async (
   message,
   channel_id,
   user_id,
@@ -268,7 +254,7 @@ export const addMessage = async (
  * Delete a channel from the DB
  * @param {number} channel_id
  */
-export const deleteChannel = async (channel_id) => {
+ const deleteChannel = async (channel_id) => {
   try {
     let { data } = await supabase
       .from("channels")
@@ -284,7 +270,7 @@ export const deleteChannel = async (channel_id) => {
  * Delete a message from the DB
  * @param {number} message_id
  */
-export const deleteMessage = async (message_id) => {
+ const deleteMessage = async (message_id) => {
   try {
     let { data } = await supabase
       .from("messages")
@@ -294,4 +280,23 @@ export const deleteMessage = async (message_id) => {
   } catch (error) {
     console.log("error", error);
   }
+};
+  return {
+    // We can export computed values here to map the authors to each message
+    messages: messages.map((x) => ({ ...x, })),
+    channels:
+      channels !== null
+        ? channels.sort((a, b) => a.slug.localeCompare(b.slug))
+        : [],
+    users,
+    channelId, 
+    setChannelId,
+    fetchUserRoles,
+    deleteChannel,
+    addMessage,
+    newMessage,
+    deleteMessage
+  };
+
+
 };

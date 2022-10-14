@@ -2,7 +2,7 @@ import LayoutMessages from "../components/LayoutMessages copy";
 import Message from "../components/Message";
 import MessageInput from "../components/MessageInput";
 import { useRouter } from "next/router";
-import { useStore, addMessage } from "../components/lib/Store";
+import  useStore  from "../hooks/Store";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/auth";
 
@@ -15,12 +15,12 @@ export default function MessagesPage() {
   });
 
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
-  const [channelId, setChannelId] = useState(null);
+  // const [channelId, setChannelId] = useState(null);
 
   const user = session?.user;
   const messagesEndRef = useRef(null);
 
-  const { messages, channels } = useStore({ channelId });
+  const { messages, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
 
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({

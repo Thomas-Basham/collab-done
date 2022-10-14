@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import { fetchUserRoles } from "../components/lib/Store";
+import  useStore  from "../hooks/Store";
 const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
   const router = useRouter();
-
+  const {fetchUserRoles} = useStore()
   const [errorMessageAuth, setErrorMessageAuth] = useState(null);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
