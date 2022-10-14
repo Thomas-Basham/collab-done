@@ -21,6 +21,7 @@ export default function Header({ session, signOut }) {
                 <Nav.Link onClick={signOut()}>Sign Out</Nav.Link>
                 <Nav.Link href="/profile">Profile</Nav.Link>
                 <Nav.Link href="/upload-song">Upload</Nav.Link>
+                <Nav.Link href="/messages">Messages</Nav.Link>
               </Nav>
             }
           </Navbar.Collapse>

@@ -71,7 +71,6 @@ export default function Profile() {
   const [needs, setNeeds] = useState(null);
   const [show, setShow] = useState(false);
 
-
   function handleSubmit() {
     const values = {
       artist: username,

@@ -25,7 +25,8 @@ export default function useResource() {
   const [absoluteAvatar_url, setAbsoluteAvatar_Url] = useState(null);
   const [potentialCollaborators, setPotentialCollaborators] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
+  const [allProfiles, setAllProfiles] = useState(null);
 
   useEffect(() => {
     getMusicPosts();
@@ -35,7 +36,30 @@ export default function useResource() {
     getComments();
   }, []);
 
-  const generalErrorMessage = "Our servers are currently down. Please try again soon.";
+  const generalErrorMessage =
+    "Our servers are currently down. Please try again soon.";
+
+  async function getAllProfiles() {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase.from("profiles").select("*");
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setAllProfiles(data);
+        return data;
+      }
+    } catch (error) {
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function getMusicPosts() {
     try {
@@ -48,7 +72,7 @@ export default function useResource() {
       }
 
       if (data) {
-        setmusicPosts(data.reverse());
+        setmusicPosts(data);
       }
     } catch (error) {
       setErrorMessage(generalErrorMessage);
@@ -445,5 +469,7 @@ export default function useResource() {
     songUrl,
     fileName,
     setFileName,
+    getAllProfiles,
+    allProfiles,
   };
 }
