@@ -713,21 +713,30 @@ ul {
   opacity: 0.9;
 }
 
-.Messages {
+.messages {
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
+  padding-left: 1vw;
 }
 
 .channel-container {
   width: 50vw !important;
   border: var(--custom-border);
-  padding: 40px;
-  max-height: 40vh;
-  min-height: 40vh;
+  /* padding: 40px; */
+  max-height: 50vh;
+  min-height: 50vh;
   overflow: scroll;
 }
-
+.message-header{
+  background-color: var(--custom-panel-color);
+  padding: none !important;
+  opacity: .6;
+}
+.message-header h3{
+  padding: 1vw !important;
+  
+}
 .side-bar {
   width: 10vw !important;
 }

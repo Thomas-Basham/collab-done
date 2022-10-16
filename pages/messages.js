@@ -23,6 +23,7 @@ export default function MessagesPage() {
     }
   }, []);
 
+  const messagesEndRef = useRef(null);
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({
       block: "start",
@@ -31,20 +32,27 @@ export default function MessagesPage() {
   }, [messages]);
 
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
-  const { addChannel, messages, channelId, addMessage, deleteMessage } =
-    useStore();
+  const {
+    addChannel,
+    messages,
+    channelId,
+    addMessage,
+    deleteMessage,
+    channels,
+  } = useStore();
   const { allProfiles, getAllProfiles } = useResource();
 
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
 
   const user = session?.user;
-  const messagesEndRef = useRef(null);
 
   function openNewChannelModal() {
     setShowNewChannelModal(true);
   }
-  const size = 100;
 
+  let currentChannel = channels.filter((chanel) => chanel.id == channelId);
+  console.log({channelId})
+  console.log({currentChannel})
   // Render the channels and messages
   return (
     <>
@@ -60,7 +68,15 @@ export default function MessagesPage() {
               {/* Messages */}
 
               <div className="channel-container">
-                <div className="Messages">
+                <div className="sticky-top message-header ">
+                  <h3 className="">
+                    {" "}
+                    {currentChannel[0]?.message_to == user?.id
+                      ? currentChannel[0]?.created_by_username
+                      : currentChannel[0]?.slug}
+                  </h3>
+                </div>
+                <div className="messages">
                   <div className="">
                     {messages.map((x) => (
                       <Message

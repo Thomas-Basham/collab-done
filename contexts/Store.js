@@ -95,20 +95,12 @@ export function MessageProvider({ children }) {
     if (channelId > 0) {
       const handleAsync = async () => {
         await fetchMessages(channelId, setMessages);
-
-        console.log(channels, "CHANNEL CURRENT");
-        console.log(channelId, "CHANNEL ID CHANGED");
       };
       handleAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
-  useEffect(() => {
-    if (messages) {
-      console.log(messages, "messages in effect");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
+
   useEffect(() => {
     if (newMessage) {
       fetchMessages(incomingChannelId);
