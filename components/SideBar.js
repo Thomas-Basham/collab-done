@@ -17,7 +17,7 @@ export default function SideBar(props) {
   const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
 
   let filteredChannels = channels.filter(
-    (chanel) => chanel.message_to || chanel.created_by == session.user.id
+    (chanel) => chanel.message_to === session.user.id || chanel.created_by === session.user.id
   );
 
   if (props.global == true) {
