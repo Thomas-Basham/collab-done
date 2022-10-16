@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import { useAuth } from "../contexts/auth";
