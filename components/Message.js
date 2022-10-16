@@ -1,13 +1,13 @@
-import useStore from "../hooks/Store";
+import { useStore } from "../contexts/Store";
 import TrashIcon from "./TrashIcon";
 import { useAuth } from "../contexts/auth";
 
-const Message = ({ message }) => {
+const Message = ({ message, deleteMessage }) => {
   // const { userRoles } = useContext(UserContext)
 
-  const {  session, userRoles } = useAuth();
+  const { session, userRoles } = useAuth();
   const user = session?.user;
-  const { deleteMessage} = useStore();
+  // const { deleteMessage } = useStore();
 
   const size = 60;
   return (

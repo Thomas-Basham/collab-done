@@ -1,12 +1,13 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAuth } from "../contexts/auth";
-import {  Container, Modal } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import useResource from "../hooks/useResource";
 import SideBar from "./SideBar";
 import NewChannelModal from "./NewChannelModal";
-import useStore from "../hooks/Store";
+import useStore from "../contexts/Store";
+
 export default function LayoutMessages(props) {
   // const {  userRoles } = useContext(UserContext)
   const router = useRouter();
@@ -15,7 +16,15 @@ export default function LayoutMessages(props) {
 
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
   const [userSearch, setUserSearch] = useState("");
-  const {addChannel,deleteChannel, newMessage, channels, channelId, setChannelId, addMessage } = useStore();
+  const {
+    addChannel,
+    deleteChannel,
+    newMessage,
+    channels,
+    channelId,
+    setChannelId,
+    addMessage,
+  } = useStore();
 
   useEffect(() => {
     if (!session?.user) {
@@ -28,10 +37,7 @@ export default function LayoutMessages(props) {
     }
   }, []);
 
-    const user = session?.user;
-
-
-
+  const user = session?.user;
 
   function openNewChannelModal() {
     setShowNewChannelModal(true);
@@ -43,12 +49,7 @@ export default function LayoutMessages(props) {
       {/* Sidebar */}
       <Container>
         <div className="row">
-          <SideBar
-            openNewChannelModal={openNewChannelModal}
-            user={user}
-            userRoles={userRoles}
-
-          />
+          <SideBar openNewChannelModal={openNewChannelModal} />
 
           <div className="col">
             {/* Messages */}
@@ -57,15 +58,13 @@ export default function LayoutMessages(props) {
         </div>
       </Container>
 
-
       <NewChannelModal
-      setShowNewChannelModal={setShowNewChannelModal}
-      showNewChannelModal={showNewChannelModal}
-      addChannel={addChannel}
-      allProfiles={allProfiles}
-      user={user}
+        setShowNewChannelModal={setShowNewChannelModal}
+        showNewChannelModal={showNewChannelModal}
+        addChannel={addChannel}
+        allProfiles={allProfiles}
+        user={user}
       />
-
 
       {/* <Modal
         show={showNewChannelModal}

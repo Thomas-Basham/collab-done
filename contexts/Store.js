@@ -1,15 +1,12 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useState, useEffect, useContext, createContext } from "react";
+import { supabase } from "../utils/supabaseClient";
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+const MessageContext = createContext();
 
 // /**
 //  * @param {number} channelId the currently selected Channel
 //  */
-export default function useStore() {
+export function MessageProvider({ children }) {
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [users] = useState(new Map());
@@ -21,72 +18,68 @@ export default function useStore() {
   const [channelId, setChannelId] = useState(null);
   const [incomingChannelId, setIncomingChannelId] = useState(null);
   // Load initial data and set up listeners
-  // console.log(channelId)
   useEffect(() => {
-    const handleAsync = () => {
-      // Get Channels
-      fetchChannels(setChannels);
-      // Listen for new and deleted messages
-      supabase // const messageListener =
-        .channel("public:messages")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "messages" },
-          (payload) => {
-            console.log({ payload });
-            console.log([payload.new.channel_id]);
+    // Get Channels
+    fetchChannels(setChannels);
+    // Listen for new and deleted messages
+    supabase // const messageListener =
+      .channel("public:messages")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          console.log({ payload });
+          console.log([payload.new.channel_id]);
 
-            setIncomingChannelId(payload.new.channel_id);
-            handleNewMessage(payload.new);
-            // fetchMessages(payload.new.channel_id);
-          }
-        )
-        .on(
-          "postgres_changes",
-          { event: "DELETE", schema: "public", table: "messages" },
-          (payload) => {
-            console.log(payload);
-            handleDeletedMessage(payload.old);
-          }
-        )
-        .subscribe();
-      // Listen for changes to our users
-      supabase //const userListener =
-        .channel("public:profiles")
-        .on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "profiles" },
-          (payload) => {
-            console.log(payload);
+          setIncomingChannelId(payload.new.channel_id);
+          handleNewMessage(payload.new);
+          // fetchMessages(payload.new.channel_id);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "messages" },
+        (payload) => {
+          console.log(payload);
+          handleDeletedMessage(payload.old);
+        }
+      )
+      .subscribe();
+    // Listen for changes to our users
+    supabase //const userListener =
+      .channel("public:profiles")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        (payload) => {
+          console.log(payload);
 
-            handleNewOrUpdatedUser(payload.new);
-          }
-        )
-        .subscribe();
-      // Listen for new and deleted channels
-      supabase //const channelListener =
-        .channel("public:channels")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "channels" },
-          (payload) => {
-            console.log(payload);
+          handleNewOrUpdatedUser(payload.new);
+        }
+      )
+      .subscribe();
+    // Listen for new and deleted channels
+    supabase //const channelListener =
+      .channel("public:channels")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "channels" },
+        (payload) => {
+          console.log(payload);
 
-            handleNewChannel(payload.new);
-          }
-        )
-        .on(
-          "postgres_changes",
-          { event: "DELETE", schema: "public", table: "channels" },
-          (payload) => {
-            console.log(payload);
+          handleNewChannel(payload.new);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "channels" },
+        (payload) => {
+          console.log(payload);
 
-            handleDeletedChannel(payload.old);
-          }
-        )
-        .subscribe();
-    };
-    handleAsync();
+          handleDeletedChannel(payload.old);
+        }
+      )
+      .subscribe();
     // Cleanup on unmount
     // return () => {
     //   supabase.removeChannel('public:messages')
@@ -99,12 +92,22 @@ export default function useStore() {
   // console.log(channelId);
   // Update when the route changes
   useEffect(() => {
-    if (channelId) {
-      fetchMessages(channelId);
-      console.log(channelId, "CHANNEL ID CHANGED");
+    if (channelId > 0) {
+      const handleAsync = async () => {
+        await fetchMessages(channelId, setMessages);
+        console.log(messages, "messages");
+        console.log(channelId, "CHANNEL ID CHANGED");
+      };
+      handleAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
+  useEffect(() => {
+    if (messages) {
+      console.log(messages, "messages in effect");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
   useEffect(() => {
     if (newMessage) {
       fetchMessages(incomingChannelId);
@@ -115,7 +118,7 @@ export default function useStore() {
 
   // New message received from Postgres
   useEffect(() => {
-    if (newMessage && newMessage.channel_id == channelId) {
+    if (newMessage && incomingChannelId == channelId) {
       const handleAsync = async () => {
         setMessages(messages.concat(newMessage));
         console.log({ newMessage });
@@ -207,23 +210,27 @@ export default function useStore() {
   //  * @param {number} channelId
   //  * @param {function} setState Optionally pass in a hook or callback to set the state
   //  */
-  const fetchMessages = async (id) => {
+  async function fetchMessages(id, setState) {
     try {
-      let { data } = await supabase
+      let { data, error, status } = await supabase
         .from("messages")
         .select(`*`)
         .eq("channel_id", id)
         .order("inserted_at", true);
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
       if (data) {
-        console.log({ data });
-        await setMessages(data);
-        console.log(messages);
-        return data;
+        setState(data);
+        console.log(data, "FETCH MESSAGES DATA");
+        // return data;
       }
     } catch (error) {
       console.log("error", error);
     }
-  };
+  }
 
   /**
    * Insert a new channel into the DB
@@ -299,9 +306,11 @@ export default function useStore() {
       console.log("error", error);
     }
   };
-  return {
+
+  const value = {
     // We can export computed values here to map the authors to each message
     messages,
+    setMessages,
     channels:
       channels !== null
         ? channels.sort((a, b) => a.slug.localeCompare(b.slug))
@@ -311,9 +320,18 @@ export default function useStore() {
     addChannel,
     setChannelId,
     fetchUserRoles,
+    fetchMessages,
     deleteChannel,
     addMessage,
     newMessage,
     deleteMessage,
   };
+
+  return (
+    <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
+  );
+}
+
+export function useStore() {
+  return useContext(MessageContext);
 }

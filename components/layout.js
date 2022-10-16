@@ -3,6 +3,7 @@ import Footer from "./footer";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/auth";
+
 import useResource from "../hooks/useResource";
 import ErrorModal from "./ErrorModal";
 import Dropdown from "react-bootstrap/Dropdown";

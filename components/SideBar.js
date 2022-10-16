@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TrashIcon from "/components/TrashIcon";
-import useStore from "../hooks/Store";
+import {useStore} from "../contexts/Store";
 import { useAuth } from "../contexts/auth";
 export default function SideBar(props) {
   const {
@@ -105,7 +105,7 @@ export default function SideBar(props) {
                 channel={x}
                 key={x.id}
                 isActiveChannel={x.id == channelId}
-                user={props.user}
+                user={session?.user}
                 userRoles={userRoles}
               />
             ))}

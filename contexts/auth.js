@@ -1,12 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-// import  useStore  from "../hooks/Store";
 const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
   const router = useRouter();
-  // const {fetchUserRoles} = useStore()
   const [errorMessageAuth, setErrorMessageAuth] = useState(null);
   const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -410,21 +408,19 @@ export function AuthProvider({ children }) {
     setUsername(null);
   }
 
-
-/**
- * Fetch all roles for the current user
- * @param {function} setState Optionally pass in a hook or callback to set the state
- */
- const fetchUserRoles = async (setState) => {
-  try {
-    let { data } = await supabase.from("user_roles").select(`*`);
-    if (setState) setState(data);
-    return data;
-  } catch (error) {
-    console.log("error", error);
-  }
-};
-
+  /**
+   * Fetch all roles for the current user
+   * @param {function} setState Optionally pass in a hook or callback to set the state
+   */
+  const fetchUserRoles = async (setState) => {
+    try {
+      let { data } = await supabase.from("user_roles").select(`*`);
+      if (setState) setState(data);
+      return data;
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const value = {
     signUp: (data) => supabase.auth.signUp(data),
