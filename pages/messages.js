@@ -35,6 +35,8 @@ export default function MessagesPage() {
     });
     console.log(messages, "messages front end");
   }, [messages]);
+
+
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
   const { addChannel, messages, channelId, addMessage, deleteMessage } =
     useStore();
@@ -103,6 +105,7 @@ export default function MessagesPage() {
           addChannel={addChannel}
           allProfiles={allProfiles}
           user={user}
+          username={username}
         />
       </main>
     </>

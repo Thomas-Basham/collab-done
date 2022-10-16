@@ -12,6 +12,7 @@ export default function SideBar(props) {
     channelId,
     setChannelId,
     addMessage,
+    
   } = useStore();
   const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
 
@@ -63,25 +64,26 @@ export default function SideBar(props) {
   } else {
     const SidebarItem = ({ user, userRoles, isActiveChannel, channel }) => (
       <>
-        <div style={{ cursor: "pointer" }}>
+        <div >
           <li>
             <div onClick={() => setChannelId(channel.id)}>
               <p
                 className={
                   isActiveChannel
-                    ? "font-weight-bold text-decoration-underline"
+                    ? "text-decoration-underline px-2"
                     : ""
                 }
+                style={{ cursor: "pointer" }}
               >
-                {channel.slug}
+                
+                {channel.message_to == user?.id ? channel.created_by_username : channel.slug}
               </p>
             </div>
 
-            {channel.id !== 1 &&
-              (channel.created_by === user?.id || userRoles.includes("admin")) |
+            {(channel.created_by === user?.id || userRoles.includes("admin")) |
                 (channel.message_to === user?.id) && (
-                <span onClick={() => deleteChannel(channel.id)}>
-                  <TrashIcon />
+                <span style={{ cursor: "pointer" }} onClick={() => deleteChannel(channel.id)}>
+                  <TrashIcon  />
                 </span>
               )}
           </li>

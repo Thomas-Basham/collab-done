@@ -95,7 +95,8 @@ export function MessageProvider({ children }) {
     if (channelId > 0) {
       const handleAsync = async () => {
         await fetchMessages(channelId, setMessages);
-        console.log(messages, "messages");
+       
+        console.log(channels, "CHANNEL CURRENT");
         console.log(channelId, "CHANNEL ID CHANGED");
       };
       handleAsync();
@@ -166,6 +167,7 @@ export function MessageProvider({ children }) {
     try {
       let { data } = await supabase.from("channels").select("*");
       if (setState) setState(data);
+      console.log(data)
       return data;
     } catch (error) {
       console.log("error", error);
@@ -237,11 +239,11 @@ export function MessageProvider({ children }) {
    * @param {string} slug The channel name
    * @param {number} user_id The channel creator
    */
-  const addChannel = async (slug, user_id, message_to) => {
+  const addChannel = async (slug, user_id, message_to, created_by_username) => {
     try {
       let { data } = await supabase
         .from("channels")
-        .insert([{ slug, created_by: user_id, message_to }])
+        .insert([{ slug, created_by: user_id, message_to, created_by_username }])
         .select();
       return data;
     } catch (error) {

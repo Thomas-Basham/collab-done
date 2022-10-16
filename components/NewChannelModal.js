@@ -22,7 +22,7 @@ export default function NewChannelModal(props) {
 
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
-      let channel = await addChannel(channelName, props.user.id, user_id);
+      let channel = await addChannel(channelName, props.user.id, user_id, props.username);
 
       props.setShowNewChannelModal(false);
       if (channel[0]?.id) {
