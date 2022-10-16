@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TrashIcon from "/components/TrashIcon";
-import {useStore} from "../contexts/Store";
+import { useStore } from "../contexts/Store";
 import { useAuth } from "../contexts/auth";
 export default function SideBar(props) {
   const {
@@ -12,12 +12,13 @@ export default function SideBar(props) {
     channelId,
     setChannelId,
     addMessage,
-    
   } = useStore();
   const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
 
   let filteredChannels = channels.filter(
-    (chanel) => chanel.message_to === session?.user?.id || chanel.created_by === session?.user?.id
+    (chanel) =>
+      chanel.message_to === session?.user?.id ||
+      chanel.created_by === session?.user?.id
   );
 
   if (props.global == true) {
@@ -48,7 +49,7 @@ export default function SideBar(props) {
             <button>New Message</button>{" "}
           </div>
           <hr />
-          <h4>Channels</h4>
+          <h4>Messages</h4>
           <ul className="channel-list">
             {filteredChannels.map((x) => (
               <SidebarItem
@@ -64,29 +65,31 @@ export default function SideBar(props) {
   } else {
     const SidebarItem = ({ user, userRoles, isActiveChannel, channel }) => (
       <>
-        <div >
-          <li>
-            <div onClick={() => setChannelId(channel.id)}>
+        <div className="side-bar">
+          <div className="row">
+            <div className="col" onClick={() => setChannelId(channel.id)}>
               <p
-                className={
-                  isActiveChannel
-                    ? "text-decoration-underline px-2"
-                    : ""
-                }
+                className={isActiveChannel ? " px-4 " : ""}
                 style={{ cursor: "pointer" }}
               >
-                
-                {channel.message_to == user?.id ? channel.created_by_username : channel.slug}
+                {channel.message_to == user?.id
+                  ? channel.created_by_username
+                  : channel.slug}
               </p>
             </div>
-
-            {(channel.created_by === user?.id || userRoles.includes("admin")) |
+            <div className="col">
+              {(channel.created_by === user?.id ||
+                userRoles.includes("admin")) |
                 (channel.message_to === user?.id) && (
-                <span style={{ cursor: "pointer" }} onClick={() => deleteChannel(channel.id)}>
-                  <TrashIcon  />
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => deleteChannel(channel.id)}
+                >
+                  <TrashIcon />
                 </span>
               )}
-          </li>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -100,7 +103,7 @@ export default function SideBar(props) {
           </div>
 
           <hr />
-          <h4>Channels</h4>
+          <h4>Messages</h4>
           <ul className="channel-list">
             {filteredChannels.map((x) => (
               <SidebarItem

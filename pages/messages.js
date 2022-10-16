@@ -33,9 +33,7 @@ export default function MessagesPage() {
       block: "start",
       behavior: "smooth",
     });
-    console.log(messages, "messages front end");
   }, [messages]);
-
 
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
   const { addChannel, messages, channelId, addMessage, deleteMessage } =
@@ -60,14 +58,14 @@ export default function MessagesPage() {
       <main>
         {/* Sidebar */}
 
-        <Container>
+        <Container fluid>
           <div className="row">
             <SideBar openNewChannelModal={openNewChannelModal} />
 
             <div className="col">
               {/* Messages */}
 
-              <div className=" channel-container">
+              <div className="channel-container">
                 <div className="Messages">
                   <div className="">
                     {messages.map((x) => (
@@ -81,6 +79,7 @@ export default function MessagesPage() {
                   </div>
                 </div>
               </div>
+
               <div className="">
                 <MessageInput
                   onSubmit={async (text) =>

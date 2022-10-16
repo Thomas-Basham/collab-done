@@ -20,11 +20,18 @@ export default function NewChannelModal(props) {
     addMessage,
   } = useStore();
 
-  let filteredProfiles = props.allProfiles?.filter((user)=> { return user.id != props.user.id})
+  let filteredProfiles = props.allProfiles?.filter((user) => {
+    return user.id != props.user.id;
+  });
 
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
-      let channel = await addChannel(channelName, props.user.id, user_id, props.username);
+      let channel = await addChannel(
+        channelName,
+        props.user.id,
+        user_id,
+        props.username
+      );
 
       props.setShowNewChannelModal(false);
       if (channel[0]?.id) {
@@ -43,7 +50,10 @@ export default function NewChannelModal(props) {
 
     if (keyword !== "") {
       const results = filteredProfiles.filter((user) => {
-        return  user.username != props.username && user.username?.toLowerCase().startsWith(keyword.toLowerCase()  );
+        return (
+          user.username != props.username &&
+          user.username?.toLowerCase().startsWith(keyword.toLowerCase())
+        );
         // Use the toLowerCase() method to make it case-insensitive
       });
       setFoundUsers(results);

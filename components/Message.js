@@ -15,7 +15,10 @@ const Message = ({ message, deleteMessage }) => {
       <div className="col-1">
         {(user?.id == message.user_id ||
           userRoles.some((role) => ["admin", "moderator"].includes(role))) && (
-          <span  style={{ cursor: "pointer" }} onClick={() => deleteMessage(message.id)}>
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => deleteMessage(message.id)}
+          >
             <TrashIcon />
           </span>
         )}
