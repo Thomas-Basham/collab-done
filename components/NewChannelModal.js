@@ -7,8 +7,8 @@ export default function NewChannelModal(props) {
   // the value of the search field
   const [name, setName] = useState("");
 
-  // the search result
-  const [foundUsers, setFoundUsers] = useState(props.allProfiles);
+  // the search result. initially all users except logged in user
+  const [foundUsers, setFoundUsers] = useState(filteredProfiles);
   const {
     addChannel,
     deleteChannel,
@@ -19,6 +19,8 @@ export default function NewChannelModal(props) {
     setChannelId,
     addMessage,
   } = useStore();
+
+  let filteredProfiles = props.allProfiles?.filter((user)=> { return user.id != props.user.id})
 
   const newChannel = async (channelName, user_id) => {
     if (channelName) {
@@ -40,13 +42,13 @@ export default function NewChannelModal(props) {
     const keyword = e.target.value;
 
     if (keyword !== "") {
-      const results = props.allProfiles.filter((user) => {
-        return user.username?.toLowerCase().startsWith(keyword.toLowerCase());
+      const results = filteredProfiles.filter((user) => {
+        return  user.username != props.username && user.username?.toLowerCase().startsWith(keyword.toLowerCase()  );
         // Use the toLowerCase() method to make it case-insensitive
       });
       setFoundUsers(results);
     } else {
-      setFoundUsers(props.allProfiles);
+      setFoundUsers(filteredProfiles);
       // If the text field is empty, show all users
     }
 
