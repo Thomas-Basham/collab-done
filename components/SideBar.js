@@ -2,6 +2,8 @@ import Link from "next/link";
 import TrashIcon from "/components/TrashIcon";
 import { useStore } from "../contexts/Store";
 import { useAuth } from "../contexts/auth";
+import { useRouter } from "next/router";
+
 export default function SideBar(props) {
   const {
     addChannel,
@@ -13,6 +15,8 @@ export default function SideBar(props) {
     setChannelId,
     addMessage,
   } = useStore();
+  const router = useRouter();
+
   const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
 
   let filteredChannels = channels.filter(
@@ -21,24 +25,44 @@ export default function SideBar(props) {
       chanel.created_by === session?.user?.id
   );
 
+  // GLOBAL SIDEBAR ON BOTTOM OF SCREEN
   if (props.global == true) {
-    const SidebarItem = ({ channel, isActiveChannel, user, userRoles }) => (
+    function handleGoToMessages(id) {
+      setChannelId(id);
+      const query = router.pathname;
+      console.log(query);
+      if (query != "/messages") {
+        router.push("/messages");
+      }
+    }
+
+    const SidebarItem = ({ user, userRoles, isActiveChannel, channel }) => (
       <>
-        <div style={{ cursor: "pointer" }}>
-          <li>
-            <Link href={`/messages`}>
-              <a className={isActiveChannel ? "font-weight-bold " : ""}>
-                {channel.slug}
-              </a>
-            </Link>
-            {/* {channel.id !== 1 &&
-              (channel.created_by === user?.id ||
-                userRoles.includes("admin")) && (
-                <button onClick={() => deleteChannel(channel.id)}>
+        <div className="side-bar-global">
+          <div className="row">
+            <div className="col" onClick={() => handleGoToMessages(channel.id)}>
+              <p
+                className={isActiveChannel ? " px-4 " : ""}
+                style={{ cursor: "pointer" }}
+              >
+                {channel.message_to == user?.id
+                  ? channel.created_by_username
+                  : channel.slug}
+              </p>
+            </div>
+            <div className="col">
+              {(channel.created_by === user?.id ||
+                userRoles.includes("admin")) |
+                (channel.message_to === user?.id) && (
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => deleteChannel(channel.id)}
+                >
                   <TrashIcon />
-                </button>
-              )} */}
-          </li>
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </>
     );
@@ -46,7 +70,9 @@ export default function SideBar(props) {
       <>
         <div className="side-bar col">
           <div>
-            <button>New Message</button>{" "}
+            <button onClick={() => router.push("/messages")}>
+              New Message
+            </button>{" "}
           </div>
           <hr />
           <h4>Messages</h4>
@@ -55,7 +81,9 @@ export default function SideBar(props) {
               <SidebarItem
                 channel={x}
                 key={x.id}
-                isActiveChannel={x.id === channelId}
+                isActiveChannel={x.id == channelId}
+                user={session?.user}
+                userRoles={userRoles}
               />
             ))}
           </ul>

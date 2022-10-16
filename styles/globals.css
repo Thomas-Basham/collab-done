@@ -732,6 +732,10 @@ ul {
   width: 10vw !important;
 }
 
+.side-bar-global{
+  width: 100% !important;
+}
+
 #dropdown-button-drop-up {
   width: 30vw !important;
 }
@@ -739,6 +743,8 @@ ul {
 .dropdown-menu,
 .dropdown-menu:hover,
 .dropdown-item {
+  width: 30vw !important;
+
   background-color: var(--custom-panel-color) !important;
 }
 

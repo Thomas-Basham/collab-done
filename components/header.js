@@ -10,14 +10,15 @@ export default function Header({ session, signOut }) {
           </Navbar.Brand>
           <h5>Finish Your Musical Ideas</h5>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto" style={{ display: session && "none" }}>
+          <br></br>
+          <Navbar.Collapse id="responsive-navbar-nav ">
+            <Nav className=" justify-content-between" style={{ display: session && "none" }}>
               <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="/signup">Signup</Nav.Link>
             </Nav>
 
             {
-              <Nav style={{ display: !session?.user && "none" }}>
+              <Nav className=" justify-content-between " style={{ width: '30vw', display: !session?.user && "none" }}>
                 <Nav.Link onClick={signOut()}>Sign Out</Nav.Link>
                 <Nav.Link href="/profile">Profile</Nav.Link>
                 <Nav.Link href="/upload-song">Upload</Nav.Link>

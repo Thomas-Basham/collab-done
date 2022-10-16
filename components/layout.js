@@ -8,25 +8,18 @@ import useResource from "../hooks/useResource";
 import ErrorModal from "./ErrorModal";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-// import SideBar from "./SideBar";
-// import useStore from "../hooks/Store";
+import SideBar from "./SideBar";
+import { useStore } from "../contexts/Store";
 
 export default function Layout({ children }) {
   const { signOut, session, errorMessageAuth, setErrorMessageAuth, userRoles } =
     useAuth();
   const { errorMessage, setErrorMessage } = useResource();
-  // const [channelId, setChannelId] = useState(null);
-  // const { messages, channels,channelId, setChannelId, deleteChannel } = useStore();
-  // const [showNewChannelModal, setShowNewChannelModal] = useState(false);
-  // const user = session?.user;
+  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
 
-  // function openNewChannelModal() {
-  //   setShowNewChannelModal(true);
-  // }
-  // let filteredChannels = channels.filter(
-  //   (chanel) => chanel.message_to || chanel.created_by == session.user.id
-  // );
-
+  function openNewChannelModal() {
+    setShowNewChannelModal(true);
+  }
   return (
     <div>
       <Head>
@@ -58,15 +51,7 @@ export default function Layout({ children }) {
           title={` Messages `}
         >
           <Dropdown.Item eventKey="up">
-            {/* <SideBar
-              channels={filteredChannels}
-              openNewChannelModal={openNewChannelModal}
-              user={user}
-              userRoles={userRoles}
-              setActiveChannel={setChannelId}
-              deleteChannel={deleteChannel}
-              global={true}
-            /> */}
+            <SideBar openNewChannelModal={openNewChannelModal} global={true} />
           </Dropdown.Item>
         </DropdownButton>
       </div>

@@ -14,7 +14,7 @@ export default function MessagesPage() {
   const router = useRouter();
   useEffect(() => {
     if (!session) {
-      router.push("/");
+      router.push("/login");
     }
   });
   useEffect(() => {
@@ -22,11 +22,6 @@ export default function MessagesPage() {
       getAllProfiles();
     }
   }, []);
-  useEffect(() => {
-    if (!messages) {
-      console.log(messages);
-    }
-  });
 
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({
@@ -41,7 +36,6 @@ export default function MessagesPage() {
   const { allProfiles, getAllProfiles } = useResource();
 
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
-  const [userSearch, setUserSearch] = useState("");
 
   const user = session?.user;
   const messagesEndRef = useRef(null);
