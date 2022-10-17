@@ -42,7 +42,7 @@ export default function SideBar(props) {
           <div className="row">
             <div className="col" onClick={() => handleGoToMessages(channel.id)}>
               <p
-                className={isActiveChannel ? " px-4 " : ""}
+                className={isActiveChannel ? "active-channel" : ""}
                 style={{ cursor: "pointer" }}
               >
                 {channel.message_to == user?.id
@@ -94,10 +94,10 @@ export default function SideBar(props) {
     const SidebarItem = ({ user, userRoles, isActiveChannel, channel }) => (
       <>
         <div className="side-bar">
-          <div className="row">
+          <div className={isActiveChannel ? " active-channel row " : " row"}>
             <div className="col" onClick={() => setChannelId(channel.id)}>
               <p
-                className={isActiveChannel ? " px-4 " : ""}
+                className={isActiveChannel ? " active-channel  " : " "}
                 style={{ cursor: "pointer" }}
               >
                 {channel.message_to == user?.id

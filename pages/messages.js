@@ -60,9 +60,12 @@ export default function MessagesPage() {
       <main>
         {/* Sidebar */}
 
-        <Container fluid>
+        <Container  >
           <div className="row">
+          <div className="col">
+
             <SideBar openNewChannelModal={openNewChannelModal} />
+            </div>
 
             <div className="col">
               {/* Messages */}
