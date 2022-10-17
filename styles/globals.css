@@ -292,8 +292,6 @@ button.primary:hover,
 .footer {
   position: relative;
   max-width: 100%;
-  height: 100px;
-  max-height: 100px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -307,26 +305,6 @@ button.primary:hover,
   align-items: center;
   text-align: center;
 
-}
-
-.footer div {
-  padding: var(--custom-spacing);
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.footer div>img {
-  height: 20px;
-  margin-left: 10px;
-}
-
-.footer>div:first-child {
-  display: none;
-}
-
-.footer>div:nth-child(2) {
-  justify-content: left;
 }
 
 
@@ -467,7 +445,6 @@ nav {
   margin: 0;
   width: 100vw;
   border-bottom: 5px solid var(--custom-color-brand);
-  background-color: var(--custom-bg-color);
   margin-bottom: 2em;
   padding-left: 320px;
   padding-right: 320px;
@@ -475,6 +452,15 @@ nav {
   display: flex;
   position: fixed;
   top: 0;
+
+}
+
+.active, .active:last-child{
+  /* border: var(--custom-border); */
+  border-radius: var(--custom-border-radius);
+  color: var(--custom-color-brand) !important;
+  opacity: .5;
+  
 }
 
 .description {
@@ -652,7 +638,7 @@ small {
 }
 
 a:hover {
-  color: var(--custom-color-brand-secondary) !important;
+  color: var(--custom-color-brand) !important;
 
 }
 

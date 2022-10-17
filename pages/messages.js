@@ -29,7 +29,7 @@ export default function MessagesPage() {
       block: "start",
       behavior: "smooth",
     });
-  }, [messages]);
+  });
 
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
   const {

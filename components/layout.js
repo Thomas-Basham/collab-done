@@ -42,8 +42,8 @@ export default function Layout({ children }) {
         setErrorMessageAuth={setErrorMessageAuth}
       />
 
-      <div className="mb-2 d-flex justify-content-end fixed-bottom">
         <DropdownButton
+          className="mb-2 d-flex justify-content-end fixed-bottom"
           key={"up"}
           id={`dropdown-button-drop-up`}
           drop={"up"}
@@ -54,7 +54,6 @@ export default function Layout({ children }) {
             <SideBar openNewChannelModal={openNewChannelModal} global={true} />
           </Dropdown.Item>
         </DropdownButton>
-      </div>
     </div>
   );
 }

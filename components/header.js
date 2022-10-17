@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {CgProfile} from 'react-icons/cg'
+import {TiMessages} from 'react-icons/ti'
+import {FaSignOutAlt} from 'react-icons/fa'
+
+import {FcUpload} from 'react-icons/fc'
 export default function Header({ session, signOut }) {
   return (
     <header className="">
@@ -12,19 +17,27 @@ export default function Header({ session, signOut }) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <br></br>
           <Navbar.Collapse id="responsive-navbar-nav ">
-            <Nav className=" justify-content-between" style={{ display: session && "none" }}>
+            <Nav
+            activeKey={location.pathname}
+              className=" justify-content-between"
+              style={{ display: session && "none" }}
+            >
               <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="/signup">Signup</Nav.Link>
             </Nav>
 
-            {
-              <Nav className=" justify-content-between " style={{ width: '30vw', display: !session?.user && "none" }}>
-                <Nav.Link onClick={signOut()}>Sign Out</Nav.Link>
-                <Nav.Link href="/profile">Profile</Nav.Link>
-                <Nav.Link href="/upload-song">Upload</Nav.Link>
-                <Nav.Link href="/messages">Messages</Nav.Link>
-              </Nav>
-            }
+            <Nav
+              className=" justify-content-between "
+              style={{ width: "30vw", display: !session?.user && "none" }}
+              activeKey={location.pathname}
+            >
+              
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/profile" className="d-flex align-items-center "><CgProfile/>   &nbsp; Profile</Nav.Link>
+              <Nav.Link href="/upload-song" className="d-flex align-items-center "><FcUpload/>   &nbsp; Upload</Nav.Link>
+              <Nav.Link href="/messages" className="d-flex align-items-center "><TiMessages/>    &nbsp; Messages</Nav.Link>
+              <Nav.Link className="d-flex align-items-center " onClick={signOut()}><FaSignOutAlt/> &nbsp; Sign Out</Nav.Link>
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
