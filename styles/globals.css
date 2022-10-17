@@ -457,12 +457,13 @@ nav {
 
 }
 
-.active, .active:last-child{
+.active,
+.active:last-child {
   /* border: var(--custom-border); */
   border-radius: var(--custom-border-radius);
   color: var(--custom-color-brand) !important;
   opacity: .5;
-  
+
 }
 
 .description {
@@ -524,7 +525,7 @@ a {
 }
 
 main {
-  min-height: 80vh;
+  min-height: 70vh;
   padding: 5rem 0;
   flex: 1;
   display: flex;
@@ -714,8 +715,8 @@ ul {
   min-width: 37vw;
   max-width: 37vw;
   /* padding: 40px; */
-  max-height: 70vh;
-  min-height: 70vh;
+  max-height: 60vh;
+  min-height: 60vh;
   overflow: scroll;
   z-index: -3;
 }
@@ -802,7 +803,7 @@ ul {
   .dropdown-menu:hover,
   .dropdown-item {
     width: 70vw !important;
-  
+
     background-color: var(--custom-panel-color) !important;
   }
 
@@ -816,10 +817,10 @@ ul {
     min-height: 50vh;
 
   }
-  
 
-  .active-channel{
-    padding-right:  max-content !important;
+
+  .active-channel {
+    padding-right: max-content !important;
 
   }
 }

@@ -5,11 +5,36 @@ import useResource from "../../hooks/useResource";
 import Avatar from "../../components/Avatar";
 import Socials from "../../components/socials";
 import { RiArrowGoBackFill } from "react-icons/ri";
-
-export default function ForeignUserProfile() {
+import { useStore } from "../../contexts/Store";
+export default function ForeignUserProfilePage() {
   const router = useRouter();
   const { getSocials } = useResource();
-  const { session } = useAuth();
+  const { session, username } = useAuth();
+  const {
+    addChannel,
+    messages,
+    channelId,
+    setChannelId,
+    addMessage,
+    deleteMessage,
+    channels,
+  } = useStore();
+  const handleNewChannel = async () => {
+    if (socials) {
+      let channel = await addChannel(
+        socials?.username,
+        session.user.id,
+        socials?.id,
+        username
+      );
+
+      if (channel[0]?.id) {
+        setChannelId(channel[0].id);
+        router.push('/messages')
+      }
+    }
+  };
+
   const [socials, setSocials] = useState(null);
 
   // if (!resources) return <h2>Loading...</h2>
@@ -31,6 +56,9 @@ export default function ForeignUserProfile() {
       <br></br>
 
       <div className="bio">
+        <div>
+          <button onClick={() => handleNewChannel(socials?.username, socials?.id)}>Send Message</button>
+        </div>
         <h1>{socials?.username}</h1>
         <a
           href={`https://${socials?.website}`}

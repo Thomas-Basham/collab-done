@@ -3,7 +3,7 @@ import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { CgProfile } from "react-icons/cg";
 import { TiMessages } from "react-icons/ti";
 import { FaSignOutAlt } from "react-icons/fa";
-
+import {AiOutlineLogin} from "react-icons/ai"
 import { FcUpload } from "react-icons/fc";
 export default function Header({ session, signOut }) {
   return (
@@ -22,8 +22,10 @@ export default function Header({ session, signOut }) {
               className=" justify-content-between"
               style={{ display: session && "none" }}
             >
-              <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="/signup">Signup</Nav.Link>
+              <Nav.Link href="/login"                 className="d-flex align-items-center "
+ ><AiOutlineLogin/>  &nbsp; Login</Nav.Link>
+              <Nav.Link href="/signup"                 className="d-flex align-items-center "
+>  &nbsp; Signup</Nav.Link>
             </Nav>
 
             <Nav
