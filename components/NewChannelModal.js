@@ -21,7 +21,7 @@ export default function NewChannelModal(props) {
   } = useStore();
 
   let filteredProfiles = props.allProfiles?.filter((user) => {
-    return user.id != props.user.id;
+    return user?.id != props.user?.id;
   });
 
   const newChannel = async (channelName, user_id) => {
