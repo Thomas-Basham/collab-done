@@ -10,9 +10,7 @@ export default function Home(props) {
         <Row>
           <Col>
             <SongFeed profilePage={false} />
-            <div style={{ margin: "50% 50%", width: "100%" }}>
-              <p>Messaging coming soon</p>
-            </div>
+
           </Col>
         </Row>
       </Container>

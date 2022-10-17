@@ -292,6 +292,8 @@ button.primary:hover,
 .footer {
   position: relative;
   max-width: 100%;
+  max-height: 10vh;
+  min-height: 10vh;
   bottom: 0;
   left: 0;
   right: 0;
@@ -522,7 +524,7 @@ a {
 }
 
 main {
-  /* min-height: 90vh; */
+  min-height: 80vh;
   padding: 5rem 0;
   flex: 1;
   display: flex;
