@@ -12,12 +12,9 @@ export default function ForeignUserProfilePage() {
   const { session, username } = useAuth();
   const {
     addChannel,
-    messages,
-    channelId,
+
     setChannelId,
-    addMessage,
-    deleteMessage,
-    channels,
+
   } = useStore();
   const handleNewChannel = async () => {
     if (socials) {
@@ -56,9 +53,8 @@ export default function ForeignUserProfilePage() {
       <br></br>
 
       <div className="bio">
-        <div>
-          <button onClick={() => handleNewChannel(socials?.username, socials?.id)}>Send Message</button>
-        </div>
+  
+          <button className="socials-container" onClick={() => handleNewChannel(socials?.username, socials?.id)}>Send Message</button>
         <h1>{socials?.username}</h1>
         <a
           href={`https://${socials?.website}`}

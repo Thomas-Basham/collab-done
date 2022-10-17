@@ -602,7 +602,7 @@ small {
   float: right;
   text-align: right;
   /* justify-content: end; */
-  width: 100px !important;
+  /* width: 100px !important; */
   display: flex;
   flex-direction: column;
   align-content: space-between;
@@ -733,7 +733,8 @@ ul {
 }
 
 .side-bar {
-  /* width: 10vw !important; */
+  min-width: 12vw;
+  max-width: 80vw;
   padding-right: 2vw;
 }
 
