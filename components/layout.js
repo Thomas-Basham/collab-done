@@ -42,18 +42,18 @@ export default function Layout({ children }) {
         setErrorMessageAuth={setErrorMessageAuth}
       />
 
-        <DropdownButton
-          className="mb-2 d-flex justify-content-end fixed-bottom"
-          key={"up"}
-          id={`dropdown-button-drop-up`}
-          drop={"up"}
-          variant="none"
-          title={` Messages `}
-        >
-          <Dropdown.Item eventKey="up">
-            <SideBar openNewChannelModal={openNewChannelModal} global={true} />
-          </Dropdown.Item>
-        </DropdownButton>
+      <DropdownButton
+        className="mb-2 d-flex justify-content-end fixed-bottom"
+        key={"up"}
+        id={`dropdown-button-drop-up`}
+        drop={"up"}
+        variant="none"
+        title={` Messages `}
+      >
+        <Dropdown.Item eventKey="up">
+          <SideBar openNewChannelModal={openNewChannelModal} global={true} />
+        </Dropdown.Item>
+      </DropdownButton>
     </div>
   );
 }

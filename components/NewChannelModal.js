@@ -48,7 +48,7 @@ export default function NewChannelModal(props) {
   const filter = (e) => {
     const keyword = e.target.value;
 
-    if (keyword !== "") {
+    if (keyword) {
       const results = filteredProfiles.filter((user) => {
         return (
           user.username != props.username &&
@@ -75,7 +75,7 @@ export default function NewChannelModal(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Search for a new user here</Modal.Title>
+          <Modal.Title>Search for a user here</Modal.Title>
         </Modal.Header>
         <br></br>
         <br></br>
@@ -90,7 +90,7 @@ export default function NewChannelModal(props) {
         <br></br>
 
         <div className="user-list">
-          {foundUsers && foundUsers.length > 0 ? (
+          {foundUsers &&
             foundUsers.map((user) => (
               <div
                 key={user.id}
@@ -118,10 +118,7 @@ export default function NewChannelModal(props) {
                 <span className="user-age">{user.age} </span>
                 <br></br>
               </div>
-            ))
-          ) : (
-            <h5>No results found!</h5>
-          )}
+            ))}
         </div>
       </Modal>
     </>
