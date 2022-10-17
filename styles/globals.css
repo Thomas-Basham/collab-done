@@ -446,9 +446,7 @@ a {
 main {
 
   min-height: 70vh;
-  min-width: 100vw !important;
-  max-width: 100vw !important;
-  padding: 5rem 0;
+  padding-bottom: 5vh;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -634,8 +632,8 @@ ul {
 .channel-container {
   border: var(--custom-border);
   border-radius: var(--custom-border-radius);
-  min-width: 37vw;
-  max-width: 37vw;
+  min-width: 50vw;
+  max-width: 50vw;
   /* padding: 40px; */
   max-height: 60vh;
   min-height: 60vh;
