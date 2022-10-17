@@ -1,4 +1,3 @@
-import styles from "../styles/form.module.css";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Link from "next/link";
