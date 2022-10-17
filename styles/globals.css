@@ -17,6 +17,7 @@ body {
   --custom-border-radius: 5px;
   --custom-spacing: 5px;
 
+
   padding: 0 !important;
   margin: 0 !important;
   font-family: var(--custom-font-family) !important;
@@ -28,22 +29,21 @@ body {
   font-family: var(--custom-font-family);
   box-sizing: border-box;
 }
+html {
+  width: 100vw !important;
 
+}
 html,
 body,
 #__next {
-  height: 100vh;
-  width: 100vw;
+  /* height: 100vh; */
+  width: 100%;
   overflow-x: hidden;
 }
 
 /* Grid */
 
-.container {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 
 .col-1,
@@ -525,7 +525,10 @@ a {
 }
 
 main {
+  
   min-height: 70vh;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
   padding: 5rem 0;
   flex: 1;
   display: flex;

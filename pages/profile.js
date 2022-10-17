@@ -5,9 +5,9 @@ import useResource from "../hooks/useResource";
 import Modal from "react-bootstrap/Modal";
 import Router from "next/router";
 import SongFeed from "../components/SongFeed";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
-export default function Profile() {
+export default function ProfilePage() {
   useEffect(() => {
     if (!session) {
       Router.push("/login");
@@ -88,8 +88,8 @@ export default function Profile() {
   return (
     <>
       <Container fluid="md">
-        <div className="row ">
-          <div className="col form-widget">
+        <Row>
+          <Col className=" form-widget">
             <Avatar
               url={avatar_url}
               size={150}
@@ -205,8 +205,8 @@ export default function Profile() {
             </div>
 
             <SongFeed profilePage={true} />
-          </div>
-        </div>
+          </Col>
+        </Row>
       </Container>
 
       <Modal

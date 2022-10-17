@@ -5,36 +5,13 @@ import useResource from "../../hooks/useResource";
 import Avatar from "../../components/Avatar";
 import Socials from "../../components/socials";
 import { RiArrowGoBackFill } from "react-icons/ri";
-import { useStore } from "../../contexts/Store";
 export default function ForeignUserProfilePage() {
   const router = useRouter();
   const { getSocials } = useResource();
   const { session, username } = useAuth();
-  const {
-    addChannel,
-
-    setChannelId,
-
-  } = useStore();
-  const handleNewChannel = async () => {
-    if (socials) {
-      let channel = await addChannel(
-        socials?.username,
-        session.user.id,
-        socials?.id,
-        username
-      );
-
-      if (channel[0]?.id) {
-        setChannelId(channel[0].id);
-        router.push('/messages')
-      }
-    }
-  };
 
   const [socials, setSocials] = useState(null);
 
-  // if (!resources) return <h2>Loading...</h2>
   useEffect(() => {
     handleGetSocials();
   }, []);
@@ -53,8 +30,13 @@ export default function ForeignUserProfilePage() {
       <br></br>
 
       <div className="bio">
-  
-          <button className="socials-container" onClick={() => handleNewChannel(socials?.username, socials?.id)}>Send Message</button>
+        <div className="socials-container">
+          <Socials
+            data={socials}
+            currentUser={session.user}
+            username={username}
+          />
+        </div>
         <h1>{socials?.username}</h1>
         <a
           href={`https://${socials?.website}`}
@@ -63,10 +45,7 @@ export default function ForeignUserProfilePage() {
         >
           <h6>{socials?.website}</h6>
         </a>
-        <div className="d-flex ">
-          <Avatar url={socials?.avatar_url} size={150} />
-          <Socials data={socials} />
-        </div>
+        <Avatar url={socials?.avatar_url} size={150} />
         <div>
           <div>
             <br></br>

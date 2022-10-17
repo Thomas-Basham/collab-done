@@ -2,10 +2,39 @@ import Link from "next/link";
 import { FiTwitter, FiInstagram } from "react-icons/fi";
 import { RiSpotifyLine } from "react-icons/ri";
 import { GrSoundcloud } from "react-icons/gr";
+import { useStore } from "../contexts/Store";
+import { useRouter } from "next/router";
 
-export default function Socials({ data }) {
+export default function Socials({ data, currentUser, username }) {
+  const router = useRouter();
+  const {
+    addChannel,
+
+    setChannelId,
+  } = useStore();
+  const handleNewChannel = async () => {
+    if (data) {
+      let channel = await addChannel(
+        data?.username,
+        currentUser.id,
+        data?.id,
+        username
+      );
+
+      if (channel[0]?.id) {
+        setChannelId(channel[0].id);
+        router.push("/messages");
+      }
+    }
+  };
+
   return (
     <div className="socials-container">
+      {currentUser && (
+        <button onClick={() => handleNewChannel(data?.username, data?.id)}>
+          Send Message
+        </button>
+      )}
       {data && (
         <Link href={`https://www.instagram.com/${data.instagram_url}`}>
           <a target="blank" rel="noopener noreferrer">

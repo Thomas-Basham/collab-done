@@ -173,7 +173,11 @@ export default function SongFeed({ profilePage }) {
               />
 
               {selectedPostKey == i && ( // displays socials when button is collected.
-                <Socials data={socials} />
+                <Socials
+                  data={socials}
+                  currentUser={session?.user}
+                  username={username}
+                />
               )}
               <h1>{data.artist}</h1>
             </div>

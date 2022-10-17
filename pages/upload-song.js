@@ -45,6 +45,7 @@ export default function UploadSong() {
     } else return loading ? "Loading ..." : "Start Collabing";
   };
   return (
+    <>
     <Container fluid="md">
       <div className="row flex-center flex">
         <div className="col-6 form-widget">
@@ -119,5 +120,6 @@ export default function UploadSong() {
         </div>
       </div>
     </Container>
+    </>
   );
 }
