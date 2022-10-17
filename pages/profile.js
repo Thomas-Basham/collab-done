@@ -63,7 +63,7 @@ export default function ProfilePage() {
   if (playSong == false) {
     audio.pause();
   }
-  let size = 150;
+  let size = "150px";
 
   const [songPostData, SetSongPostData] = useState(null);
   const [genre, setGenre] = useState(null);
@@ -86,128 +86,117 @@ export default function ProfilePage() {
   }
 
   return (
-    <>
-      <Container fluid="md">
-        <Row>
-          <Col className=" form-widget">
-            <Avatar
-              url={avatar_url}
-              size={150}
-              onUpload={(url, absoluteAvatar_url) => {
-                setAvatarUrl(url);
-                updateProfile({
-                  avatar_url: url,
-                  absolute_avatar_url: absoluteAvatar_url,
-                }); // username, website,
-              }}
-            />
-            <div>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                value={session?.user.email}
-                disabled
-              />
-            </div>
-            <div>
-              <label htmlFor="username">Artist Name</label>
-              <input
-                id="username"
-                type="text"
-                value={username || ""}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="bio">BIO</label>
-              <textarea
-                cols="40"
-                rows="5"
-                id="bio"
-                type="text"
-                value={bio || ""}
-                onChange={(e) => setBio(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="website">Website</label>
-              <input
-                id="website"
-                type="text"
-                value={website || ""}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="instagram">Instagram username</label>
-              <input
-                id="instagram"
-                type="text"
-                value={instagram_url || ""}
-                onChange={(e) => setInstagram_url(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="twitter">Twitter username</label>
-              <input
-                id="twitter"
-                type="text"
-                value={twitter_url || ""}
-                onChange={(e) => setTwitter_url(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="soundcloud">Soundcloud username</label>
-              <input
-                id="soundcloud"
-                type="website"
-                value={soundcloud_url || ""}
-                onChange={(e) => setSoundcloud_url(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="Spotify">Spotify artist id</label>
-              <input
-                id="Spotify"
-                type="website"
-                value={spotify_url || ""}
-                onChange={(e) => setSpotify_url(e.target.value)}
-              />
-            </div>
+    <Container fluid="md">
+      <Avatar
+        url={avatar_url}
+        size={size}
+        onUpload={(url, absoluteAvatar_url) => {
+          setAvatarUrl(url);
+          updateProfile({
+            avatar_url: url,
+            absolute_avatar_url: absoluteAvatar_url,
+          }); // username, website,
+        }}
+      />
+      <div>
+        <label htmlFor="email">Email</label>
+        <input id="email" type="text" value={session?.user.email} disabled />
+      </div>
+      <div>
+        <label htmlFor="username">Artist Name</label>
+        <input
+          id="username"
+          type="text"
+          value={username || ""}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="bio">BIO</label>
+        <textarea
+          cols="40"
+          rows="5"
+          id="bio"
+          type="text"
+          value={bio || ""}
+          onChange={(e) => setBio(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          type="text"
+          value={website || ""}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="instagram">Instagram username</label>
+        <input
+          id="instagram"
+          type="text"
+          value={instagram_url || ""}
+          onChange={(e) => setInstagram_url(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="twitter">Twitter username</label>
+        <input
+          id="twitter"
+          type="text"
+          value={twitter_url || ""}
+          onChange={(e) => setTwitter_url(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="soundcloud">Soundcloud username</label>
+        <input
+          id="soundcloud"
+          type="website"
+          value={soundcloud_url || ""}
+          onChange={(e) => setSoundcloud_url(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="Spotify">Spotify artist id</label>
+        <input
+          id="Spotify"
+          type="website"
+          value={spotify_url || ""}
+          onChange={(e) => setSpotify_url(e.target.value)}
+        />
+      </div>
 
-            <div>
-              <button
-                className="button primary block"
-                onClick={() =>
-                  updateProfile({
-                    username,
-                    bio,
-                    website,
-                    avatar_url,
-                    absolute_avatar_url: absoluteAvatar_urlAuth,
-                    instagram_url,
-                    twitter_url,
-                    spotify_url,
-                    soundcloud_url,
-                  })
-                }
-                disabled={isLoading}
-              >
-                {isLoading ? "Loading ..." : "Update"}
-              </button>
-            </div>
+      <div>
+        <button
+          className="button primary block"
+          onClick={() =>
+            updateProfile({
+              username,
+              bio,
+              website,
+              avatar_url,
+              absolute_avatar_url: absoluteAvatar_urlAuth,
+              instagram_url,
+              twitter_url,
+              spotify_url,
+              soundcloud_url,
+            })
+          }
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading ..." : "Update"}
+        </button>
+      </div>
 
-            <div>
-              <button className="button block" onClick={signOut()}>
-                Sign Out
-              </button>
-            </div>
+      <div>
+        <button className="button block" onClick={signOut()}>
+          Sign Out
+        </button>
+      </div>
 
-            <SongFeed profilePage={true} />
-          </Col>
-        </Row>
-      </Container>
+      <SongFeed profilePage={true} />
 
       <Modal
         show={show}
@@ -291,6 +280,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </Modal>
-    </>
+    </Container>
   );
 }

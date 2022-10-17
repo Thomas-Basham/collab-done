@@ -67,7 +67,7 @@ export default function UploadSong() {
             <input
               style={{
                 visibility: "hidden",
-                position: "absolute",
+                position: "relative",
               }}
               type="file"
               id="single"

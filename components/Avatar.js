@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import useResource from "../hooks/useResource";
+import Image from "next/image";
 
 export default function Avatar({ url, size, onUpload }) {
   // const [avatarUrl, setAvatarUrl] = useState(null);
@@ -48,13 +49,15 @@ export default function Avatar({ url, size, onUpload }) {
   }
 
   return (
-    <div className="">
+    <div >
       {avatarUrl ? (
-        <img
+        <Image
+          width={size}
+          height={size}
           src={avatarUrl}
           alt="Avatar"
           className="avatar image"
-          style={{ height: size, width: size }}
+          style={{ height: size, width: size, padding: 0, }}
         />
       ) : (
         <div
@@ -70,7 +73,7 @@ export default function Avatar({ url, size, onUpload }) {
           <input
             style={{
               visibility: "hidden",
-              position: "absolute",
+              position: "relative",
             }}
             type="file"
             id="single"

@@ -5,6 +5,7 @@ import useResource from "../../hooks/useResource";
 import Avatar from "../../components/Avatar";
 import Socials from "../../components/socials";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { Container } from "react-bootstrap";
 export default function ForeignUserProfilePage() {
   const router = useRouter();
   const { getSocials } = useResource();
@@ -24,6 +25,7 @@ export default function ForeignUserProfilePage() {
 
   return (
     <>
+    <Container >
       <button className="rounded bio" onClick={() => router.back()}>
         <RiArrowGoBackFill />
       </button>
@@ -56,6 +58,7 @@ export default function ForeignUserProfilePage() {
           </div>
         </div>
       </div>
+      </Container>
     </>
   );
 }
