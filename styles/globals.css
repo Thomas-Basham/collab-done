@@ -709,11 +709,13 @@ ul {
 }
 
 .channel-container {
-  width: 40vw !important;
   border: var(--custom-border);
+  border-radius: var(--custom-border-radius);
+  min-width: 37vw;
+  max-width: 37vw;
   /* padding: 40px; */
-  max-height: 50vh;
-  min-height: 50vh;
+  max-height: 70vh;
+  min-height: 70vh;
   overflow: scroll;
   z-index: -3;
 }
@@ -730,7 +732,7 @@ ul {
 }
 
 .side-bar {
-  width: 10vw !important;
+  /* width: 10vw !important; */
   padding-right: 2vw;
 }
 
@@ -753,7 +755,7 @@ ul {
 .dropdown-menu,
 .dropdown-menu:hover,
 .dropdown-item {
-  width: 30vw !important;
+  width: 40vw !important;
 
   background-color: var(--custom-panel-color) !important;
 }
@@ -794,6 +796,31 @@ ul {
   .comment-holder {
     min-width: 60% !important;
     max-width: 60% !important;
+  }
+
+  .dropdown-menu,
+  .dropdown-menu:hover,
+  .dropdown-item {
+    width: 70vw !important;
+  
+    background-color: var(--custom-panel-color) !important;
+  }
+
+
+  .channel-container {
+    border-radius: var(--custom-border-radius);
+    min-width: 95vw;
+    max-width: 95vw;
+    /* padding: 40px; */
+    max-height: 50vh;
+    min-height: 50vh;
+
+  }
+  
+
+  .active-channel{
+    padding-right:  max-content !important;
+
   }
 }
 

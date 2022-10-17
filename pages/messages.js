@@ -51,23 +51,20 @@ export default function MessagesPage() {
   }
 
   let currentChannel = channels.filter((chanel) => chanel.id == channelId);
-  console.log({channelId})
-  console.log({currentChannel})
+
   // Render the channels and messages
   return (
     <>
       {" "}
       <main>
         {/* Sidebar */}
-
-        <Container  >
+          <div className="container">
           <div className="row">
-          <div className="col">
-
-            <SideBar openNewChannelModal={openNewChannelModal} />
+            <div className="col-sm-3">
+              <SideBar openNewChannelModal={openNewChannelModal} />
             </div>
 
-            <div className="col">
+            <div className="col-sm-9">
               {/* Messages */}
 
               <div className="channel-container">
@@ -92,8 +89,7 @@ export default function MessagesPage() {
                   </div>
                 </div>
               </div>
-
-              <div className="">
+              <div className="position-relative bottom-0 col-md-12">
                 <MessageInput
                   onSubmit={async (text) =>
                     addMessage(
@@ -107,9 +103,10 @@ export default function MessagesPage() {
                   channelId={channelId}
                 />
               </div>
+
             </div>
           </div>
-        </Container>
+          </div>
 
         <NewChannelModal
           setShowNewChannelModal={setShowNewChannelModal}

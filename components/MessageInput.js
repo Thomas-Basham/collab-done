@@ -4,11 +4,6 @@ import { useStore } from "../contexts/Store";
 const MessageInput = ({ onSubmit, channelId }) => {
   const [messageText, setMessageText] = useState("");
 
-  // const {
-
-  //   channelId,
-
-  // } = useStore();
   const submitOnEnter = (event) => {
     // Watch for enter key
     if (event.keyCode === 13) {
@@ -17,11 +12,10 @@ const MessageInput = ({ onSubmit, channelId }) => {
     }
   };
 
-  console.log(channelId);
   return (
     <>
       <input
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="border rounded px-3 "
         type="text"
         placeholder="Send a message"
         disabled={!channelId}

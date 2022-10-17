@@ -124,7 +124,7 @@ export default function SideBar(props) {
 
     return (
       <>
-        <div className="side-bar col">
+        <div className="side-bar ">
           <div>
             {/* <button onClick={() => newChannel()}>New Channel</button> */}
             <button onClick={props.openNewChannelModal}>New Message</button>
