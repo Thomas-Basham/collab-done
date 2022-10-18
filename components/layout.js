@@ -10,6 +10,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import SideBar from "./SideBar";
 import { useStore } from "../contexts/Store";
+import { TiMessages } from "react-icons/ti";
 
 export default function Layout({ children }) {
   const { signOut, session, errorMessageAuth, setErrorMessageAuth, userRoles } =
