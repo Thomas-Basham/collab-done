@@ -3,6 +3,7 @@ import TrashIcon from "/components/TrashIcon";
 import { useStore } from "../contexts/Store";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
+import { TiMessages } from "react-icons/ti";
 
 export default function SideBar(props) {
   const {
@@ -40,17 +41,7 @@ export default function SideBar(props) {
       <>
         <div className="side-bar-global">
           <div className="row">
-            <div className="col" onClick={() => handleGoToMessages(channel.id)}>
-              <p
-                className={isActiveChannel ? "active-channel" : ""}
-                style={{ cursor: "pointer" }}
-              >
-                {channel.message_to == user?.id
-                  ? channel.created_by_username
-                  : channel.slug}
-              </p>
-            </div>
-            <div className="col">
+            <div className="col col-2">
               {(channel.created_by === user?.id ||
                 userRoles.includes("admin")) |
                 (channel.message_to === user?.id) && (
@@ -61,6 +52,19 @@ export default function SideBar(props) {
                   <TrashIcon />
                 </span>
               )}
+            </div>
+            <div
+              className="col "
+              onClick={() => handleGoToMessages(channel.id)}
+            >
+              <p
+                className={isActiveChannel ? "active-channel" : ""}
+                style={{ cursor: "pointer" }}
+              >
+                {channel.message_to == user?.id
+                  ? channel.created_by_username
+                  : channel.slug}
+              </p>
             </div>
           </div>
         </div>
@@ -75,7 +79,7 @@ export default function SideBar(props) {
             </button>{" "}
           </div>
           <hr />
-          <h4>Messages</h4>
+
           <ul className="channel-list">
             {filteredChannels.map((x) => (
               <SidebarItem
@@ -131,7 +135,12 @@ export default function SideBar(props) {
           </div>
 
           <hr />
-          <h4>Messages</h4>
+
+          <div className="d-flex ">
+            <TiMessages size={22} />
+            &nbsp; &nbsp;
+            <h4>Messages</h4>
+          </div>
           <ul className="channel-list">
             {filteredChannels.map((x) => (
               <SidebarItem
