@@ -34,8 +34,8 @@ export default function NewChannelModal(props) {
       );
 
       props.setShowNewChannelModal(false);
-      if (channel[0]?.id) {
-        setChannelId(channel[0].id);
+      if (channel && channel[0]?.id) {
+        setChannelId(channel[0]?.id);
       }
     }
   };

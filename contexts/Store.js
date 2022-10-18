@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { supabase } from "../utils/supabaseClient";
-
+import { useAuth } from "./auth";
 const MessageContext = createContext();
 
 // /**
 //  * @param {number} channelId the currently selected Channel
 //  */
 export function MessageProvider({ children }) {
+  const { session } = useAuth();
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [users] = useState(new Map());
@@ -232,16 +233,31 @@ export function MessageProvider({ children }) {
    * @param {number} user_id The channel creator
    */
   const addChannel = async (slug, user_id, message_to, created_by_username) => {
-    try {
-      let { data } = await supabase
-        .from("channels")
-        .insert([
-          { slug, created_by: user_id, message_to, created_by_username },
-        ])
-        .select();
-      return data;
-    } catch (error) {
-      console.log("error", error);
+    let filteredChannels = channels.filter(
+      (chanel) =>
+        chanel.message_to === session?.user?.id ||
+        chanel.created_by === session?.user?.id
+    );
+    let existingChannel = filteredChannels.filter(
+      (chanel) =>
+        chanel.message_to === message_to ||
+        chanel.created_by === created_by_username
+    );
+    if (existingChannel.length < 1) {
+      try {
+        let { data } = await supabase
+          .from("channels")
+          .insert([
+            { slug, created_by: user_id, message_to, created_by_username },
+          ])
+          .select();
+        return data;
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      console.log({ existingChannel });
+      setChannelId(existingChannel[0]?.id);
     }
   };
 
