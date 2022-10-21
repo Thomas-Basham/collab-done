@@ -18,7 +18,7 @@ export default function CommentSection(props) {
     deleteComment,
   } = useResource();
 
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [commenter, setCommenter] = useState(null);
   const [viewCommentData, setViewCommentData] = useState(null);
   const [viewCommentPosition, setViewCommentPosition] = useState(null);
@@ -55,7 +55,7 @@ export default function CommentSection(props) {
 
     setViewCommentProfile(profile);
   };
-  
+
   const handleDeleteComment = async (id) => {
     await deleteComment(id);
     setViewCommentData(null);
@@ -112,13 +112,23 @@ export default function CommentSection(props) {
             className="d-inline comment"
             style={{
               position: "relative",
+              cursor: "default",
               left:
                 viewCommentPosition - 16 > 0
                   ? `${viewCommentPosition}%`
                   : `${viewCommentPosition}%`,
             }}
           >
-            <p className="brand-text">{viewCommentProfile?.username}</p>
+            <div>
+              <a
+                href={`/pr/${viewCommentProfile?.id}`}
+                className="brand-text"
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                {viewCommentProfile?.username}
+              </a>
+            </div>
             {viewCommentData?.comment}
             &nbsp;
             <DeleteButton />
