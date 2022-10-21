@@ -6,7 +6,7 @@ const MessageContext = createContext();
 // /**
 //  * @param {number} channelId the currently selected Channel
 //  */
-export function MessageProvider({ children }) {
+export function RealTimeProvider({ children }) {
   const { session } = useAuth();
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);

@@ -2,17 +2,17 @@ import "../styles/globals.css";
 import Layout from "../components/layout";
 import { AuthProvider } from "../contexts/auth";
 
-import { MessageProvider } from "../contexts/Store";
+import { RealTimeProvider } from "../contexts/RealTime";
 import GithubCorner from "react-github-corner";
 
 import ThemeProvider from "react-bootstrap/ThemeProvider";
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <MessageProvider>
+      <RealTimeProvider>
         <ThemeProvider
           breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
-          minBreakpoint="xxs"
+          minBreakpoint="s"
         >
           <Layout>
             <Component {...pageProps} />
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
           </Layout>
           <GithubCorner href="https://github.com/Thomas-Basham/collab-done" />
         </ThemeProvider>
-      </MessageProvider>
+      </RealTimeProvider>
     </AuthProvider>
   );
 }

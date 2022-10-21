@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FiTwitter, FiInstagram } from "react-icons/fi";
 import { RiSpotifyLine } from "react-icons/ri";
 import { GrSoundcloud } from "react-icons/gr";
-import { useStore } from "../contexts/Store";
+import { useStore } from "../contexts/RealTime";
 import { useRouter } from "next/router";
 
 export default function Socials({ data, currentUser, username }) {
@@ -21,10 +21,10 @@ export default function Socials({ data, currentUser, username }) {
         username
       );
 
-      if (channel[0]?.id) {
+      if (channel && channel[0]?.id) {
         setChannelId(channel[0].id);
         router.push("/messages");
-      }
+      } else router.push("/messages");
     }
   };
 

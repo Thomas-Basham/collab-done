@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/auth";
-import { useStore } from "../contexts/Store";
+import { useStore } from "../contexts/RealTime";
 import { Container, Modal } from "react-bootstrap";
 import useResource from "../hooks/useResource";
 import SideBar from "../components/SideBar";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../contexts/Store";
+import { useStore } from "../contexts/RealTime";
 
 const MessageInput = ({ onSubmit, channelId }) => {
   const [messageText, setMessageText] = useState("");

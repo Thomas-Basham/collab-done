@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useStore } from "../contexts/Store";
+import { useStore } from "../contexts/RealTime";
 
 export default function NewChannelModal(props) {
   // the value of the search field

@@ -154,7 +154,13 @@ export default function SongFeed({ profilePage }) {
           className="music-post "
           key={i}
         >
-          {" "}
+          {selectedPostKey == i && ( // displays socials when button is collected.
+            <Socials
+              data={socials}
+              currentUser={session?.user}
+              username={username}
+            />
+          )}
           {selectedPostKey != i && (
             <button
               className="socials-container"
@@ -171,17 +177,10 @@ export default function SongFeed({ profilePage }) {
                 className="avatar image"
                 style={{ height: 150, width: 150 }}
               />
-
-              {selectedPostKey == i && ( // displays socials when button is collected.
-                <Socials
-                  data={socials}
-                  currentUser={session?.user}
-                  username={username}
-                />
-              )}
               <h1>{data.artist}</h1>
             </div>
           </Link>
+
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
           {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
@@ -304,10 +303,10 @@ export default function SongFeed({ profilePage }) {
                 style={{ height: 150, width: 150 }}
               />
 
+              <h1>{data.artist}</h1>
               {selectedPostKey == i && ( // displays socials when button is collected.
                 <Socials data={socials} />
               )}
-              <h1>{data.artist}</h1>
             </div>
           </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
