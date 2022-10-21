@@ -14,11 +14,15 @@ export default function ForeignUserProfilePage() {
   const [socials, setSocials] = useState(null);
 
   useEffect(() => {
-    handleGetSocials();
-  }, []);
+    if (!socials) {
+
+      handleGetSocials();
+    }
+  });
 
   const handleGetSocials = async () => {
     const { id } = router.query;
+    console.log({id})
     let data = await getSocials(id, 0);
     setSocials(data);
   };
