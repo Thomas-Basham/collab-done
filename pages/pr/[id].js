@@ -35,7 +35,7 @@ export default function ForeignUserProfilePage() {
         <div className="socials-container">
           <Socials
             data={socials}
-            currentUser={session.user}
+            currentUser={session?.user}
             username={username}
           />
         </div>
