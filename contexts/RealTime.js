@@ -240,7 +240,7 @@ export function RealTimeProvider({ children }) {
     );
     let existingChannel = filteredChannels.filter(
       (chanel) =>
-        chanel.message_to === message_to ||
+        chanel.message_to === message_to &&
         chanel.created_by === created_by_username
     );
     if (existingChannel.length < 1) {

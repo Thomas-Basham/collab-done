@@ -72,8 +72,8 @@ export default function MessagesPage() {
                   <h3 className="">
                     {" "}
                     {currentChannel[0]?.message_to == user?.id
-                      ? currentChannel[0]?.created_by_username
-                      : currentChannel[0]?.slug}
+                      ? <a href={`pr/${currentChannel[0]?.created_by}`}>{currentChannel[0]?.created_by_username}</a> 
+                      : <a href={`pr/${currentChannel[0]?.message_to}`}>{currentChannel[0]?.slug}</a>}
                   </h3>
                 </div>
                 <div className="messages">
