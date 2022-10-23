@@ -58,7 +58,7 @@ export default function MessagesPage() {
       {" "}
       <main>
         {/* Sidebar */}
-          <div className="container">
+        <div className="container">
           <div className="row">
             <div className="col-sm-3">
               <SideBar openNewChannelModal={openNewChannelModal} />
@@ -69,11 +69,16 @@ export default function MessagesPage() {
 
               <div className="channel-container">
                 <div className="sticky-top message-header ">
-                  <h3 className="">
-                    {" "}
-                    {currentChannel[0]?.message_to == user?.id
-                      ? <a href={`pr/${currentChannel[0]?.created_by}`}>{currentChannel[0]?.created_by_username}</a> 
-                      : <a href={`pr/${currentChannel[0]?.message_to}`}>{currentChannel[0]?.slug}</a>}
+                  <h3 id="message-from">
+                    {currentChannel[0]?.message_to == user?.id ? (
+                      <a href={`pr/${currentChannel[0]?.created_by}`}>
+                        {currentChannel[0]?.created_by_username}
+                      </a>
+                    ) : (
+                      <a href={`pr/${currentChannel[0]?.message_to}`}>
+                        {currentChannel[0]?.slug}
+                      </a>
+                    )}
                   </h3>
                 </div>
                 <div className="messages">
@@ -103,10 +108,9 @@ export default function MessagesPage() {
                   channelId={channelId}
                 />
               </div>
-
             </div>
           </div>
-          </div>
+        </div>
 
         <NewChannelModal
           setShowNewChannelModal={setShowNewChannelModal}
