@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FiTwitter, FiInstagram } from "react-icons/fi";
 import { RiSpotifyLine } from "react-icons/ri";
 import { GrSoundcloud } from "react-icons/gr";
-import { useStore } from "../contexts/RealTime";
+import { useRealtime } from "../contexts/RealTime";
 import { useRouter } from "next/router";
 
 export default function Socials({ data, currentUser, username }) {
@@ -11,7 +11,7 @@ export default function Socials({ data, currentUser, username }) {
     addChannel,
 
     setChannelId,
-  } = useStore();
+  } = useRealtime();
   const handleNewChannel = async () => {
     if (data) {
       let channel = await addChannel(

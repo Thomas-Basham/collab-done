@@ -18,8 +18,6 @@ export function AuthProvider({ children }) {
   const [soundcloud_url, setSoundcloud_url] = useState("");
   const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState("");
 
-  const [userLoaded, setUserLoaded] = useState(false);
-  const [user, setUser] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
   useEffect(() => {
@@ -43,18 +41,11 @@ export function AuthProvider({ children }) {
 
     getInitialSession();
 
-    // const { subscription } = supabase.auth.onAuthStateChange(
-    //   (_event, session) => {
-    //     setSession(session);
-    //   }
-    // );
 
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         const currentUser = session?.user;
-        setUser(currentUser ?? null);
-        setUserLoaded(!!currentUser);
         if (currentUser) {
           signIn(currentUser.id, currentUser.email);
         }
@@ -65,7 +56,7 @@ export function AuthProvider({ children }) {
       mounted = false;
 
       // subscription?.unsubscribe();
-      authListener.unsubscribe();
+      authListener?.unsubscribe();
     };
   }, []);
 

@@ -29,8 +29,6 @@ export function RealTimeProvider({ children }) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
-          console.log({ payload });
-          console.log([payload.new.channel_id]);
 
           setIncomingChannelId(payload.new.channel_id);
           handleNewMessage(payload.new);
@@ -53,7 +51,7 @@ export function RealTimeProvider({ children }) {
         "postgres_changes",
         { event: "*", schema: "public", table: "profiles" },
         (payload) => {
-          console.log(payload);
+          console.log("PROFILES!", payload);
 
           handleNewOrUpdatedUser(payload.new);
         }
@@ -160,7 +158,6 @@ export function RealTimeProvider({ children }) {
     try {
       let { data } = await supabase.from("channels").select("*");
       if (setState) setState(data);
-      console.log(data);
       return data;
     } catch (error) {
       console.log("error", error);
@@ -344,6 +341,6 @@ export function RealTimeProvider({ children }) {
   );
 }
 
-export function useStore() {
+export function useRealtime() {
   return useContext(MessageContext);
 }

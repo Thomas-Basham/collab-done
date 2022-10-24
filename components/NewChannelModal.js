@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useStore } from "../contexts/RealTime";
+import { useRealtime } from "../contexts/RealTime";
 
 export default function NewChannelModal(props) {
   // the value of the search field
@@ -18,7 +18,7 @@ export default function NewChannelModal(props) {
     channelId,
     setChannelId,
     addMessage,
-  } = useStore();
+  } = useRealtime();
 
   let filteredProfiles = props.allProfiles?.filter((user) => {
     return user?.id != props.user?.id;

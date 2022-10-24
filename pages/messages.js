@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/auth";
-import { useStore } from "../contexts/RealTime";
+import { useRealtime } from "../contexts/RealTime";
 import { Container, Modal } from "react-bootstrap";
 import useResource from "../hooks/useResource";
 import SideBar from "../components/SideBar";
@@ -12,15 +12,36 @@ import NewChannelModal from "../components/NewChannelModal";
 
 export default function MessagesPage() {
   const router = useRouter();
+
+  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+  const {
+    addChannel,
+    messages,
+    channelId,
+    addMessage,
+    deleteMessage,
+    channels,
+  } = useRealtime();
+  const { allProfiles, getAllProfiles } = useResource();
+  const user = session?.user;
+
+  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
+
   useEffect(() => {
     if (!session) {
       router.push("/login");
+    }
+    if ( !username){
+      router.push("/profile");
+
     }
   });
   useEffect(() => {
     if (!allProfiles) {
       getAllProfiles();
+      console.log({allProfiles})
     }
+    console.log({allProfiles})
   }, []);
 
   const messagesEndRef = useRef(null);
@@ -31,24 +52,12 @@ export default function MessagesPage() {
     });
   });
 
-  const { session, username, absoluteAvatar_urlAuth } = useAuth();
-  const {
-    addChannel,
-    messages,
-    channelId,
-    addMessage,
-    deleteMessage,
-    channels,
-  } = useStore();
-  const { allProfiles, getAllProfiles } = useResource();
 
-  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
-
-  const user = session?.user;
 
   function openNewChannelModal() {
     setShowNewChannelModal(true);
   }
+
 
   let currentChannel = channels.filter((chanel) => chanel.id == channelId);
 
@@ -83,7 +92,8 @@ export default function MessagesPage() {
                 </div>
                 <div className="messages">
                   <div className="">
-                    {messages.map((x) => (
+                    {messages.map((x) =>  (
+                     
                       <Message
                         key={x.id}
                         message={x}

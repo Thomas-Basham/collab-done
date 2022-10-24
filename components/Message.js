@@ -1,4 +1,4 @@
-import { useStore } from "../contexts/RealTime";
+import { useRealtime } from "../contexts/RealTime";
 import TrashIcon from "./TrashIcon";
 import { useAuth } from "../contexts/auth";
 
@@ -7,7 +7,7 @@ const Message = ({ message, deleteMessage }) => {
 
   const { session, userRoles } = useAuth();
   const user = session?.user;
-  // const { deleteMessage } = useStore();
+  // const { deleteMessage } = useRealtime();
 
   const size = 60;
   return (

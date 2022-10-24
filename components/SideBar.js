@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TrashIcon from "/components/TrashIcon";
-import { useStore } from "../contexts/RealTime";
+import { useRealtime } from "../contexts/RealTime";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 import { TiMessages } from "react-icons/ti";
@@ -15,7 +15,7 @@ export default function SideBar(props) {
     channelId,
     setChannelId,
     addMessage,
-  } = useStore();
+  } = useRealtime();
   const router = useRouter();
 
   const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
