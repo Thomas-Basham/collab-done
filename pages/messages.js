@@ -13,7 +13,13 @@ import NewChannelModal from "../components/NewChannelModal";
 export default function MessagesPage() {
   const router = useRouter();
 
-  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+  const {
+    session,
+    username,
+    absoluteAvatar_urlAuth,
+    errorMessageAuth,
+    setErrorMessageAuth,
+  } = useAuth();
   const {
     addChannel,
     messages,
@@ -31,17 +37,17 @@ export default function MessagesPage() {
     if (!session) {
       router.push("/login");
     }
-    if ( !username){
-      router.push("/profile");
-
+    if (username == null) {
+      router.push("/profile?error=no-username");
+      setErrorMessageAuth("You must have a name before you can send a message");
     }
+    console.log(username)
   });
+
   useEffect(() => {
     if (!allProfiles) {
       getAllProfiles();
-      console.log({allProfiles})
     }
-    console.log({allProfiles})
   }, []);
 
   const messagesEndRef = useRef(null);
@@ -52,12 +58,9 @@ export default function MessagesPage() {
     });
   });
 
-
-
   function openNewChannelModal() {
     setShowNewChannelModal(true);
   }
-
 
   let currentChannel = channels.filter((chanel) => chanel.id == channelId);
 
@@ -92,8 +95,7 @@ export default function MessagesPage() {
                 </div>
                 <div className="messages">
                   <div className="">
-                    {messages.map((x) =>  (
-                     
+                    {messages.map((x) => (
                       <Message
                         key={x.id}
                         message={x}

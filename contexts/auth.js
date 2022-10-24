@@ -41,7 +41,6 @@ export function AuthProvider({ children }) {
 
     getInitialSession();
 
-
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
@@ -56,7 +55,7 @@ export function AuthProvider({ children }) {
       mounted = false;
 
       // subscription?.unsubscribe();
-      authListener?.unsubscribe();
+      authListener.unsubscribe();
     };
   }, []);
 
@@ -377,6 +376,8 @@ export function AuthProvider({ children }) {
           return updateComment(commentValues, post.id);
         })
       );
+
+      await getProfile();
 
       // ERROR HANDLING
       if (error) {

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function useResource() {
   const router = useRouter();
-  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+  const { session, username, getProfile, absoluteAvatar_urlAuth } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);

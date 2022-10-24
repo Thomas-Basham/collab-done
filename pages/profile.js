@@ -1,18 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Avatar from "../components/Avatar";
 import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
 import Modal from "react-bootstrap/Modal";
-import Router from "next/router";
 import SongFeed from "../components/SongFeed";
 import { Container, Row, Col } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 export default function ProfilePage() {
+  const router = useRouter();
+
   useEffect(() => {
     if (!session) {
-      Router.push("/login");
+      router.push("/login");
     }
   });
+
+  useEffect(() => {
+    if (router.query.error == "no-username") {
+      usernameRef.current.focus();
+
+      usernameRef.current.className = "border border-danger";
+      usernameRef.current.placeholder =
+        "enter a unique username to send a message";
+    }
+  });
+
+  const usernameRef = useRef(null);
+
   const {
     musicPosts,
     audio,
@@ -105,6 +120,7 @@ export default function ProfilePage() {
       <div>
         <label htmlFor="username">Artist Name</label>
         <input
+          ref={usernameRef}
           id="username"
           type="text"
           value={username || ""}
