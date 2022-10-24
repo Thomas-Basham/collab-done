@@ -57,7 +57,6 @@ export function AuthProvider({ children }) {
         setUserLoaded(!!currentUser);
         if (currentUser) {
           signIn(currentUser.id, currentUser.email);
-          router.push("/");
         }
       }
     );
