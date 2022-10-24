@@ -12,6 +12,7 @@ A full stack web application for musicians to connect and collaborate.
 - Nextjs
 - Supabase
 - Wavesurferjs
+- Bootstrap
 - React-Icons
 - Vercel
 
@@ -24,6 +25,8 @@ A full stack web application for musicians to connect and collaborate.
 ## References
 
 [supabase.com/docs](https://supabase.com/docs/)
+
+[github.com/supabase/realtime](https://github.com/supabase/realtime)
 
 [creating-new-supabase-users-in-next-js](https://aboutmonica.com/blog/creating-new-supabase-users-in-next-js/)
 
