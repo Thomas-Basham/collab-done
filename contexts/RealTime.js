@@ -1,13 +1,12 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "./auth";
+
 const MessageContext = createContext();
 
-// /**
-//  * @param {number} channelId the currently selected Channel
-//  */
 export function RealTimeProvider({ children }) {
   const { session } = useAuth();
+
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [users] = useState(new Map());
@@ -18,6 +17,7 @@ export function RealTimeProvider({ children }) {
   const [deletedMessage, handleDeletedMessage] = useState(null);
   const [channelId, setChannelId] = useState(null);
   const [incomingChannelId, setIncomingChannelId] = useState(null);
+
   // Load initial data and set up listeners
   useEffect(() => {
     // Get Channels
@@ -29,7 +29,6 @@ export function RealTimeProvider({ children }) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
-
           setIncomingChannelId(payload.new.channel_id);
           handleNewMessage(payload.new);
           // fetchMessages(payload.new.channel_id);
@@ -44,6 +43,7 @@ export function RealTimeProvider({ children }) {
         }
       )
       .subscribe();
+
     // Listen for changes to our users
     supabase //const userListener =
       .channel("public:profiles")
@@ -80,15 +80,11 @@ export function RealTimeProvider({ children }) {
       )
       .subscribe();
     // Cleanup on unmount
-    // return () => {
-    //   supabase.removeChannel('public:messages')
-    //   supabase.removeChannel('public:profiles')
-    //   supabase.removeChannel('public:channels')
-    // }
-    // console.log(newMessage);
+    return () => {
+      supabase.removeAllChannels();
+    };
   }, []);
 
-  // console.log(channelId);
   // Update when the route changes
   useEffect(() => {
     if (channelId > 0) {
@@ -100,22 +96,12 @@ export function RealTimeProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
 
-  useEffect(() => {
-    if (newMessage) {
-      fetchMessages(incomingChannelId);
-      console.log({ newMessage });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newMessage]);
-
   // New message received from Postgres
   useEffect(() => {
     if (newMessage && incomingChannelId == channelId) {
-      const handleAsync = async () => {
-        setMessages(messages.concat(newMessage));
-        console.log({ newMessage });
-      };
-      handleAsync();
+      fetchMessages(incomingChannelId);
+
+      setMessages(messages.concat(newMessage));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage]); //
@@ -197,17 +183,17 @@ export function RealTimeProvider({ children }) {
     }
   };
 
-  // /**
-  //  * Fetch all messages and their authors
-  //  * @param {number} channelId
-  //  * @param {function} setState Optionally pass in a hook or callback to set the state
-  //  */
-  async function fetchMessages(id, setState) {
+  /**
+   * Fetch all messages for given channel
+   * @param {number} channel_id
+   * @param {function} setState Optionally pass in a hook or callback to set the state
+   */
+  async function fetchMessages(channel_id, setState) {
     try {
       let { data, error, status } = await supabase
         .from("messages")
         .select(`*`)
-        .eq("channel_id", id)
+        .eq("channel_id", channel_id)
         .order("inserted_at", true);
 
       if (error && status !== 406) {
@@ -225,9 +211,11 @@ export function RealTimeProvider({ children }) {
   }
 
   /**
-   * Insert a new channel into the DB
-   * @param {string} slug The channel name
-   * @param {number} user_id The channel creator
+   * Insert a new channel into the DB with creator and receiver's id
+   * @param {string} slug The receiver's username
+   * @param {number} user_id The channel creator's id
+   * @param {string} message_to The receiver's id
+   * @param {string} created_by_username The channel creator's username
    */
   const addChannel = async (slug, user_id, message_to, created_by_username) => {
     let filteredChannels = channels.filter(
@@ -262,7 +250,9 @@ export function RealTimeProvider({ children }) {
    * Insert a new message into the DB
    * @param {string} message The message text
    * @param {number} channel_id
-   * @param {number} user_id The author
+   * @param {number} user_id The author's id
+   * @param {string} username The author's username
+   * @param {string} absolute_avatar_url src of author's avatar
    */
   const addMessage = async (
     message,
@@ -317,7 +307,6 @@ export function RealTimeProvider({ children }) {
   };
 
   const value = {
-    // We can export computed values here to map the authors to each message
     messages,
     setMessages,
     channels:
