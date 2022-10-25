@@ -1,8 +1,15 @@
 # Collab-done
 
+
+![Node.js CI](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
+![Node.js CI](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Node.js CI](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
+
 ## Author: Thomas Basham
 
 [https://collab-done.vercel.app/](https://collab-done.vercel.app/)
+
 
 A full stack web application for musicians to connect and collaborate.
 
