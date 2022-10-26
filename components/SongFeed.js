@@ -219,7 +219,7 @@ export default function SongFeed({ profilePage }) {
             <p>{data.needs}</p>
           </div>
           <p>{data.description}</p>
-          {session?.user.id != data.artist_id && (
+          {session?.user && session?.user.id != data.artist_id && (
             <button
               className="collab-button"
               onClick={() => handleShowAddCollabModal(data)}
