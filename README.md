@@ -1,17 +1,14 @@
 # Collab-done
 
-
 ![Node.js CI](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
 ![Node.js CI](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Node.js CI](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-
 
 ## Author: Thomas Basham
 
 [https://collab-done.vercel.app/](https://collab-done.vercel.app/)
 
-
-A full stack web application for musicians to connect and collaborate.
+A social media web application for musicians to connect and collaborate.
 
 ## Tech Used
 
@@ -23,9 +20,23 @@ A full stack web application for musicians to connect and collaborate.
 - React-Icons
 - Vercel
 
+## Features
+
+
+Users can:
+
+- log in with email authentication and email verification
+- log in with Github, Gmail, or Spotify credentials
+- Upload an unfinished clip of a song with genre, needs, and description
+- View other artist's uploads in the feed sorted by date
+- Play, pause, and skip to a section in a song with audio visualization
+- Comment on specific spots in a song
+- Send direct messages to other users
+
 <img src="./public/snapShots/collabDone00.png" />
 <img src="./public/snapShots/collabDone01.png" />
 <img src="./public/snapShots/collabDone02.png" />
+<img src="./public/snapShots/collabDone05.png" />
 <img src="./public/snapShots/collabDone03.png" />
 <img src="./public/snapShots/collabDone04.png" />
 
