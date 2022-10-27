@@ -25,23 +25,25 @@ const Message = ({ message, deleteMessage }) => {
       </div>
       <div className="col ">
         <header>
-          {message.absolute_avatar_url ? (
-            <img
-              src={message.absolute_avatar_url}
-              alt={message.username}
-              className="avatar image"
-              style={{ height: size, width: size }}
-            />
-          ) : (
-            <>
-              <br></br>
-              <div
-                className="avatar no-image"
+          <a href={`pr/${message.user_id}`}>
+            {message.absolute_avatar_url ? (
+              <img
+                src={message.absolute_avatar_url}
+                alt={message.username}
+                className="avatar image"
                 style={{ height: size, width: size }}
               />
-            </>
-          )}
-          <h6 className="">{message.username}</h6>
+            ) : (
+              <>
+                <br></br>
+                <div
+                  className="avatar no-image"
+                  style={{ height: size, width: size }}
+                />
+              </>
+            )}
+            <h6 className="">{message.username}</h6>
+          </a>
         </header>
         <p className="">{message.message}</p>
       </div>
