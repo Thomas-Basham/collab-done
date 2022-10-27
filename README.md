@@ -22,7 +22,6 @@ A social media web application for musicians to connect and collaborate.
 
 ## Features
 
-
 Users can:
 
 - log in with email authentication and email verification
