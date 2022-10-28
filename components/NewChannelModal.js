@@ -6,9 +6,9 @@ import { useRealtime } from "../contexts/RealTime";
 export default function NewChannelModal(props) {
   // the value of the search field
   const [name, setName] = useState("");
-
   // the search result. initially all users except logged in user
   const [foundUsers, setFoundUsers] = useState(filteredProfiles);
+ 
   const {
     addChannel,
     deleteChannel,

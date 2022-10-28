@@ -14,24 +14,17 @@ const Waveform = dynamic(() => import("../components/WaveForm"), {
 export default function SongFeed({ profilePage }) {
   const {
     musicPosts,
-    getUserData,
-    downloadSong,
-    audio,
-    handlePlayMusic,
-    playSong,
+    getMusicPosts,
+    // audio,
+    // playSong,
     getSocials,
     socials,
     selectedPostKey,
     addCollaborator,
-    allAvatars,
-    downloadImage,
-    avatarUrl,
-    audioUrl,
     fileName,
     uploading,
     uploadSong,
     loading,
-    songUrl,
     setFileName,
     getCollaborators,
     potentialCollaborators,
@@ -39,6 +32,8 @@ export default function SongFeed({ profilePage }) {
     setAbsoluteSongUrl,
     updateSongPost,
     deleteSongPost,
+    allProfiles,
+    getAllProfiles,
   } = useResource();
   const { session, username } = useAuth();
   const [postData, setPostData] = useState(null);
@@ -52,13 +47,23 @@ export default function SongFeed({ profilePage }) {
   const [needs, setNeeds] = useState(null);
   const [show, setShow] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // the value of the search field
+  const [name, setName] = useState("");
+  // the search result. initially all users
+  const [foundMusicPosts, setFoundMusicPosts] = useState(musicPosts);
 
-  if (playSong == true) {
-    audio.play();
-  }
-  if (playSong == false) {
-    audio.pause();
-  }
+  // backup audio player
+  // if (playSong == true) {
+  //   audio.play();
+  // }
+  // if (playSong == false) {
+  //   audio.pause();
+  // }
+
+  useEffect(() => {
+    setFoundMusicPosts(musicPosts);
+  }, [musicPosts]);
+
   const size = 150;
 
   function collabButton(data) {
@@ -142,49 +147,67 @@ export default function SongFeed({ profilePage }) {
     setShow(false);
   }
 
-  function songPostFeed() {
-    const sortedMusicPosts = musicPosts.sort(
-      (a, b) => new Date(b.created_at) - new Date(a.created_at)
-    );
-    return sortedMusicPosts.map((data, i) => {
-      return (
-        <div
-          // with this feature uncommented, each photo will be rendered upon mouse enter
-          // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
-          className="music-post "
-          key={i}
-        >
-          {selectedPostKey == i && ( // displays socials when button is collected.
-            <Socials
-              data={socials}
-              currentUser={session?.user}
-              username={username}
-            />
-          )}
-          {selectedPostKey != i && (
-            <button
-              className="socials-container"
-              onClick={() => getSocials(data.artist_id, i)}
-            >
-              CONNECT
-            </button>
-          )}
-          <Link href={`/pr/${data.artist_id}`}>
-            <div style={{ cursor: "pointer" }}>
-              <img
-                src={data.absolute_avatar_url}
-                alt="Avatar"
-                className="avatar image"
-                style={{ height: 150, width: 150 }}
-              />
-              <h1>{data.artist}</h1>
-            </div>
-          </Link>
+  const filter = (e) => {
+    const keyword = e.target.value;
 
-          <small>{new Date(data.created_at).toLocaleDateString()}</small>
-          <br></br>
-          {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
-          {/* <svg
+    if (keyword) {
+      const results = musicPosts.filter((post) => {
+        return post.artist?.toLowerCase().startsWith(keyword.toLowerCase());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setFoundMusicPosts(results);
+    } else {
+      setFoundMusicPosts(musicPosts);
+      // If the text field is empty, show all users
+    }
+
+    setName(keyword);
+  };
+
+  function songPostFeed() {
+    if (foundMusicPosts) {
+      const sortedMusicPosts = foundMusicPosts.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+      return sortedMusicPosts.map((data, i) => {
+        return (
+          <div
+            // with this feature uncommented, each photo will be rendered upon mouse enter
+            // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
+            className="music-post "
+            key={i}
+          >
+            {selectedPostKey == i && ( // displays socials when button is collected.
+              <Socials
+                data={socials}
+                currentUser={session?.user}
+                username={username}
+              />
+            )}
+            {selectedPostKey != i && (
+              <button
+                className="socials-container"
+                onClick={() => getSocials(data.artist_id, i)}
+              >
+                CONNECT
+              </button>
+            )}
+            <Link href={`/pr/${data.artist_id}`}>
+              <div style={{ cursor: "pointer" }}>
+                <img
+                  src={data.absolute_avatar_url}
+                  alt="Avatar"
+                  className="avatar image"
+                  style={{ height: 150, width: 150 }}
+                />
+                <h1>{data.artist}</h1>
+              </div>
+            </Link>
+
+            <small>{new Date(data.created_at).toLocaleDateString()}</small>
+            <br></br>
+            {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
+            {/* <svg
             cursor="pointer"
             onClick={() => handlePlayMusic(data, i)}
             xmlns="http://www.w3.org/2000/svg"
@@ -201,43 +224,44 @@ export default function SongFeed({ profilePage }) {
               d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
             />
           </svg> */}
-          {/* WAVESURFER-JS */}
-          <Waveform
-            url={data.absolute_song_url}
-            indexNumber={data.id.toString()}
-            song_id={data.id}
-          />
-          <br></br>
-          <div className="d-inline-flex">
-            <span className="brand-text">GENRE</span>
+            {/* WAVESURFER-JS */}
+            <Waveform
+              url={data.absolute_song_url}
+              indexNumber={data.id.toString()}
+              song_id={data.id}
+            />
+            <br></br>
+            <div className="d-inline-flex">
+              <span className="brand-text">GENRE</span>
 
-            <p>{data.genre}</p>
-          </div>
-          <br></br>
-          <div className="d-inline-flex">
-            <span className="brand-text">NEEDS</span>
-            <p>{data.needs}</p>
-          </div>
-          <p>{data.description}</p>
-          {session?.user && session?.user.id != data.artist_id && (
+              <p>{data.genre}</p>
+            </div>
+            <br></br>
+            <div className="d-inline-flex">
+              <span className="brand-text">NEEDS</span>
+              <p>{data.needs}</p>
+            </div>
+            <p>{data.description}</p>
+            {session?.user && session?.user.id != data.artist_id && (
+              <button
+                className="collab-button"
+                onClick={() => handleShowAddCollabModal(data)}
+              >
+                LET'S COLLAB{" "}
+              </button>
+            )}
             <button
-              className="collab-button"
-              onClick={() => handleShowAddCollabModal(data)}
+              onClick={() => handleShowPotentialCollabsModal(data.id)}
+              className="brand-text"
             >
-              LET'S COLLAB{" "}
+              POTENTIAL COLLABORATORS
             </button>
-          )}
-          <button
-            onClick={() => handleShowPotentialCollabsModal(data.id)}
-            className="brand-text"
-          >
-            POTENTIAL COLLABORATORS
-          </button>
-          <br></br>
-          <p>{data.finished_song && ""}</p>
-        </div>
-      );
-    });
+            <br></br>
+            <p>{data.finished_song && ""}</p>
+          </div>
+        );
+      });
+    }
   }
 
   const songPostFeedProfilePage = () => {
@@ -311,24 +335,6 @@ export default function SongFeed({ profilePage }) {
           </Link>
           <small>{new Date(data.created_at).toLocaleDateString()}</small>
           <br></br>
-          {/* SAVE THIS FOR BACKUP AUDIO PLAYER */}
-          {/* <svg
-            cursor="pointer"
-            onClick={() => handlePlayMusic(data, i)}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-            width={100}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
-            />
-          </svg> */}
           {/* WAVESURFER-JS */}
           <Waveform
             url={data.absolute_song_url}
@@ -365,6 +371,17 @@ export default function SongFeed({ profilePage }) {
     <>
       {profilePage === false && (
         <>
+          <div className="d-flex justify-content-around">
+            <input
+              type="search"
+              value={name}
+              onChange={filter}
+              className="input col-4 "
+              placeholder="Filter by artist"
+            />
+          </div>
+          <br></br>
+          <br></br>
           <div>{songPostFeed()}</div>
 
           <Modal

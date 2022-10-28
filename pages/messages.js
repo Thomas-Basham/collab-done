@@ -41,7 +41,6 @@ export default function MessagesPage() {
       router.push("/profile?error=no-username");
       setErrorMessageAuth("You must have a name before you can send a message");
     }
-    console.log(username);
   });
 
   useEffect(() => {
