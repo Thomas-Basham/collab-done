@@ -28,6 +28,7 @@ Users can:
 - log in with Github, Gmail, or Spotify credentials
 - Upload an unfinished clip of a song with genre, needs, and description
 - View other artist's uploads in the feed sorted by date
+- View other artist's profiles and click on their social media links
 - Play, pause, and skip to a section in a song with audio visualization
 - Comment on specific spots in a song
 - Send direct messages to other users
