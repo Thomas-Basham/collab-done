@@ -1,0 +1,90 @@
+create table comments (
+  id bigint not null primary key,
+  created_at timestamp default now(),
+  "user" uuid,
+  comment text not null,
+  song_id bigint,
+  commentPosition double not null,
+  avatarURl text
+);
+
+create table role_permissions (
+  id bigint not null primary key,
+  role public.app_role not null,
+  permission public.app_permission not null
+);
+
+create table profiles (
+  id uuid default uuid_generate_v4() primary key,
+  updated_at timestamp default now(),
+  username text,
+  avatar_url text,
+  website text,
+  instagram_url text,
+  twitter_url text,
+  spotify_url text,
+  soundcloud_url text,
+  absolute_avatar_url text,
+  bio text,
+  status public.user_status
+);
+
+create table users (
+  id uuid default uuid_generate_v4() primary key,
+  username text,
+  status public.user_status
+);
+
+create table channels (
+  id bigint not null primary key,
+  inserted_at timestamp default now() not null,
+  slug text references profiles (username),
+  created_by uuid references profiles (id),
+  message_to uuid references profiles (id),
+  created_by_username text
+);
+
+create table messages (
+  id bigint not null primary key,
+  inserted_at timestamp default now() not null,
+  message text,
+  user_id uuid,
+  channel_id bigint references channels (id),
+  username text,
+  absolute_avatar_url text
+);
+
+create table user_roles (
+  id bigint not null primary key,
+  user_id uuid references profiles (id),
+  role public.app_role not null
+);
+
+create table potentialCollaborators (
+  id bigint not null primary key,
+  added_at timestamp default now(),
+  song_id bigint,
+  "user" uuid references profiles (id),
+  username text,
+  absolute_avatar_url text
+);
+
+create table songs (
+  id bigint not null primary key,
+  created_at timestamp default now(),
+  genre text not null,
+  description text,
+  needs text not null,
+  open boolean not null,
+  finished_song text,
+  artist text,
+  artist_id uuid,
+  song_url text,
+  instagram_url text,
+  twitter_url text,
+  spotify_url text,
+  soundcloud_url text,
+  absolute_song_url text,
+  absolute_avatar_url text
+);
+
