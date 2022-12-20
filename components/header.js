@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { CgProfile } from "react-icons/cg";
 import { TiMessages } from "react-icons/ti";
 import { FaSignOutAlt } from "react-icons/fa";
