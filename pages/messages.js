@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/auth";
 import { useRealtime } from "../contexts/RealTime";
-import { Container, Modal } from "react-bootstrap";
 import useResource from "../hooks/useResource";
 import SideBar from "../components/SideBar";
 import NewChannelModal from "../components/NewChannelModal";
@@ -13,13 +12,8 @@ import NewChannelModal from "../components/NewChannelModal";
 export default function MessagesPage() {
   const router = useRouter();
 
-  const {
-    session,
-    username,
-    absoluteAvatar_urlAuth,
-    errorMessageAuth,
-    setErrorMessageAuth,
-  } = useAuth();
+  const { session, username, absoluteAvatar_urlAuth, setErrorMessageAuth } =
+    useAuth();
   const {
     addChannel,
     messages,
