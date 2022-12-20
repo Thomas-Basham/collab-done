@@ -1,12 +1,9 @@
-import { supabase } from "../utils/supabaseClient";
 import { useState, useEffect } from "react";
 import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
-import Avatar from "./Avatar";
 import Socials from "./socials";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { Modal } from "react-bootstrap";
 const Waveform = dynamic(() => import("../components/WaveForm"), {
   ssr: false,
@@ -14,9 +11,6 @@ const Waveform = dynamic(() => import("../components/WaveForm"), {
 export default function SongFeed({ profilePage }) {
   const {
     musicPosts,
-    getMusicPosts,
-    // audio,
-    // playSong,
     getSocials,
     socials,
     selectedPostKey,
@@ -32,8 +26,6 @@ export default function SongFeed({ profilePage }) {
     setAbsoluteSongUrl,
     updateSongPost,
     deleteSongPost,
-    allProfiles,
-    getAllProfiles,
   } = useResource();
   const { session, username } = useAuth();
   const [postData, setPostData] = useState(null);
@@ -171,12 +163,7 @@ export default function SongFeed({ profilePage }) {
       );
       return sortedMusicPosts.map((data, i) => {
         return (
-          <div
-            // with this feature uncommented, each photo will be rendered upon mouse enter
-            // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
-            className="music-post "
-            key={i}
-          >
+          <div className="music-post " key={i}>
             {selectedPostKey == i && ( // displays socials when button is collected.
               <Socials
                 data={socials}
@@ -224,12 +211,14 @@ export default function SongFeed({ profilePage }) {
               d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
             />
           </svg> */}
+
             {/* WAVESURFER-JS */}
             <Waveform
               url={data.absolute_song_url}
               indexNumber={data.id.toString()}
               song_id={data.id}
             />
+
             <br></br>
             <div className="d-inline-flex">
               <span className="brand-text">GENRE</span>
@@ -274,12 +263,7 @@ export default function SongFeed({ profilePage }) {
     );
     return sortedMusicPosts.map((data, i) => {
       return (
-        <div
-          // with this feature uncommented, each photo will be rendered upon mouse enter
-          // onMouseEnter={() => downloadImage(getSocials(data.artist_id, i))}
-          className="music-post "
-          key={i}
-        >
+        <div className="music-post " key={i}>
           <div className="edit-delete-buttons">
             <svg
               cursor={"pointer"}

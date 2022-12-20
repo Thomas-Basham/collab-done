@@ -7,11 +7,7 @@ import { useRouter } from "next/router";
 
 export default function Socials({ data, currentUser, username }) {
   const router = useRouter();
-  const {
-    addChannel,
-
-    setChannelId,
-  } = useRealtime();
+  const { addChannel, setChannelId } = useRealtime();
   const handleNewChannel = async () => {
     if (data) {
       let channel = await addChannel(
@@ -75,8 +71,6 @@ export default function Socials({ data, currentUser, username }) {
           <GrSoundcloud className="brand-hover" />
         </a>
       )}
-      {/* TODO: button for messaging  */}
-      {/* <button>MESSAGE</button> */}
     </div>
   );
 }
