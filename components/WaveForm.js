@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { HiPlay, HiPause } from "react-icons/hi";
 import { FiPlay, FiPause } from "react-icons/fi";
 import CommentSection from "./CommentSection";
 
@@ -35,7 +33,7 @@ export default function WaveForm(props) {
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
 
-    let songDuration = await wavesurfer.current.getDuration();
+    await wavesurfer.current.getDuration();
     wavesurfer.current.load(url);
   };
 
@@ -67,7 +65,10 @@ export default function WaveForm(props) {
       <div className="wave-container col">
         <div id={props.indexNumber} ref={waveformRef} className="wave-song" />
       </div>
-      <CommentSection songDetails={wavesurfer.current} song_id={props.song_id} />
+      <CommentSection
+        songDetails={wavesurfer.current}
+        song_id={props.song_id}
+      />
     </div>
   );
 }
