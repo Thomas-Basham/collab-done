@@ -1,7 +1,6 @@
 import useResource from "../hooks/useResource";
 import { useAuth } from "../contexts/auth";
 import { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
 import { Container } from "react-bootstrap";
 
 export default function UploadSong() {

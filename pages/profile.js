@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
 import Modal from "react-bootstrap/Modal";
 import SongFeed from "../components/SongFeed";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 
 export default function ProfilePage() {
@@ -29,25 +29,17 @@ export default function ProfilePage() {
   const usernameRef = useRef(null);
 
   const {
-    musicPosts,
     audio,
-    handlePlayMusic,
     playSong,
-    deleteSongPost,
     loading,
     updateSongPost,
-    potentialCollaborators,
     uploading,
     fileName,
-    setFileName,
     uploadSong,
-    songUrl,
     absoluteSongUrl,
-    setAbsoluteSongUrl,
   } = useResource();
   const {
     session,
-    signIn,
     signOut,
     username,
     setUsername,
@@ -65,9 +57,7 @@ export default function ProfilePage() {
     setSpotify_url,
     soundcloud_url,
     setSoundcloud_url,
-    getProfile,
     isLoading,
-    setIsLoading,
     updateProfile,
     absoluteAvatar_urlAuth,
   } = useAuth();
