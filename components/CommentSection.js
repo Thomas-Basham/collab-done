@@ -1,14 +1,11 @@
-import Link from "next/link";
-import { Container, Row, Col, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import Avatar from "./Avatar";
+import { useState } from "react";
 import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
 import { HiOutlineTrash } from "react-icons/hi";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 export default function CommentSection(props) {
-  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+  const { session, absoluteAvatar_urlAuth } = useAuth();
   const {
     createComment,
     comments,
@@ -19,7 +16,6 @@ export default function CommentSection(props) {
   } = useResource();
 
   const [comment, setComment] = useState("");
-  const [commenter, setCommenter] = useState(null);
   const [viewCommentData, setViewCommentData] = useState(null);
   const [viewCommentPosition, setViewCommentPosition] = useState(null);
   const [viewCommentProfile, setViewCommentProfile] = useState(null);
