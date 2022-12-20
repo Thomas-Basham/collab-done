@@ -1,14 +1,7 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
-import Avatar from "../components/Avatar";
-import { useAuth } from "../contexts/auth";
-import { useRouter } from "next/router";
-import useResource from "../hooks/useResource";
-
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-export default function updateSongPostModal({show, setShow}) {
+export default function updateSongPostModal({ setShow }) {
   return (
     <Modal
       show={true}
