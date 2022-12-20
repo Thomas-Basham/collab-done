@@ -4,16 +4,8 @@ import useResource from "../hooks/useResource";
 import Image from "next/image";
 
 export default function Avatar({ url, size, onUpload }) {
-  // const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const {
-    downloadImage,
-    avatarUrl,
-    setAvatarUrl,
-    absoluteAvatar_url,
-    setAbsoluteAvatarUrl,
-    getAbsoluteAvatarUrl,
-  } = useResource();
+  const { downloadImage, avatarUrl, getAbsoluteAvatarUrl } = useResource();
 
   useEffect(() => {
     if (url) downloadImage(url);
@@ -49,7 +41,7 @@ export default function Avatar({ url, size, onUpload }) {
   }
 
   return (
-    <div >
+    <div>
       {avatarUrl ? (
         <Image
           width={size}
@@ -57,7 +49,7 @@ export default function Avatar({ url, size, onUpload }) {
           src={avatarUrl}
           alt="Avatar"
           className="avatar image"
-          style={{ height: size, width: size, padding: 0, }}
+          style={{ height: size, width: size, padding: 0 }}
         />
       ) : (
         <div
