@@ -81,7 +81,9 @@ export default function useResource() {
       setLoading(false);
     }
   }
-
+  /**
+   * Upload an audio file to Supabase Storage
+   */
   async function uploadSong(event) {
     try {
       setUploading(true);
@@ -115,6 +117,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * upload song to feed
+   * @param {object} values
+   */
   async function createSongPost(values) {
     try {
       setLoading(true);
@@ -170,7 +176,10 @@ export default function useResource() {
       setLoading(false);
     }
   }
-
+  /**
+   * Delete a comment that belongs to the user
+   * @param {number} id The id of the comment
+   */
   async function deleteComment(id) {
     try {
       setLoading(true);
@@ -190,6 +199,10 @@ export default function useResource() {
       setLoading(false);
     }
   }
+  /**
+   * Delete a song post that belongs to the user
+   * @param {number} id The id of the song post
+   */
   async function deleteSongPost(id) {
     try {
       setLoading(true);
@@ -210,7 +223,11 @@ export default function useResource() {
       setLoading(false);
     }
   }
-
+  /**
+   * Update a comment that belongs to the user
+   * @param {object} values The values to be updated
+   * @param {number} id The id of the song post
+   */
   async function updateSongPost(values, id) {
     try {
       setLoading(true);
@@ -232,6 +249,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * Add yourself as a potential collaborator to a song post
+   * @param {number} id The id of the song post you are adding to
+   */
   async function addCollaborator(id) {
     if (!session) {
       router.push("/login");
@@ -259,6 +280,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * See the potential collaborators for a song post
+   * @param {number} id The id of the song post
+   */
   async function getCollaborators(id) {
     try {
       setLoading(true);
