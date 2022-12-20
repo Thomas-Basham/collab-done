@@ -6,19 +6,10 @@ import { useRouter } from "next/router";
 import { TiMessages } from "react-icons/ti";
 
 export default function SideBar(props) {
-  const {
-    addChannel,
-    deleteChannel,
-    messages,
-    newMessage,
-    channels,
-    channelId,
-    setChannelId,
-    addMessage,
-  } = useRealtime();
+  const { deleteChannel, channels, channelId, setChannelId } = useRealtime();
   const router = useRouter();
 
-  const { session, username, absoluteAvatar_urlAuth, userRoles } = useAuth();
+  const { session, userRoles } = useAuth();
 
   let filteredChannels = channels.filter(
     (chanel) =>
@@ -130,7 +121,6 @@ export default function SideBar(props) {
       <>
         <div className="side-bar ">
           <div>
-            {/* <button onClick={() => newChannel()}>New Channel</button> */}
             <button onClick={props.openNewChannelModal}>New Message</button>
           </div>
 
