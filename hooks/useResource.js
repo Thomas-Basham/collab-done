@@ -3,10 +3,9 @@ import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
-
 export default function useResource() {
   const router = useRouter();
-  const { session, username, getProfile, absoluteAvatar_urlAuth } = useAuth();
+  const { session, username, absoluteAvatar_urlAuth } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,14 +26,6 @@ export default function useResource() {
   const [uploading, setUploading] = useState(false);
   const [fileName, setFileName] = useState("");
   const [allProfiles, setAllProfiles] = useState(null);
-
-  useEffect(() => {
-    getMusicPosts();
-  }, []);
-
-  useEffect(() => {
-    getComments();
-  }, []);
 
   const generalErrorMessage =
     "Our servers are currently down. Please try again soon.";

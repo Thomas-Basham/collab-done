@@ -10,6 +10,7 @@ const Waveform = dynamic(() => import("../components/WaveForm"), {
 });
 export default function SongFeed({ profilePage }) {
   const {
+    getMusicPosts,
     musicPosts,
     getSocials,
     socials,
@@ -51,7 +52,11 @@ export default function SongFeed({ profilePage }) {
   // if (playSong == false) {
   //   audio.pause();
   // }
-
+  useEffect(() => {
+    if (musicPosts.length == 0) {
+      getMusicPosts();
+    }
+  }, [musicPosts]);
   useEffect(() => {
     setFoundMusicPosts(musicPosts);
   }, [musicPosts]);

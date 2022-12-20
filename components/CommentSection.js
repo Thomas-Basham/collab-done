@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/auth";
 import useResource from "../hooks/useResource";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -20,6 +20,9 @@ export default function CommentSection(props) {
   const [viewCommentPosition, setViewCommentPosition] = useState(null);
   const [viewCommentProfile, setViewCommentProfile] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  useEffect(() => {
+    getComments();
+  }, [comments]);
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
