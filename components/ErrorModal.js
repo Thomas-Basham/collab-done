@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Container, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 export default function ErrorModal(props) {
   const [showModal, setShowModal] = useState(false);
@@ -11,9 +10,6 @@ export default function ErrorModal(props) {
     if (props.errorMessageAuth) {
       setShowModal(true);
     }
-    // return () => {
-    //   setShowModal(false);
-    // };
   });
 
   const handleClose = () => {
