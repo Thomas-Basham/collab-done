@@ -2,14 +2,22 @@ import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import useResource from "../hooks/useResource";
 import Image from "next/image";
-
-export default function Avatar({ url, size, onUpload }) {
+import { useAuth } from "../contexts/auth";
+export default function Avatar({ url, size }) {
   const [uploading, setUploading] = useState(false);
   const { downloadImage, avatarUrl, getAbsoluteAvatarUrl } = useResource();
-
+  const {setAvatarUrl, updateProfile} = useAuth()
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
+  
+  const onUpload=(url, absoluteAvatar_url) => {
+    setAvatarUrl(url);
+    updateProfile({
+      avatar_url: url,
+      absolute_avatar_url: absoluteAvatar_url,
+    }); // username, website,
+  }
 
   async function uploadAvatar(event) {
     try {
@@ -32,6 +40,7 @@ export default function Avatar({ url, size, onUpload }) {
         throw uploadError;
       }
       const absoluteUrl = await getAbsoluteAvatarUrl(filePath);
+
       onUpload(filePath, absoluteUrl);
     } catch (error) {
       alert(error.message);

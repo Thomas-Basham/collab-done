@@ -48,7 +48,6 @@ export default function ProfilePage() {
     website,
     setWebsite,
     avatar_url,
-    setAvatarUrl,
     instagram_url,
     setInstagram_url,
     twitter_url,
@@ -92,17 +91,7 @@ export default function ProfilePage() {
 
   return (
     <Container fluid="md">
-      <Avatar
-        url={avatar_url}
-        size={size}
-        onUpload={(url, absoluteAvatar_url) => {
-          setAvatarUrl(url);
-          updateProfile({
-            avatar_url: url,
-            absolute_avatar_url: absoluteAvatar_url,
-          }); // username, website,
-        }}
-      />
+      <Avatar url={avatar_url} size={size} />
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session?.user.email} disabled />
