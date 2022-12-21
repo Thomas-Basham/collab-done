@@ -1,8 +1,8 @@
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
-import { useState, useEffect } from "react";
 export default function useResource() {
   const router = useRouter();
   const { session, username, absoluteAvatar_urlAuth } = useAuth();
@@ -151,6 +151,11 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
+  /**
+   * post a comment to a song
+   * @param {object} values
+   */
   async function createComment(values) {
     try {
       setLoading(true);
@@ -167,6 +172,7 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
   /**
    * Delete a comment that belongs to the user
    * @param {number} id The id of the comment
@@ -190,6 +196,7 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
   /**
    * Delete a song post that belongs to the user
    * @param {number} id The id of the song post
@@ -210,10 +217,10 @@ export default function useResource() {
       console.log(error.message);
     } finally {
       getMusicPosts();
-      router.push("/profile");
       setLoading(false);
     }
   }
+
   /**
    * Update a comment that belongs to the user
    * @param {object} values The values to be updated
@@ -301,6 +308,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * Download a song from Supase storage
+   * @param {string} path
+   */
   async function downloadSong(path) {
     try {
       setLoading(true);
@@ -323,6 +334,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * Retrieve a mp3 src from the path
+   * @param {string} path
+   */
   async function getAbsoluteSongUrl(path) {
     try {
       setLoading(true);
@@ -343,6 +358,11 @@ export default function useResource() {
     }
   }
 
+  /**
+   * Backup audio player
+   * @param {object} data
+   * @param {Number} key
+   */
   async function handlePlayMusic(data, key) {
     setCurrentKey(key);
     if (key != currentKey) {
@@ -354,7 +374,12 @@ export default function useResource() {
     }
   }
 
-  async function getSocials(id, i) {
+  /**
+   * Get socials link from profile id, and key
+   * @param {string} id
+   * @param {number} key key of the song post
+   */
+  async function getSocials(id, key) {
     try {
       setLoading(true);
 
@@ -371,7 +396,7 @@ export default function useResource() {
 
       if (data) {
         setSocials(data);
-        setSelectedPostKey(i);
+        setSelectedPostKey(key);
         setAvatarUrl(data.avatar_url);
 
         return data;
@@ -383,6 +408,11 @@ export default function useResource() {
       setLoading(false);
     }
   }
+
+  /**
+   * Get profile from profile id
+   * @param {string} id
+   */
   async function getProfileByID(id) {
     try {
       setLoading(true);
@@ -425,6 +455,10 @@ export default function useResource() {
     }
   }
 
+  /**
+   * Get avatar img src from path
+   * @param {string} path
+   */
   async function getAbsoluteAvatarUrl(path) {
     try {
       setLoading(true);
