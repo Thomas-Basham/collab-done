@@ -77,14 +77,16 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
+
+        options: {
+          data: {
+            username: email,
+          },
+        },
       });
       if (error) throw error;
-      if (data.user) {
-        setErrorMessageAuth(
-          "There is already an account associated with this email address. Forgot your password? Click here"
-        );
-      }
     } catch (error) {
+      console.log(error);
       setErrorMessageAuth(error.message || error.error_description);
     } finally {
       setIsLoading(false);

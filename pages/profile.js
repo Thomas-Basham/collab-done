@@ -91,7 +91,7 @@ export default function ProfilePage() {
 
   return (
     <Container fluid="md">
-      <Avatar url={avatar_url} size={size} />
+      <Avatar url={avatar_url} size={size} profilePage={true} />
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session?.user.email} disabled />

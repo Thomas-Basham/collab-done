@@ -3,7 +3,7 @@ import { supabase } from "../utils/supabaseClient";
 import useResource from "../hooks/useResource";
 import Image from "next/image";
 import { useAuth } from "../contexts/auth";
-export default function Avatar({ url, size }) {
+export default function Avatar({ url, size, profilePage }) {
   const [uploading, setUploading] = useState(false);
   const { downloadImage, avatarUrl, getAbsoluteAvatarUrl } = useResource();
   const {setAvatarUrl, updateProfile} = useAuth()
@@ -66,7 +66,7 @@ export default function Avatar({ url, size }) {
           style={{ height: size, width: size }}
         />
       )}
-      {onUpload && (
+      {profilePage && (
         <div style={{ width: size }}>
           <label className="button primary block" htmlFor="single">
             {uploading ? "Uploading ..." : "Upload"}

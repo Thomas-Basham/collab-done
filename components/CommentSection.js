@@ -51,8 +51,11 @@ export default function CommentSection(props) {
     setViewCommentData(data);
 
     let profile = await getProfileByID(data.user);
-
+    if (!profile['username']){
+      profile['username'] = "Unknown User"
+    }
     setViewCommentProfile(profile);
+
   };
 
   const handleDeleteComment = async (id) => {
@@ -132,7 +135,7 @@ export default function CommentSection(props) {
                 style={{ cursor: "pointer" }}
               >
                 {" "}
-                {viewCommentProfile?.username || "Unknown User"}
+                {viewCommentProfile ? viewCommentProfile.username : ""}
               </a>
             </div>
             {viewCommentData?.comment}
