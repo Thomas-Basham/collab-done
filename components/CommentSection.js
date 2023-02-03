@@ -98,12 +98,19 @@ export default function CommentSection(props) {
                       : `${data.commentPosition}%`,
                 }}
               >
-                <img
-                  src={data.avatarURl}
-                  alt="Avatar"
-                  className="avatar image d-inline"
-                  style={{ height: "15px", width: "15px" }}
-                />
+                {data.avatarURl ? (
+                  <img
+                    src={data.avatarURl}
+                    alt="Avatar"
+                    className="avatar image d-inline-flex"
+                    style={{ height: "15px", width: "15px" }}
+                  />
+                ) : (
+                  <div
+                    className="avatar no-image d-inline-flex"
+                    style={{ height: "15px", width: "15px" }}
+                  />
+                )}
               </div>
             );
           })}
@@ -125,7 +132,7 @@ export default function CommentSection(props) {
                 style={{ cursor: "pointer" }}
               >
                 {" "}
-                {viewCommentProfile?.username}
+                {viewCommentProfile?.username || "Unknown User"}
               </a>
             </div>
             {viewCommentData?.comment}
