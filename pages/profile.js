@@ -6,17 +6,25 @@ import Modal from "react-bootstrap/Modal";
 import SongFeed from "../components/SongFeed";
 import { Container } from "react-bootstrap";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
 export default function ProfilePage() {
   const router = useRouter();
+
+  const [songPostData, SetSongPostData] = useState(null);
+  const [genre, setGenre] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [needs, setNeeds] = useState(null);
+  const [show, setShow] = useState(false);
+  const [testMode, setTestMode] = useState(false);
 
   useEffect(() => {
     if (!session) {
       router.push("/login");
     }
-  });
-
-  useEffect(() => {
+    if (session?.user.email == process.env.NEXT_PUBLIC_TEST_EMAIL) {
+      console.log("TEST USER!");
+      setTestMode(true);
+    }
     if (router.query.error == "no-username") {
       usernameRef.current.focus();
 
@@ -69,12 +77,6 @@ export default function ProfilePage() {
   }
   let size = "150px";
 
-  const [songPostData, SetSongPostData] = useState(null);
-  const [genre, setGenre] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [needs, setNeeds] = useState(null);
-  const [show, setShow] = useState(false);
-
   function handleSubmit() {
     const values = {
       artist: username,
@@ -91,7 +93,20 @@ export default function ProfilePage() {
 
   return (
     <Container fluid="md">
-      <Avatar url={avatar_url} size={size} profilePage={true} />
+      <div className="row">
+        <div className="col">
+          <Avatar
+            url={avatar_url}
+            size={size}
+            profilePage={true}
+            testMode={testMode}
+          />
+        </div>
+        <div className="col float-right text-right">
+          <Link href="/password-reset">Reset Password</Link>
+        </div>
+      </div>
+
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session?.user.email} disabled />
@@ -179,7 +194,7 @@ export default function ProfilePage() {
               soundcloud_url,
             })
           }
-          disabled={isLoading}
+          disabled={isLoading || testMode == true}
         >
           {isLoading ? "Loading ..." : "Update"}
         </button>

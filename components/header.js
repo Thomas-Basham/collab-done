@@ -4,10 +4,28 @@ import { TiMessages } from "react-icons/ti";
 import { FaSignOutAlt } from "react-icons/fa";
 import { AiOutlineLogin } from "react-icons/ai";
 import { FcUpload } from "react-icons/fc";
+import { useAuth } from "../contexts/auth";
+
 export default function Header({ session, signOut }) {
+  const { handleLogin } = useAuth();
+
   return (
     <header className="">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <button
+          id="one-time-login-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            handleLogin(
+              process.env.NEXT_PUBLIC_TEST_EMAIL,
+              process.env.NEXT_PUBLIC_TEST_PASSWORD
+            );
+          }}
+          className="position-absolute text-right"
+          style={{ display: session?.user && "none", left: "10%" }}
+        >
+          DEMO USER ONE CLICK LOG IN{" "}
+        </button>
         <Container>
           <Navbar.Brand href="/">
             <h1>COLLAB DONE</h1>

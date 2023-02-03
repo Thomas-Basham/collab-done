@@ -687,6 +687,11 @@ ul {
 
 
 @media (max-width: 600px) {
+  #one-time-login-btn{
+    position: relative !important;
+    left: 10px !important;
+    margin-bottom: 50px;
+  }
   .description {
     display: none;
   }

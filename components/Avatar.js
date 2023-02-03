@@ -3,21 +3,21 @@ import { supabase } from "../utils/supabaseClient";
 import useResource from "../hooks/useResource";
 import Image from "next/image";
 import { useAuth } from "../contexts/auth";
-export default function Avatar({ url, size, profilePage }) {
+export default function Avatar({ url, size, profilePage, testMode }) {
   const [uploading, setUploading] = useState(false);
   const { downloadImage, avatarUrl, getAbsoluteAvatarUrl } = useResource();
-  const {setAvatarUrl, updateProfile} = useAuth()
+  const { setAvatarUrl, updateProfile } = useAuth();
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
-  
-  const onUpload=(url, absoluteAvatar_url) => {
+
+  const onUpload = (url, absoluteAvatar_url) => {
     setAvatarUrl(url);
     updateProfile({
       avatar_url: url,
       absolute_avatar_url: absoluteAvatar_url,
     }); // username, website,
-  }
+  };
 
   async function uploadAvatar(event) {
     try {
@@ -80,7 +80,7 @@ export default function Avatar({ url, size, profilePage }) {
             id="single"
             accept="image/*"
             onChange={uploadAvatar}
-            disabled={uploading}
+            disabled={uploading || testMode == true}
           />
         </div>
       )}

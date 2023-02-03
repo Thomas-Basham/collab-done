@@ -64,7 +64,14 @@ export default function PasswordReset() {
         />
         <small>{passwordError}</small>
         <br></br>
-        <button className="col-12" disabled={passwordError} type="submit">
+        <button
+          className="col-12"
+          disabled={
+            passwordError ||
+            session?.user.email == process.env.NEXT_PUBLIC_TEST_EMAIL
+          }
+          type="submit"
+        >
           Submit
         </button>
       </form>

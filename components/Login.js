@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
 import { useRouter } from "next/router";
 import { FaGithub, FaGoogle, FaSpotify } from "react-icons/fa";
