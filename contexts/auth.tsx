@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-
-interface User {
-  id: string;
-  email: string;
+import { User as SupabaseUser } from "@supabase/supabase-js";
+interface User extends SupabaseUser {
+  // Add any additional properties or overrides here
 }
 
 interface UserProfile {
@@ -92,19 +91,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     getInitialSession();
 
-    const { subscription: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        const currentUser = session?.user;
-        if (currentUser) {
-          signIn(currentUser.id, currentUser.email);
-        }
+    const authListener = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      const currentUser = session?.user;
+      if (currentUser) {
+        // signIn(currentUser.id, currentUser.email);
+        signIn();
       }
-    );
+    });
 
     return () => {
       mounted = false;
-      authListener.unsubscribe();
+      authListener.data.subscription.unsubscribe();
     };
   }, []);
 
@@ -203,11 +201,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
 
-      if (!data?.user) {
+      if (!data?.session?.user) {
         router.push("/");
       }
 
-      return data.user;
+      return data.session.user;
     } catch (error) {
       console.error(error);
     }
@@ -347,7 +345,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     twitter_url,
     spotify_url,
     soundcloud_url,
-  }: ProfileUpdate) {
+  }: UserProfile) {
     try {
       setIsLoading(true);
       const user = await getCurrentUser();
@@ -463,11 +461,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   };
+  type Provider = "google" | "github" | "facebook" | "twitter";
 
-  const signInOauth = async (provider: string) => {
+  const signInOauth = async (provider: Provider) => {
     try {
       setIsLoading(true);
-      await supabase.auth.signIn({ provider });
+      await supabase.auth.signInWithOAuth({ provider: provider });
     } catch (error) {
       console.log(error);
       setErrorMessageAuth(error.message || error.error_description);
