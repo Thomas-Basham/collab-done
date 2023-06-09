@@ -1,7 +1,16 @@
-import { useState, useEffect, useContext, createContext, ReactNode } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "./auth";
-
+import {
+  RealtimePostgresChangesPayload,
+  RealtimeChannel,
+} from "@supabase/realtime-js";
 interface Message {
   id: number;
   channel_id: number;
@@ -79,26 +88,29 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
   const [users] = useState<Map<number, User>>(new Map());
   const [newMessage, handleNewMessage] = useState<Message | null>(null);
   const [newChannel, handleNewChannel] = useState<Channel | null>(null);
-  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState<User | null>(null);
+  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState<User | null>(
+    null
+  );
   const [deletedChannel, handleDeletedChannel] = useState<Channel | null>(null);
   const [deletedMessage, handleDeletedMessage] = useState<Message | null>(null);
   const [channelId, setChannelId] = useState<number | null>(null);
-  const [incomingChannelId, setIncomingChannelId] = useState<number | null>(null);
+  const [incomingChannelId, setIncomingChannelId] = useState<number | null>(
+    null
+  );
 
   // Load initial data and set up listeners
   useEffect(() => {
     // Get Channels
     fetchChannels(setChannels);
     // Listen for new and deleted messages
-    const messageListener = supabase
+    const messageListener: RealtimeChannel = supabase
       .channel("public:messages")
-      .on(
+      .on<RealtimePostgresChangesPayload<{ channel_id: string }>>(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
+        { event: "*", schema: "public", table: "messages" },
         (payload) => {
           setIncomingChannelId(payload.new.channel_id);
-          handleNewMessage(payload.new);
-          // fetchMessages(payload.new.channel_id);
+          handleNewMessage(payload.new as unknown as Message);
         }
       )
       .on(
@@ -106,7 +118,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         { event: "DELETE", schema: "public", table: "messages" },
         (payload) => {
           console.log(payload);
-          handleDeletedMessage(payload.old);
+          handleDeletedMessage(payload.old as Message);
         }
       )
       .subscribe();
@@ -120,7 +132,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         (payload) => {
           console.log("PROFILES!", payload);
 
-          handleNewOrUpdatedUser(payload.new);
+          handleNewOrUpdatedUser(payload.new as User);
         }
       )
       .subscribe();
@@ -133,7 +145,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         (payload) => {
           console.log(payload);
 
-          handleNewChannel(payload.new);
+          handleNewChannel(payload.new as Channel);
         }
       )
       .on(
@@ -142,7 +154,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         (payload) => {
           console.log(payload);
 
-          handleDeletedChannel(payload.old);
+          handleDeletedChannel(payload.old as Channel);
         }
       )
       .subscribe();
@@ -299,8 +311,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
     );
     let existingChannel = filteredChannels.filter(
       (channel) =>
-        channel.message_to === message_to &&
-        channel.created_by === created_by_username
+        channel.message_to === message_to && channel.created_by === user_id
     );
     if (existingChannel.length < 1) {
       try {
