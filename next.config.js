@@ -6,8 +6,6 @@ const nextConfig = {
 }
 
 module.exports ={ 
-  nextConfig,
-
   images: {
     domains: ['hkltergikayqbtqclwqv.supabase.co'],
   }, 
