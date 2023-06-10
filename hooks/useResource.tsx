@@ -43,7 +43,7 @@ export default function useResource() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [songUrl, setSongUrl] = useState<string | null>(null);
   const [playSong, setPlaySong] = useState<boolean>(false);
-  const [audio, setAudio] = useState<HTMLAudioElement>(new Audio());
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(new Audio());
   const [currentKey, setCurrentKey] = useState<number | null>(null);
   const [socials, setSocials] = useState<Profile | null>(null);
   const [allAvatars, setAllAvatars] = useState<any>(null);
@@ -161,14 +161,11 @@ export default function useResource() {
     }
   }
 
-  async function getComments(songId: number) {
+  async function getComments() {
     try {
       setLoading(true);
 
-      let { data, error, status } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("song_id", songId);
+      let { data, error, status } = await supabase.from("comments").select("*");
 
       if (error && status !== 406) {
         throw error;
@@ -205,21 +202,21 @@ export default function useResource() {
     }
   }
 
-  async function deleteComment(comment: Comment) {
+  async function deleteComment(id: number) {
     try {
       setLoading(true);
 
       const { error } = await supabase
         .from("comments")
         .delete()
-        .match({ id: comment.id });
+        .match({ id: id });
 
       if (error) {
         throw error;
       }
 
       // Refresh the comments
-      await getComments(comment.song_id);
+      await getComments();
     } catch (error) {
       setErrorMessage(generalErrorMessage);
       console.log(error.message);
@@ -404,12 +401,88 @@ export default function useResource() {
       setLoading(false);
     }
   }
+  async function getProfileByID(id: number) {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
+        .eq("id", id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
+    } catch (error) {
+      setErrorMessage(`Error downloading Audio File: , ${error.message}`);
+      console.log("Error downloading Audio File: ", error.message);
+    }
+  }
+  /**
+   * Get socials link from profile id, and key
+   * @param {string} id
+   * @param {number} key key of the song post
+   */
+  async function getSocials(id, key) {
+    try {
+      setLoading(true);
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        // .select(`username, website, avatar_url`)
+        .select(`*`)
+        .eq("id", id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setSocials(data);
+        setSelectedPostKey(key);
+        setAvatarUrl(data.avatar_url);
+
+        return data;
+      }
+    } catch (error) {
+      setErrorMessage(generalErrorMessage);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return {
     errorMessage,
     loading,
     musicPosts,
     comments,
+    setComments,
     songUrl,
     playSong,
     audio,
@@ -440,5 +513,8 @@ export default function useResource() {
     updateProfile,
     getProfile,
     deleteProfile,
+    getProfileByID,
+    downloadImage,
+    getSocials
   };
 }

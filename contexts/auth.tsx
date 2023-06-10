@@ -1,65 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import { User as SupabaseUser } from "@supabase/supabase-js";
-interface User extends SupabaseUser {
-  // Add any additional properties or overrides here
-}
+const AuthContext = React.createContext();
 
-interface UserProfile {
-  id: string;
-  username: string;
-  bio: string;
-  website: string;
-  avatar_url: string;
-  absolute_avatar_url: string;
-  instagram_url: string;
-  twitter_url: string;
-  spotify_url: string;
-  soundcloud_url: string;
-}
-
-interface AuthContextProps {
-  signUp: (data: { email: string; password: string }) => Promise<any>;
-  signInOauth: (provider: string) => Promise<any>;
-  signOut: () => void;
-  errorMessageAuth: string | null;
-  setErrorMessageAuth: (message: string | null) => void;
-  registerUser: (email: string, password: string) => void;
-  handleLogin: (email: string, password: string) => void;
-  session: any;
-  getProfile: () => void;
-  username: string;
-  setUsername: (username: string) => void;
-  bio: string;
-  setBio: (bio: string) => void;
-  website: string;
-  setWebsite: (website: string) => void;
-  avatar_url: string;
-  setAvatarUrl: (avatarUrl: string) => void;
-  updateProfile: (values: UserProfile) => Promise<void>;
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
-  instagram_url: string;
-  setInstagram_url: (url: string) => void;
-  twitter_url: string;
-  setTwitter_url: (url: string) => void;
-  spotify_url: string;
-  setSpotify_url: (url: string) => void;
-  soundcloud_url: string;
-  setSoundcloud_url: (url: string) => void;
-  absoluteAvatar_urlAuth: string;
-  userRoles: string[] | null;
-}
-
-const AuthContext = React.createContext<AuthContextProps>(
-  {} as AuthContextProps
-);
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }) {
   const router = useRouter();
-  const [errorMessageAuth, setErrorMessageAuth] = useState<string | null>(null);
-  const [session, setSession] = useState<any>();
+  const [errorMessageAuth, setErrorMessageAuth] = useState(null);
+  const [session, setSession] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -70,13 +17,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [spotify_url, setSpotify_url] = useState("");
   const [soundcloud_url, setSoundcloud_url] = useState("");
   const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState("");
-  const [userRoles, setUserRoles] = useState<string[] | null>(null);
+
+  const [userRoles, setUserRoles] = useState(null);
 
   useEffect(() => {
     let mounted = true;
 
     async function getInitialSession() {
-      const { data: session } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       // only update the react state if the component is still mounted
       if (mounted) {
@@ -91,18 +41,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     getInitialSession();
 
-    const authListener = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      const currentUser = session?.user;
-      if (currentUser) {
-        // signIn(currentUser.id, currentUser.email);
-        signIn();
+    const { subscription: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        const currentUser = session?.user;
+        if (currentUser) {
+          signIn(currentUser.id, currentUser.email);
+        }
       }
-    });
+    );
 
     return () => {
       mounted = false;
-      authListener.data.subscription.unsubscribe();
+
+      // subscription?.unsubscribe();
+      authListener.unsubscribe();
     };
   }, []);
 
@@ -118,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const generalErrorMessage = "There seems to be an error with our servers";
 
-  const registerUser = async (email: string, password: string) => {
+  const registerUser = async (email, password) => {
     try {
       setIsLoading(true);
       const { data, error } = await supabase.auth.signUp({
@@ -140,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const handleLogin = async (email: string, password: string) => {
+  const handleLogin = async (email, password) => {
     try {
       setIsLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -165,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         let { data, error, status } = await supabase
           .from("profiles")
+          // .select(`username, website, avatar_url`)
           .select(`*`)
           .eq("id", user.id)
           .single();
@@ -183,6 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setSoundcloud_url(data.soundcloud_url);
           setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
           setBio(data.bio);
+          // return(data)
         }
       } catch (error) {
         setErrorMessageAuth(generalErrorMessage);
@@ -193,25 +148,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function getCurrentUser(): Promise<User> {
+  async function getCurrentUser() {
     try {
-      const { data, error } = await supabase.auth.getSession();
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
       if (error) {
         throw error;
       }
 
-      if (!data?.session?.user) {
+      if (!session?.user) {
         router.push("/");
-      }
 
-      return data.session.user;
-    } catch (error) {
-      console.error(error);
-    }
+        // throw new Error("User not logged in");
+      }
+      return session.user;
+    } catch (error) {}
   }
 
-  async function updateSongPost(values: any, id: string) {
+  async function updateSongPost(values, id) {
     try {
       setIsLoading(true);
 
@@ -230,8 +187,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }
-
-  async function updateComment(values: any, id: string) {
+  async function updateComment(values, id) {
     try {
       setIsLoading(true);
 
@@ -251,7 +207,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function updatePotentialCollaborator(values: any, id: string) {
+  async function updatePotentialCollaborator(values, id) {
     try {
       setIsLoading(true);
 
@@ -271,7 +227,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function getCollaborators(): Promise<any[]> {
+  async function getCollaborators() {
     try {
       setIsLoading(true);
 
@@ -293,8 +249,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }
-
-  async function getMusicPosts(): Promise<any[]> {
+  async function getMusicPosts() {
     try {
       setIsLoading(true);
 
@@ -311,11 +266,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setErrorMessageAuth(generalErrorMessage);
       console.log(error.message);
     } finally {
-      setIsLoading(false);
+      setIsLoading(true);
+      false;
     }
   }
 
-  async function getComments(): Promise<any[]> {
+  async function getComments() {
     try {
       setIsLoading(true);
 
@@ -345,7 +301,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     twitter_url,
     spotify_url,
     soundcloud_url,
-  }: UserProfile) {
+  }) {
     try {
       setIsLoading(true);
       const user = await getCurrentUser();
@@ -369,6 +325,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .update(updates)
         .eq("id", user.id);
 
+      // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
+
       let collaborators = await getCollaborators();
 
       let fillteredCollabPosts = collaborators.filter(
@@ -386,6 +344,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         })
       );
 
+      // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
       let musicPosts = await getMusicPosts();
 
       let fillteredPosts = musicPosts.filter(
@@ -403,23 +362,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         })
       );
 
+      // UPDATE ALL COMMENTS WITH USERNAME AND AVATAR URL
       let comments = await getComments();
 
       let fillteredComments = comments.filter(
-        (comment) => comment.user_id === user.id
+        (comment) => comment.user === user.id
       );
 
       const commentValues = {
-        username,
-        absolute_avatar_url,
+        avatarURl: absolute_avatar_url,
       };
 
       await Promise.all(
-        fillteredComments.map(async (comment) => {
-          return updateComment(commentValues, comment.id);
+        fillteredComments.map(async (post) => {
+          return updateComment(commentValues, post.id);
         })
       );
 
+      await getProfile();
+
+      // ERROR HANDLING
       if (error) {
         throw error;
       }
@@ -431,93 +393,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function fetchUserRoles(callback: (userRoles: any) => void) {
-    try {
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("*")
-        .eq("user_id", session.user.id)
-        .limit(1);
-
-      if (error) {
-        throw error;
-      }
-
-      callback(data);
-    } catch (error) {
-      console.error(error);
-    }
+  async function signOut() {
+    // Ends user session
+    router.push("/");
+    await supabase.auth.signOut();
+    setSession(null);
+    setUsername(null);
   }
 
-  const signUp = async (data: { email: string; password: string }) => {
+  /**
+   * Fetch all roles for the current user
+   * @param {function} setState Optionally pass in a hook or callback to set the state
+   */
+  const fetchUserRoles = async (setState) => {
     try {
-      setIsLoading(true);
-      const { error } = await supabase.auth.signUp(data);
-      if (error) throw error;
+      let { data } = await supabase.from("user_roles").select(`*`);
+      if (setState) setState(data);
+      return data;
     } catch (error) {
-      console.log(error);
-      setErrorMessageAuth(error.message || error.error_description);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  type Provider = "google" | "github" | "facebook" | "twitter";
-
-  const signInOauth = async (provider: Provider) => {
-    try {
-      setIsLoading(true);
-      await supabase.auth.signInWithOAuth({ provider: provider });
-    } catch (error) {
-      console.log(error);
-      setErrorMessageAuth(error.message || error.error_description);
-    } finally {
-      setIsLoading(false);
+      console.log("error", error);
     }
   };
 
-  const signOut = () => {
-    supabase.auth.signOut();
-    router.push("/");
+  const value = {
+    signUp: (data) => supabase.auth.signUp(data),
+    signInOauth: async (provider) =>
+      await supabase.auth.signInWithOAuth({
+        provider,
+      }),
+    signOut: () => signOut,
+    errorMessageAuth,
+    setErrorMessageAuth,
+    registerUser,
+    handleLogin,
+    session,
+    getProfile,
+    username,
+    setUsername,
+    bio,
+    setBio,
+    website,
+    setWebsite,
+    avatar_url,
+    setAvatarUrl,
+    updateProfile,
+    isLoading,
+    setIsLoading,
+    instagram_url,
+    setInstagram_url,
+    twitter_url,
+    setTwitter_url,
+    spotify_url,
+    setSpotify_url,
+    soundcloud_url,
+    setSoundcloud_url,
+    absoluteAvatar_urlAuth,
+    userRoles,
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        signUp,
-        signInOauth,
-        signOut,
-        errorMessageAuth,
-        setErrorMessageAuth,
-        registerUser,
-        handleLogin,
-        session,
-        getProfile,
-        username,
-        setUsername,
-        bio,
-        setBio,
-        website,
-        setWebsite,
-        avatar_url,
-        setAvatarUrl,
-        updateProfile,
-        isLoading,
-        setIsLoading,
-        instagram_url,
-        setInstagram_url,
-        twitter_url,
-        setTwitter_url,
-        spotify_url,
-        setSpotify_url,
-        soundcloud_url,
-        setSoundcloud_url,
-        absoluteAvatar_urlAuth,
-        userRoles,
-      }}
-    >
-      {children}
+    <AuthContext.Provider value={value}>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}

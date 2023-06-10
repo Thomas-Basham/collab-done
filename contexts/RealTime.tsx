@@ -418,6 +418,6 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
   );
 }
 
-export function useMessage() {
+export function useRealtime() {
   return useContext(MessageContext);
 }
