@@ -35,7 +35,7 @@ interface PotentialCollaborator {
 
 export default function useResource() {
   const router = useRouter();
-  const { session, username, absoluteAvatar_urlAuth } = useAuth();
+  const { session } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -75,7 +75,20 @@ export default function useResource() {
       }
 
       if (data) {
-        setAllProfiles(data);
+        const profiles: Profile[] = data.map((profile: any) => ({
+          id: profile.id,
+          username: profile.username,
+          bio: profile.bio,
+          website: profile.website,
+          avatar_url: profile.avatar_url,
+          absolute_avatar_url: profile.absolute_avatar_url,
+          instagram_url: profile.instagram_url,
+          twitter_url: profile.twitter_url,
+          spotify_url: profile.spotify_url,
+          soundcloud_url: profile.soundcloud_url,
+        }));
+
+        setAllProfiles(profiles);
         return data;
       }
     } catch (error) {
@@ -515,6 +528,6 @@ export default function useResource() {
     deleteProfile,
     getProfileByID,
     downloadImage,
-    getSocials
+    getSocials,
   };
 }

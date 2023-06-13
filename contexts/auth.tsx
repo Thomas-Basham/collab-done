@@ -1,26 +1,79 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
-import { useRouter } from "next/router";
-const AuthContext = React.createContext();
+// import { useRouter } from "next/router";
+import { Session } from "@supabase/gotrue-js/src/lib/types";
+import {
+  AuthResponse,
+  OAuthResponse,
+} from "@supabase/gotrue-js/dist/module/lib/types";
+interface AuthContextType {
+  signUp: (data: { email: string; password: string }) => Promise<AuthResponse>;
+  signInOauth: (provider: string) => Promise<OAuthResponse>;
+  signOut: () => Promise<void>;
+  errorMessageAuth: string | null;
+  setErrorMessageAuth: React.Dispatch<React.SetStateAction<string | null>>;
+  registerUser: (email: string, password: string) => Promise<void>;
+  handleLogin: (email: string, password: string) => Promise<void>;
+  session: Session | null | undefined;
+  getProfile: () => Promise<void>;
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  bio: string;
+  setBio: React.Dispatch<React.SetStateAction<string>>;
+  website: string;
+  setWebsite: React.Dispatch<React.SetStateAction<string>>;
+  avatar_url: string;
+  setAvatarUrl: React.Dispatch<React.SetStateAction<string>>;
+  updateProfile: (profile: {
+    username: string;
+    bio: string;
+    website: string;
+    avatar_url: string;
+    absolute_avatar_url: string;
+    instagram_url: string;
+    twitter_url: string;
+    spotify_url: string;
+    soundcloud_url: string;
+  }) => Promise<void>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  instagram_url: string;
+  setInstagram_url: React.Dispatch<React.SetStateAction<string>>;
+  twitter_url: string;
+  setTwitter_url: React.Dispatch<React.SetStateAction<string>>;
+  spotify_url: string;
+  setSpotify_url: React.Dispatch<React.SetStateAction<string>>;
+  soundcloud_url: string;
+  setSoundcloud_url: React.Dispatch<React.SetStateAction<string>>;
+  absoluteAvatar_urlAuth: string;
+  userRoles: null;
+}
+
+const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }) {
-  const router = useRouter();
-  const [errorMessageAuth, setErrorMessageAuth] = useState(null);
-  const [session, setSession] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [website, setWebsite] = useState("");
-  const [avatar_url, setAvatarUrl] = useState("");
-  const [instagram_url, setInstagram_url] = useState("");
-  const [twitter_url, setTwitter_url] = useState("");
-  const [spotify_url, setSpotify_url] = useState("");
-  const [soundcloud_url, setSoundcloud_url] = useState("");
-  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] = useState("");
+  // const router = useRouter();
+  const [errorMessageAuth, setErrorMessageAuth] = useState<string | null>(null);
+  const [session, setSession] = useState<Session | null>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
+  const [website, setWebsite] = useState<string>("");
+  const [avatar_url, setAvatarUrl] = useState<string>("");
+  const [instagram_url, setInstagram_url] = useState<string>("");
+  const [twitter_url, setTwitter_url] = useState<string>("");
+  const [spotify_url, setSpotify_url] = useState<string>("");
+  const [soundcloud_url, setSoundcloud_url] = useState<string>("");
+  const [absoluteAvatar_urlAuth, setAbsoluteAvatar_UrlAuth] =
+    useState<string>("");
 
   const [userRoles, setUserRoles] = useState(null);
-
   useEffect(() => {
+    const signIn = async () => {
+      await fetchUserRoles((userRoles) =>
+        setUserRoles(userRoles.map((userRole) => userRole.role))
+      );
+    };
     let mounted = true;
 
     async function getInitialSession() {
@@ -41,12 +94,13 @@ export function AuthProvider({ children }) {
 
     getInitialSession();
 
-    const { subscription: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+    const { data:{ subscription} } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log(session);
         setSession(session);
         const currentUser = session?.user;
         if (currentUser) {
-          signIn(currentUser.id, currentUser.email);
+          signIn();
         }
       }
     );
@@ -54,20 +108,14 @@ export function AuthProvider({ children }) {
     return () => {
       mounted = false;
 
-      // subscription?.unsubscribe();
-      authListener.unsubscribe();
+      subscription?.unsubscribe();
+      // subscription?.subscription?.unsubscribe();
     };
   }, []);
 
   useEffect(() => {
     getProfile();
   }, [session]);
-
-  const signIn = async () => {
-    await fetchUserRoles((userRoles) =>
-      setUserRoles(userRoles.map((userRole) => userRole.role))
-    );
-  };
 
   const generalErrorMessage = "There seems to be an error with our servers";
 
@@ -102,7 +150,11 @@ export function AuthProvider({ children }) {
       });
 
       if (error) throw error;
-      if (data) router.push("/");
+      if (data) {
+        //  router.push("/");
+
+        console.log("HANDLE LOGIN DATA", data);
+      }
     } catch (error) {
       setErrorMessageAuth(error.message || error.error_description);
     } finally {
@@ -160,8 +212,7 @@ export function AuthProvider({ children }) {
       }
 
       if (!session?.user) {
-        router.push("/");
-
+        // router.push("/");
         // throw new Error("User not logged in");
       }
       return session.user;
@@ -395,7 +446,7 @@ export function AuthProvider({ children }) {
 
   async function signOut() {
     // Ends user session
-    router.push("/");
+    // router.push("/");
     await supabase.auth.signOut();
     setSession(null);
     setUsername(null);
@@ -421,7 +472,7 @@ export function AuthProvider({ children }) {
       await supabase.auth.signInWithOAuth({
         provider,
       }),
-    signOut: () => signOut,
+    signOut: signOut,
     errorMessageAuth,
     setErrorMessageAuth,
     registerUser,
