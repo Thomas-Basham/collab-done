@@ -5,6 +5,7 @@ import { useState } from "react";
 
 interface Song {
   id: number;
+  genre: string;
 }
 
 interface Comment {
@@ -27,11 +28,12 @@ interface Profile {
   twitter_url: string;
   spotify_url: string;
   soundcloud_url: string;
+  // status: string;
+  // updated_at: Date;
 }
+interface Socials {}
 
-interface PotentialCollaborator {
-  // Add potential collaborator properties
-}
+interface PotentialCollaborator {}
 
 export default function useResource() {
   // const router = useRouter();
@@ -110,7 +112,7 @@ export default function useResource() {
       }
 
       if (data) {
-        setMusicPosts(data);
+        setMusicPosts(data as Song[]);
       }
     } catch (error) {
       setErrorMessage(generalErrorMessage);
@@ -183,9 +185,8 @@ export default function useResource() {
       if (error && status !== 406) {
         throw error;
       }
-
       if (data) {
-        setComments(data);
+        setComments(data as Comment[]);
       }
     } catch (error) {
       setErrorMessage(generalErrorMessage);
@@ -382,7 +383,7 @@ export default function useResource() {
       }
 
       if (data) {
-        setSocials(data);
+        setSocials(data as []);
       }
     } catch (error) {
       setErrorMessage(generalErrorMessage);
@@ -392,28 +393,6 @@ export default function useResource() {
     }
   }
 
-  async function deleteProfile() {
-    try {
-      setLoading(true);
-
-      const { error } = await supabase
-        .from("profiles")
-        .delete()
-        .match({ id: socials?.id });
-
-      if (error) {
-        throw error;
-      }
-
-      // Refresh the socials
-      await getProfile();
-    } catch (error) {
-      setErrorMessage(generalErrorMessage);
-      console.log(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
   async function getProfileByID(id: number) {
     try {
       setLoading(true);
@@ -476,7 +455,7 @@ export default function useResource() {
       }
 
       if (data) {
-        setSocials(data);
+        setSocials(data as []);
         setSelectedPostKey(key);
         setAvatarUrl(data.avatar_url);
 
@@ -525,7 +504,7 @@ export default function useResource() {
     getPotentialCollaborators,
     updateProfile,
     getProfile,
-    deleteProfile,
+    // deleteProfile,
     getProfileByID,
     downloadImage,
     getSocials,

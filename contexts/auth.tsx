@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Session } from "@supabase/gotrue-js/src/lib/types";
 
 import { AuthResponse, OAuthResponse } from "@supabase/supabase-js";
+import { get } from "http";
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 interface AuthContextType {
   signUp: (data: { email: string; password: string }) => Promise<AuthResponse>;

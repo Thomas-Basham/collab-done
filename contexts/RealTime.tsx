@@ -81,6 +81,7 @@ interface RealTimeProviderProps {
 }
 
 export function RealTimeProvider({ children }: RealTimeProviderProps) {
+  // @ts-ignore
   const { session } = useAuth();
 
   const [channels, setChannels] = useState<Channel[]>([]);
@@ -109,6 +110,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         "postgres_changes",
         { event: "*", schema: "public", table: "messages" },
         (payload) => {
+          // @ts-ignore
           setIncomingChannelId(payload.new.channel_id);
           handleNewMessage(payload.new as unknown as Message);
         }
@@ -277,7 +279,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         .from("messages")
         .select(`*`)
         .eq("channel_id", channel_id)
-        .order("inserted_at", true);
+        .order("inserted_at"); // , true
 
       if (error && status !== 406) {
         throw error;
@@ -309,6 +311,7 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
     let filteredChannels = channels.filter(
       (channel) =>
         channel.message_to === session?.user?.id ||
+        // @ts-ignore
         channel.created_by === session?.user?.id
     );
     let existingChannel = filteredChannels.filter(
