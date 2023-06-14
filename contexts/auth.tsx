@@ -1,15 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { Session } from "@supabase/gotrue-js/src/lib/types";
-import {
-  AuthResponse,
-  OAuthResponse,
-} from "@supabase/gotrue-js/dist/module/lib/types";
+
+import { AuthResponse, OAuthResponse } from "@supabase/supabase-js";
+const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 interface AuthContextType {
   signUp: (data: { email: string; password: string }) => Promise<AuthResponse>;
   signInOauth: (provider: string) => Promise<OAuthResponse>;
-  signOut: () => Promise<void>;
+  signOut: any;
   errorMessageAuth: string | null;
   setErrorMessageAuth: React.Dispatch<React.SetStateAction<string | null>>;
   registerUser: (email: string, password: string) => Promise<void>;
@@ -48,11 +47,8 @@ interface AuthContextType {
   absoluteAvatar_urlAuth: string;
   userRoles: null;
 }
-
-const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
-
 export function AuthProvider({ children }) {
-  // const router = useRouter();
+  const router = useRouter();
   const [errorMessageAuth, setErrorMessageAuth] = useState<string | null>(null);
   const [session, setSession] = useState<Session | null>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -68,12 +64,8 @@ export function AuthProvider({ children }) {
     useState<string>("");
 
   const [userRoles, setUserRoles] = useState(null);
+
   useEffect(() => {
-    const signIn = async () => {
-      await fetchUserRoles((userRoles) =>
-        setUserRoles(userRoles.map((userRole) => userRole.role))
-      );
-    };
     let mounted = true;
 
     async function getInitialSession() {
@@ -94,22 +86,25 @@ export function AuthProvider({ children }) {
 
     getInitialSession();
 
-    const { data:{ subscription} } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log(session);
-        setSession(session);
-        const currentUser = session?.user;
-        if (currentUser) {
-          signIn();
-        }
+    const {
+      data: { subscription: authListener },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setSession(session);
+      const currentUser = session?.user;
+      if (currentUser) {
+        signIn();
       }
-    );
-
+    });
+    const signIn = async () => {
+      await fetchUserRoles((userRoles) =>
+        setUserRoles(userRoles.map((userRole) => userRole.role))
+      );
+    };
     return () => {
       mounted = false;
 
-      subscription?.unsubscribe();
-      // subscription?.subscription?.unsubscribe();
+      // subscription?.unsubscribe();
+      authListener?.unsubscribe();
     };
   }, []);
 
@@ -150,11 +145,7 @@ export function AuthProvider({ children }) {
       });
 
       if (error) throw error;
-      if (data) {
-        //  router.push("/");
-
-        console.log("HANDLE LOGIN DATA", data);
-      }
+      if (data) router.push("/");
     } catch (error) {
       setErrorMessageAuth(error.message || error.error_description);
     } finally {
@@ -212,7 +203,8 @@ export function AuthProvider({ children }) {
       }
 
       if (!session?.user) {
-        // router.push("/");
+        router.push("/");
+
         // throw new Error("User not logged in");
       }
       return session.user;
@@ -446,10 +438,10 @@ export function AuthProvider({ children }) {
 
   async function signOut() {
     // Ends user session
-    // router.push("/");
     await supabase.auth.signOut();
     setSession(null);
     setUsername(null);
+    router.push("/");
   }
 
   /**
@@ -467,12 +459,13 @@ export function AuthProvider({ children }) {
   };
 
   const value = {
-    signUp: (data) => supabase.auth.signUp(data),
+    signUp: (data: { email: string; password: string }) =>
+      supabase.auth.signUp(data),
     signInOauth: async (provider) =>
       await supabase.auth.signInWithOAuth({
         provider,
       }),
-    signOut: signOut,
+    signOut: () => signOut,
     errorMessageAuth,
     setErrorMessageAuth,
     registerUser,

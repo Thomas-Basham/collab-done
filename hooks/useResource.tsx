@@ -1,6 +1,6 @@
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/auth";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface Song {
@@ -34,19 +34,19 @@ interface PotentialCollaborator {
 }
 
 export default function useResource() {
-  const router = useRouter();
+  // const router = useRouter();
   const { session } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [musicPosts, setmusicPosts] = useState<Song[]>([]);
+  const [musicPosts, setMusicPosts] = useState<Song[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [songUrl, setSongUrl] = useState<string | null>(null);
   const [playSong, setPlaySong] = useState<boolean>(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(new Audio());
   const [currentKey, setCurrentKey] = useState<number | null>(null);
-  const [socials, setSocials] = useState<Profile | null>(null);
-  const [allAvatars, setAllAvatars] = useState<any>(null);
+  const [socials, setSocials] = useState<[] | null>(null);
+  const [allAvatars, setAllAvatars] = useState<[] | null>(null);
   const [selectedPostKey, setSelectedPostKey] = useState<number>();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -110,7 +110,7 @@ export default function useResource() {
       }
 
       if (data) {
-        setmusicPosts(data);
+        setMusicPosts(data);
       }
     } catch (error) {
       setErrorMessage(generalErrorMessage);
@@ -206,7 +206,7 @@ export default function useResource() {
       }
 
       // Refresh the comments
-      await getComments(comment.song_id);
+      await getComments();
     } catch (error) {
       setErrorMessage(generalErrorMessage);
       console.log(error.message);
