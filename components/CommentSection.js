@@ -51,11 +51,10 @@ export default function CommentSection(props) {
     setViewCommentData(data);
 
     let profile = await getProfileByID(data.user);
-    if (!profile['username']){
-      profile['username'] = "Unknown User"
+    if (!profile["username"]) {
+      profile["username"] = "Unknown User";
     }
     setViewCommentProfile(profile);
-
   };
 
   const handleDeleteComment = async (id) => {
@@ -77,7 +76,7 @@ export default function CommentSection(props) {
     }
   };
 
-  let fillteredComments = comments.filter(
+  let filteredComments = comments?.filter(
     (comment) => comment.song_id === props.song_id
   );
   return (
@@ -85,7 +84,7 @@ export default function CommentSection(props) {
       <div className="row ">
         <div id="spacer" className="col-2"></div>
         <div className="col comment-holder">
-          {fillteredComments.map((data, i) => {
+          {filteredComments?.map((data, i) => {
             return (
               <div
                 key={i}

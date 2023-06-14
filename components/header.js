@@ -5,10 +5,11 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { AiOutlineLogin } from "react-icons/ai";
 import { FcUpload } from "react-icons/fc";
 import { useAuth } from "../contexts/auth";
-
+import { useRouter } from "next/router"; // Import the useRouter hook
 export default function Header({ session, signOut }) {
   const { handleLogin } = useAuth();
-
+  const router = useRouter(); // Use the useRouter hook to access the router object
+  const { pathname } = router; // Extract the pathname from the router object
   return (
     <header className="">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -35,7 +36,7 @@ export default function Header({ session, signOut }) {
           <br></br>
           <Navbar.Collapse id="responsive-navbar-nav ">
             <Nav
-              activeKey={location.pathname}
+              activeKey={pathname}
               className=" justify-content-between"
               style={{ display: session && "none" }}
             >
@@ -51,7 +52,7 @@ export default function Header({ session, signOut }) {
             <Nav
               className=" justify-content-between "
               style={{ width: "30vw", display: !session?.user && "none" }}
-              activeKey={location.pathname}
+              activeKey={pathname}
             >
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/profile" className="d-flex align-items-center ">

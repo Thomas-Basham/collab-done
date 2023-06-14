@@ -1,37 +1,118 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "./auth";
+import {
+  RealtimePostgresChangesPayload,
+  RealtimeChannel,
+} from "@supabase/realtime-js";
+interface Message {
+  id: number;
+  channel_id: number;
+  message: string;
+  user_id: number;
+  username: string;
+  absolute_avatar_url: string;
+}
 
-const MessageContext = createContext();
+interface Channel {
+  id: number;
+  slug: string;
+  created_by: number;
+  message_to: string;
+  created_by_username: string;
+}
 
-export function RealTimeProvider({ children }) {
+interface User {
+  id: number;
+  // Add properties for the user object
+}
+
+interface MessageContextValue {
+  messages: Message[];
+  setMessages: (messages: Message[]) => void;
+  channels: Channel[];
+  users: Map<number, User>;
+  channelId: number | null;
+  addChannel: (
+    slug: string,
+    user_id: number,
+    message_to: string,
+    created_by_username: string
+  ) => Promise<any>;
+  setChannelId: (channelId: number | null) => void;
+  fetchUserRoles: (setState?: any) => Promise<any>;
+  fetchMessages: (channel_id: number | null, setState?: any) => Promise<any>;
+  deleteChannel: (channel_id: number) => Promise<any>;
+  addMessage: (
+    message: string,
+    channel_id: number,
+    user_id: number,
+    username: string,
+    absolute_avatar_url: string
+  ) => Promise<any>;
+  newMessage: Message | null;
+  deleteMessage: (message_id: number) => Promise<any>;
+}
+
+const MessageContext = createContext<MessageContextValue>({
+  messages: [],
+  setMessages: () => {},
+  channels: [],
+  users: new Map<number, User>(),
+  channelId: null,
+  addChannel: async () => {},
+  setChannelId: () => {},
+  fetchUserRoles: async () => {},
+  fetchMessages: async () => {},
+  deleteChannel: async () => {},
+  addMessage: async () => {},
+  newMessage: null,
+  deleteMessage: async () => {},
+});
+
+interface RealTimeProviderProps {
+  children: ReactNode;
+}
+
+export function RealTimeProvider({ children }: RealTimeProviderProps) {
+  // @ts-ignore
   const { session } = useAuth();
 
-  const [channels, setChannels] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [users] = useState(new Map());
-  const [newMessage, handleNewMessage] = useState(null);
-  const [newChannel, handleNewChannel] = useState(null);
-  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null);
-  const [deletedChannel, handleDeletedChannel] = useState(null);
-  const [deletedMessage, handleDeletedMessage] = useState(null);
-  const [channelId, setChannelId] = useState(null);
-  const [incomingChannelId, setIncomingChannelId] = useState(null);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [users] = useState<Map<number, User>>(new Map());
+  const [newMessage, handleNewMessage] = useState<Message | null>(null);
+  const [newChannel, handleNewChannel] = useState<Channel | null>(null);
+  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState<User | null>(
+    null
+  );
+  const [deletedChannel, handleDeletedChannel] = useState<Channel | null>(null);
+  const [deletedMessage, handleDeletedMessage] = useState<Message | null>(null);
+  const [channelId, setChannelId] = useState<number | null>(null);
+  const [incomingChannelId, setIncomingChannelId] = useState<number | null>(
+    null
+  );
 
   // Load initial data and set up listeners
   useEffect(() => {
     // Get Channels
     fetchChannels(setChannels);
     // Listen for new and deleted messages
-    supabase // const messageListener =
+    const messageListener: RealtimeChannel = supabase
       .channel("public:messages")
-      .on(
+      .on<RealtimePostgresChangesPayload<{ channel_id: string }>>(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
+        { event: "*", schema: "public", table: "messages" },
         (payload) => {
+          // @ts-ignore
           setIncomingChannelId(payload.new.channel_id);
-          handleNewMessage(payload.new);
-          // fetchMessages(payload.new.channel_id);
+          handleNewMessage(payload.new as unknown as Message);
         }
       )
       .on(
@@ -39,13 +120,13 @@ export function RealTimeProvider({ children }) {
         { event: "DELETE", schema: "public", table: "messages" },
         (payload) => {
           console.log(payload);
-          handleDeletedMessage(payload.old);
+          handleDeletedMessage(payload.old as Message);
         }
       )
       .subscribe();
 
     // Listen for changes to our users
-    supabase //const userListener =
+    const userListener = supabase
       .channel("public:profiles")
       .on(
         "postgres_changes",
@@ -53,12 +134,12 @@ export function RealTimeProvider({ children }) {
         (payload) => {
           console.log("PROFILES!", payload);
 
-          handleNewOrUpdatedUser(payload.new);
+          handleNewOrUpdatedUser(payload.new as User);
         }
       )
       .subscribe();
     // Listen for new and deleted channels
-    supabase //const channelListener =
+    const channelListener = supabase
       .channel("public:channels")
       .on(
         "postgres_changes",
@@ -66,7 +147,7 @@ export function RealTimeProvider({ children }) {
         (payload) => {
           console.log(payload);
 
-          handleNewChannel(payload.new);
+          handleNewChannel(payload.new as Channel);
         }
       )
       .on(
@@ -75,19 +156,21 @@ export function RealTimeProvider({ children }) {
         (payload) => {
           console.log(payload);
 
-          handleDeletedChannel(payload.old);
+          handleDeletedChannel(payload.old as Channel);
         }
       )
       .subscribe();
     // Cleanup on unmount
     return () => {
-      supabase.removeAllChannels();
+      supabase.removeChannel(messageListener);
+      supabase.removeChannel(userListener);
+      supabase.removeChannel(channelListener);
     };
   }, []);
 
   // Update when the route changes
   useEffect(() => {
-    if (channelId > 0) {
+    if (channelId !== null) {
       const handleAsync = async () => {
         await fetchMessages(channelId, setMessages);
       };
@@ -98,13 +181,13 @@ export function RealTimeProvider({ children }) {
 
   // New message received from Postgres
   useEffect(() => {
-    if (newMessage && incomingChannelId == channelId) {
+    if (newMessage && incomingChannelId === channelId) {
       fetchMessages(incomingChannelId);
 
       setMessages(messages.concat(newMessage));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newMessage]); //
+  }, [newMessage]);
 
   // Deleted message received from postgres
   useEffect(() => {
@@ -140,7 +223,7 @@ export function RealTimeProvider({ children }) {
    * Fetch all channels
    * @param {function} setState Optionally pass in a hook or callback to set the state
    */
-  const fetchChannels = async (setState) => {
+  const fetchChannels = async (setState?: any) => {
     try {
       let { data } = await supabase.from("channels").select("*");
       if (setState) setState(data);
@@ -155,15 +238,17 @@ export function RealTimeProvider({ children }) {
    * @param {number} userId
    * @param {function} setState Optionally pass in a hook or callback to set the state
    */
-  const fetchUser = async (userId, setState) => {
+  const fetchUser = async (userId: number, setState?: any) => {
     try {
       let { data } = await supabase
         .from("profiles")
         .select(`*`)
         .eq("id", userId);
-      let user = data[0];
-      if (setState) setState(user);
-      return user;
+      if (data) {
+        let user = data[0];
+        if (setState) setState(user);
+        return user;
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -173,7 +258,7 @@ export function RealTimeProvider({ children }) {
    * Fetch all roles for the current user
    * @param {function} setState Optionally pass in a hook or callback to set the state
    */
-  const fetchUserRoles = async (setState) => {
+  const fetchUserRoles = async (setState?: any) => {
     try {
       let { data } = await supabase.from("user_roles").select(`*`);
       if (setState) setState(data);
@@ -188,13 +273,13 @@ export function RealTimeProvider({ children }) {
    * @param {number} channel_id
    * @param {function} setState Optionally pass in a hook or callback to set the state
    */
-  async function fetchMessages(channel_id, setState) {
+  async function fetchMessages(channel_id: number, setState?: any) {
     try {
       let { data, error, status } = await supabase
         .from("messages")
         .select(`*`)
         .eq("channel_id", channel_id)
-        .order("inserted_at", true);
+        .order("inserted_at"); // , true
 
       if (error && status !== 406) {
         throw error;
@@ -217,16 +302,21 @@ export function RealTimeProvider({ children }) {
    * @param {string} message_to The receiver's id
    * @param {string} created_by_username The channel creator's username
    */
-  const addChannel = async (slug, user_id, message_to, created_by_username) => {
+  const addChannel = async (
+    slug: string,
+    user_id: number,
+    message_to: string,
+    created_by_username: string
+  ) => {
     let filteredChannels = channels.filter(
-      (chanel) =>
-        chanel.message_to === session?.user?.id ||
-        chanel.created_by === session?.user?.id
+      (channel) =>
+        channel.message_to === session?.user?.id ||
+        // @ts-ignore
+        channel.created_by === session?.user?.id
     );
     let existingChannel = filteredChannels.filter(
-      (chanel) =>
-        chanel.message_to === message_to &&
-        chanel.created_by === created_by_username
+      (channel) =>
+        channel.message_to === message_to && channel.created_by === user_id
     );
     if (existingChannel.length < 1) {
       try {
@@ -255,17 +345,23 @@ export function RealTimeProvider({ children }) {
    * @param {string} absolute_avatar_url src of author's avatar
    */
   const addMessage = async (
-    message,
-    channel_id,
-    user_id,
-    username,
-    absolute_avatar_url
+    message: string,
+    channel_id: number,
+    user_id: number,
+    username: string,
+    absolute_avatar_url: string
   ) => {
     try {
       let { data } = await supabase
         .from("messages")
         .insert([
-          { message, channel_id, user_id, username, absolute_avatar_url },
+          {
+            message,
+            channel_id,
+            user_id,
+            username,
+            absolute_avatar_url,
+          },
         ])
         .select();
       return data;
@@ -275,15 +371,15 @@ export function RealTimeProvider({ children }) {
   };
 
   /**
-   * Delete a channel from the DB
+   * Delete a channel by id
    * @param {number} channel_id
    */
-  const deleteChannel = async (channel_id) => {
+  const deleteChannel = async (channel_id: number) => {
     try {
       let { data } = await supabase
         .from("channels")
         .delete()
-        .match({ id: channel_id });
+        .eq("id", channel_id);
       return data;
     } catch (error) {
       console.log("error", error);
@@ -291,15 +387,15 @@ export function RealTimeProvider({ children }) {
   };
 
   /**
-   * Delete a message from the DB
+   * Delete a message by id
    * @param {number} message_id
    */
-  const deleteMessage = async (message_id) => {
+  const deleteMessage = async (message_id: number) => {
     try {
       let { data } = await supabase
         .from("messages")
         .delete()
-        .match({ id: message_id });
+        .eq("id", message_id);
       return data;
     } catch (error) {
       console.log("error", error);
@@ -309,10 +405,7 @@ export function RealTimeProvider({ children }) {
   const value = {
     messages,
     setMessages,
-    channels:
-      channels !== null
-        ? channels.sort((a, b) => a.slug.localeCompare(b.slug))
-        : [],
+    channels,
     users,
     channelId,
     addChannel,
