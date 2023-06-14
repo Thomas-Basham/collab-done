@@ -542,7 +542,7 @@ small {
 
   float: right;
 
-  justify-content: end;
+  justify-content: flex-end;
 
 }
 
@@ -687,11 +687,12 @@ ul {
 
 
 @media (max-width: 600px) {
-  #one-time-login-btn{
+  #one-time-login-btn {
     position: relative !important;
     left: 10px !important;
     margin-bottom: 50px;
   }
+
   .description {
     display: none;
   }
