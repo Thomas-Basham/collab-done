@@ -45,9 +45,9 @@ interface MessageContextValue {
     message_to: string,
     created_by_username: string
   ) => Promise<any>;
-  setChannelId: (channelId: number) => void;
+  setChannelId: (channelId: number | null) => void;
   fetchUserRoles: (setState?: any) => Promise<any>;
-  fetchMessages: (channel_id: number, setState?: any) => Promise<any>;
+  fetchMessages: (channel_id: number | null, setState?: any) => Promise<any>;
   deleteChannel: (channel_id: number) => Promise<any>;
   addMessage: (
     message: string,
@@ -99,72 +99,72 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
   );
 
   // Load initial data and set up listeners
-  // useEffect(() => {
-  //   // Get Channels
-  //   fetchChannels(setChannels);
-  //   // Listen for new and deleted messages
-  //   const messageListener: RealtimeChannel = supabase
-  //     .channel("public:messages")
-  //     .on<RealtimePostgresChangesPayload<{ channel_id: string }>>(
-  //       "postgres_changes",
-  //       { event: "*", schema: "public", table: "messages" },
-  //       (payload) => {
-  //         setIncomingChannelId(payload.new.channel_id);
-  //         handleNewMessage(payload.new as unknown as Message);
-  //       }
-  //     )
-  //     .on(
-  //       "postgres_changes",
-  //       { event: "DELETE", schema: "public", table: "messages" },
-  //       (payload) => {
-  //         console.log(payload);
-  //         handleDeletedMessage(payload.old as Message);
-  //       }
-  //     )
-  //     .subscribe();
+  useEffect(() => {
+    // Get Channels
+    fetchChannels(setChannels);
+    // Listen for new and deleted messages
+    const messageListener: RealtimeChannel = supabase
+      .channel("public:messages")
+      .on<RealtimePostgresChangesPayload<{ channel_id: string }>>(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        (payload) => {
+          setIncomingChannelId(payload.new.channel_id);
+          handleNewMessage(payload.new as unknown as Message);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "messages" },
+        (payload) => {
+          console.log(payload);
+          handleDeletedMessage(payload.old as Message);
+        }
+      )
+      .subscribe();
 
-  //   // Listen for changes to our users
-  //   const userListener = supabase
-  //     .channel("public:profiles")
-  //     .on(
-  //       "postgres_changes",
-  //       { event: "*", schema: "public", table: "profiles" },
-  //       (payload) => {
-  //         console.log("PROFILES!", payload);
+    // Listen for changes to our users
+    const userListener = supabase
+      .channel("public:profiles")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        (payload) => {
+          console.log("PROFILES!", payload);
 
-  //         handleNewOrUpdatedUser(payload.new as User);
-  //       }
-  //     )
-  //     .subscribe();
-  //   // Listen for new and deleted channels
-  //   const channelListener = supabase
-  //     .channel("public:channels")
-  //     .on(
-  //       "postgres_changes",
-  //       { event: "INSERT", schema: "public", table: "channels" },
-  //       (payload) => {
-  //         console.log(payload);
+          handleNewOrUpdatedUser(payload.new as User);
+        }
+      )
+      .subscribe();
+    // Listen for new and deleted channels
+    const channelListener = supabase
+      .channel("public:channels")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "channels" },
+        (payload) => {
+          console.log(payload);
 
-  //         handleNewChannel(payload.new as Channel);
-  //       }
-  //     )
-  //     .on(
-  //       "postgres_changes",
-  //       { event: "DELETE", schema: "public", table: "channels" },
-  //       (payload) => {
-  //         console.log(payload);
+          handleNewChannel(payload.new as Channel);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "channels" },
+        (payload) => {
+          console.log(payload);
 
-  //         handleDeletedChannel(payload.old as Channel);
-  //       }
-  //     )
-  //     .subscribe();
-  //   // Cleanup on unmount
-  //   return () => {
-  //     supabase.removeChannel(messageListener);
-  //     supabase.removeChannel(userListener);
-  //     supabase.removeChannel(channelListener);
-  //   };
-  // }, []);
+          handleDeletedChannel(payload.old as Channel);
+        }
+      )
+      .subscribe();
+    // Cleanup on unmount
+    return () => {
+      supabase.removeChannel(messageListener);
+      supabase.removeChannel(userListener);
+      supabase.removeChannel(channelListener);
+    };
+  }, []);
 
   // Update when the route changes
   useEffect(() => {
@@ -242,9 +242,11 @@ export function RealTimeProvider({ children }: RealTimeProviderProps) {
         .from("profiles")
         .select(`*`)
         .eq("id", userId);
-      let user = data[0];
-      if (setState) setState(user);
-      return user;
+      if (data) {
+        let user = data[0];
+        if (setState) setState(user);
+        return user;
+      }
     } catch (error) {
       console.log("error", error);
     }

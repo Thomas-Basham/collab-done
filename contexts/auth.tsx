@@ -158,29 +158,29 @@ export function AuthProvider({ children }) {
       try {
         setIsLoading(true);
         const user = await getCurrentUser();
+        if (user) {
+          let { data, error, status } = await supabase
+            .from("profiles")
+            // .select(`username, website, avatar_url`)
+            .select(`*`)
+            .eq("id", user.id)
+            .single();
+          if (error && status !== 406) {
+            throw error;
+          }
 
-        let { data, error, status } = await supabase
-          .from("profiles")
-          // .select(`username, website, avatar_url`)
-          .select(`*`)
-          .eq("id", user.id)
-          .single();
-
-        if (error && status !== 406) {
-          throw error;
-        }
-
-        if (data) {
-          setUsername(data.username);
-          setWebsite(data.website);
-          setAvatarUrl(data.avatar_url);
-          setInstagram_url(data.instagram_url);
-          setTwitter_url(data.twitter_url);
-          setSpotify_url(data.spotify_url);
-          setSoundcloud_url(data.soundcloud_url);
-          setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
-          setBio(data.bio);
-          // return(data)
+          if (data) {
+            setUsername(data.username);
+            setWebsite(data.website);
+            setAvatarUrl(data.avatar_url);
+            setInstagram_url(data.instagram_url);
+            setTwitter_url(data.twitter_url);
+            setSpotify_url(data.spotify_url);
+            setSoundcloud_url(data.soundcloud_url);
+            setAbsoluteAvatar_UrlAuth(data.absolute_avatar_url);
+            setBio(data.bio);
+            // return(data)
+          }
         }
       } catch (error) {
         setErrorMessageAuth(generalErrorMessage);
@@ -207,7 +207,7 @@ export function AuthProvider({ children }) {
 
         // throw new Error("User not logged in");
       }
-      return session.user;
+      return session?.user;
     } catch (error) {}
   }
 
@@ -350,7 +350,7 @@ export function AuthProvider({ children }) {
       const user = await getCurrentUser();
 
       const updates = {
-        id: user.id,
+        id: user?.id,
         username,
         bio,
         website,
@@ -366,62 +366,63 @@ export function AuthProvider({ children }) {
       let { error } = await supabase
         .from("profiles")
         .update(updates)
-        .eq("id", user.id);
+        .eq("id", user?.id);
 
       // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
 
       let collaborators = await getCollaborators();
 
-      let fillteredCollabPosts = collaborators.filter(
-        (post) => post.user === user.id
+      let filteredCollabPosts = collaborators?.filter(
+        (post) => post.user === user?.id
       );
 
       const collabvalues = {
         username,
         absolute_avatar_url,
       };
-
-      await Promise.all(
-        fillteredCollabPosts.map(async (post) => {
-          return updatePotentialCollaborator(collabvalues, post.id);
-        })
-      );
+      if (filteredCollabPosts) {
+        await Promise.all(
+          filteredCollabPosts.map(async (post) => {
+            return updatePotentialCollaborator(collabvalues, post.id);
+          })
+        );
+      }
 
       // UPDATE ALL MUSIC POSTS WITH USERNAME AND AVATAR URL
       let musicPosts = await getMusicPosts();
 
-      let fillteredPosts = musicPosts.filter(
-        (post) => post.artist_id === user.id
+      let filteredPosts = musicPosts?.filter(
+        (post) => post.artist_id === user?.id
       );
 
       const values = {
         artist: username,
         absolute_avatar_url,
       };
-
-      await Promise.all(
-        fillteredPosts.map(async (post) => {
-          return updateSongPost(values, post.id);
-        })
-      );
-
+      if (filteredPosts) {
+        await Promise.all(
+          filteredPosts.map(async (post) => {
+            return updateSongPost(values, post.id);
+          })
+        );
+      }
       // UPDATE ALL COMMENTS WITH USERNAME AND AVATAR URL
       let comments = await getComments();
 
-      let fillteredComments = comments.filter(
-        (comment) => comment.user === user.id
+      let filteredComments = comments?.filter(
+        (comment) => comment.user === user?.id
       );
 
       const commentValues = {
         avatarURl: absolute_avatar_url,
       };
-
-      await Promise.all(
-        fillteredComments.map(async (post) => {
-          return updateComment(commentValues, post.id);
-        })
-      );
-
+      if (filteredComments) {
+        await Promise.all(
+          filteredComments.map(async (post) => {
+            return updateComment(commentValues, post.id);
+          })
+        );
+      }
       await getProfile();
 
       // ERROR HANDLING
@@ -440,7 +441,7 @@ export function AuthProvider({ children }) {
     // Ends user session
     await supabase.auth.signOut();
     setSession(null);
-    setUsername(null);
+    setUsername("");
     router.push("/");
   }
 
